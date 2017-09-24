@@ -1,0 +1,29 @@
+- alias: 'message'
+  trigger:
+    platform: zone
+    entity_id: device_tracker.tmc_phone
+    zone: zone.tor_magnus_work
+    event: enter
+  action:
+    service: notify.mail
+    data:
+      title: 'Tor Magnus at work'
+      message: 'Tor Magnus is now arriving at work.'
+- alias: 'Picture on open front door'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.hoverdr
+    to: open
+  action:
+    - service: shell_command.snapshot
+      data:
+        filename: /tmp/snapshot.jpg
+    - delay:
+        seconds: 1
+    - service: notify.mail
+      data:
+        title: 'Door opened'
+        message: 'The front door was opened'
+        data:
+          images:
+            - /tmp/snapshot.jpg

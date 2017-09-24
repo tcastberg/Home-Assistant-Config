@@ -1,0 +1,136 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret home_latitude_short
+  longitude: !secret home_longitude_short
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 154
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Oslo
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+# introduction:
+
+frontend:
+
+config:
+
+http:
+  api_password: !secret http_api_password
+  base_url: !secret http_base_url
+
+zwave:
+  usb_path: /dev/ttyACM0
+  network_key: !secret zwave_network_key
+
+mqtt:
+  broker: !secret mqtt_broker
+  port: 18883
+  certificate: /config/owntracks.crt
+
+device_tracker:
+  - platform: owntracks
+  - platform: unifi
+    host: !secret unifi_host
+    verify_ssl: False
+    username: !secret unifi_username
+    password: !secret unifi_password
+
+# Discover some devices automatically
+#discovery:
+
+zone:
+  - name: Home
+    latitude: !secret home_latitude
+    longitude: !secret home_longitude
+    radius: 30
+    icon: mdi:home-modern
+  - name: School
+    latitude: !secret school_latitude
+    longitude: !secret school_longitude
+    radius: 70
+    icon: mdi:school
+  - name: Tor Magnus Work
+    latitude: !secret tor_magnus_work_latitude
+    longitude: !secret tor_magnus_work_longitude
+    radius: 70
+    icon: mdi:worker
+  - name: Lande Work
+    latitude: !secret lande_work_latitude
+    longitude: !secret lande_work_longitude
+    radius: 70
+    icon: mdi:worker
+
+camera:
+  - platform: generic
+    name: Hallway Camera
+    still_image_url: !secret camera_still_image_url
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+
+# Weather prediction
+sensor:
+  - platform: yr
+  - platform: onewire
+    names:
+      '12.385D67000000': Storage room
+      '12.9D5967000000': Broken
+      '26.984585000000': Hallway
+      '26.A78785000000': Bedroom
+    mount_dir: /onewire
+  - platform: fitbit
+    clock_format: 24H
+    monitored_resources:
+      - "activities/steps"
+      - "activities/heart"
+      - "body/weight"
+      - "sleep/minutesAsleep"
+
+media_player:
+  - platform: sonos
+  - platform: cast
+  - platform: plex
+
+verisure:
+  username: !secret verisure_username
+  password: !secret verisure_password
+
+# Text to speech
+tts:
+  - platform: google
+
+notify:
+  - name: mail
+    platform: smtp
+    sender: !secret notify_mail_sender
+    sender_name: My Home Assistant
+    recipient: !secret notify_mail_recipient
+    server: !secret notify_mail_server
+    port: 25
+
+shell_command:
+  snapshot: !secret shell_command_snapshot
+
+switch:
+  platform: flux
+  lights:
+    - light.fibaro_system_fgrgbwm441_rgbw_controller_level
+  name: Fluxer
+  mode: rgb
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

@@ -1,0 +1,169 @@
+outside:
+  name: Outside
+  view: yes
+  entities:
+    - group.front_yard
+    - group.back_yard
+    - group.balcony
+front_yard:
+  name: Front Yard
+  entities:
+    - sensor.yr_symbol
+    - sun.sun
+back_yard:
+  name: Back Yard
+balcony:
+  name: Balcony
+
+
+topfloor:
+  name: Top Floor
+  view: yes
+  entities:
+    - group.fronthall
+    - group.toilet
+    - group.laundry
+    - group.kitchen
+fronthall:
+  name: Hallway
+  entities:
+    - camera.hallway_camera
+    - sensor.hallway_pressure
+    - sensor.hallway_humidity
+    - sensor.hallway_temperature
+    - binary_sensor.hoveddr
+    - alarm_control_panel.holmsens_vei_alarm
+toilet:
+  name: Toilet
+laundry:
+  name: Laundry
+kitchen:
+  name: Kitchen
+  entities:
+    - sensor.kitchen_humidity
+    - sensor.kitchen_temperature
+    - sensor.kitchen_temperature_2
+    - media_player.kitchen
+
+
+diningfloor:
+  name: Dining Floor
+  view: yes
+  entities:
+    - group.diningroom
+    - group.office
+diningroom:
+  name: Dining room
+  entities:
+    - media_player.dining_room
+office:
+  name: Office area
+
+
+bathfloor:
+  name: Bathroom Floor
+  view: yes
+  entities:
+    - group.tvroom
+    - group.familybath
+    - group.changingroom
+    - group.masterbath
+tvroom:
+  name: TV area
+  entities:
+    - media_player.tv_room
+    - sensor.tv_lounge_humidity
+    - sensor.tv_lounge_temperature
+    - sensor.tv_lounge_temperature_2
+familybath:
+  name: Family bathroom
+changingroom:
+  name: Changing room
+masterbath:
+  name: Master bathroom
+
+
+bedfloor:
+  name: Bedroom Floor
+  view: yes
+  entities:
+    - group.masterbed
+    - group.ingridbed
+    - group.backhall
+    - group.guestbed
+masterbed:
+  name: Master bedroom
+  entities:
+    - sensor.master_bedroom_humidity
+    - sensor.master_bedroom_temperature
+    - media_player.master_bedroom
+    - binary_sensor.verandadr_mastersoverom
+    - binary_sensor.sensative_strips_sensor
+    - light.fibaro_system_fgrgbwm441_rgbw_controller_level
+    - light.fibaro_system_fgrgbwm441_rgbw_controller_level_2
+    - switch.fluxer
+ingridbed:
+  name: Ingrid bedroom
+  entities:
+    - sensor.bedroom_pressure
+    - sensor.bedroom_humidity
+    - sensor.bedroom_temperature
+backhall:
+  name: Back hallway
+  entities:
+    - binary_sensor.backhall_garden_door_sensor
+guestbed:
+  name: Guest bedroom
+
+
+basefloor:
+  name: Basement Floor
+  view: yes
+  entities:
+    - group.trainingroom
+    - group.hobbyroom
+    - group.storageroom
+trainingroom:
+  name: Training room
+  entities:
+    - sensor.training_room_humidity
+    - sensor.training_room_temperature
+hobbyroom:
+  name: Hobby room
+storageroom:
+  name: Storage room
+  entities:
+    - sensor.storage_room_pressure
+    - sensor.storage_room_temperature
+
+
+people:
+  name: The Castbergs
+  view: yes
+  icon: mdi:account-multiple
+  entities:
+    - group.tormagnus
+    - group.lande
+    - group.ingridsofia
+tormagnus:
+  name: Tor Magnus
+  icon: mdi:account
+  entities:
+    - sensor.steps
+    - sensor.weight
+    - sensor.resting_heart_rate
+    - sensor.sleep_minutes_asleep
+    - device_tracker.tmc_phone
+    - device_tracker.phone__tmc
+    - device_tracker.laptop__tmc
+lande:
+  name: Lande
+  icon: mdi:account
+  entities:
+    - device_tracker.phone__lande
+    - device_tracker.samsunggalaxys7
+ingridsofia:
+  name: Ingrid Sofia
+  icon: mdi:account
+  entities:
+    - device_tracker.ingrid_ipad
