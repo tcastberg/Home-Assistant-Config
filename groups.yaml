@@ -33,6 +33,7 @@ fronthall:
     - sensor.hallway_temperature
     - binary_sensor.hoveddr
     - alarm_control_panel.holmsens_vei_alarm
+    - alarm_control_panel.home_alarm
 toilet:
   name: Toilet
 laundry:
@@ -55,7 +56,6 @@ diningfloor:
 diningroom:
   name: Dining room
   entities:
-    - media_player.dining_room
 office:
   name: Office area
 
@@ -79,6 +79,7 @@ familybath:
   name: Family bathroom
 changingroom:
   name: Changing room
+    - media_player.dining_room
 masterbath:
   name: Master bathroom
 
@@ -170,3 +171,4 @@ ingridsofia:
   icon: mdi:account
   entities:
     - device_tracker.ipad__ingrid
+

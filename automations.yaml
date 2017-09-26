@@ -1,4 +1,5 @@
-- alias: 'message'
+- id: '1'
+  alias: 'message'
   trigger:
     platform: zone
     entity_id: device_tracker.tmc_phone
@@ -9,7 +10,9 @@
     data:
       title: 'Tor Magnus at work'
       message: 'Tor Magnus is now arriving at work.'
-- alias: 'Picture on open front door'
+
+- id: '2'
+  alias: 'Picture on open front door'
   trigger:
     platform: state
     entity_id: binary_sensor.hoverdr
@@ -27,3 +30,166 @@
         data:
           images:
             - /tmp/snapshot.jpg
+
+- id: '3'
+  alias: 'Trigger alarm while armed away'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.backhall_garden_door_sensor
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.sensative_strips_sensor
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_away
+  action:
+    service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+
+- id: '4'
+  alias: 'Trigger alarm while armed home'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.backhall_garden_door_sensor
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.sensative_strips_sensor
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_home
+  action:
+    service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+
+
+- id: '5'
+  alias: 'Triggered Flash'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: 'triggered'
+  action:
+    - service: script.turn_on
+      entity_id: script.light_flash_on
+    - service: notify.mail
+      data:
+        title: 'Home Alarm Triggered'
+        message: 'Home Alarm Triggered {{now().strftime("%Y%m%d-%H%M%S")}}'
+
+- id: '6'
+  alias: 'Disarmed Off'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: 'disarmed'
+  action:
+    - service: script.turn_off
+      entity_id: script.light_flash_off
+    - service: notify.mail
+      data:
+        title: 'Home Alarm Disarmed'
+        message: 'Home Alarm Reset {{now().strftime("%Y%m%d-%H%M%S")}}'
+
+###
+# Control Time of Day
+###
+- id: '7'
+  alias: 'Set Time of Day to Day'
+  trigger:
+    - platform: sun
+      event: sunrise
+    - platform: time
+      at: '09:00:00'    
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.time_of_day
+        option: Day
+
+- id: '8'
+  alias: 'Set Time of Day to Evening'
+  trigger:
+    - platform: sun
+      event: sunset
+    - platform: time
+      at: '20:00:00'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.time_of_day
+        option: Evening
+
+- id: '9'
+  alias: 'Set Time of Day to Morning'
+  trigger:
+    platform: state
+    entity_id: input_select.sleep_state
+    to: 'Awake'
+  condition:
+    condition: sun
+    before: sunrise
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.time_of_day
+        option: Morning
+
+- id: '10'
+  alias: 'Set Time of Day to Night'
+  trigger:
+    platform: state
+    entity_id: input_select.sleep_state
+    to: 'Sleeping'
+  condition:
+    condition: sun
+    before: sunset
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.time_of_day
+        option: Night
+
+- id: '11'
+  alias: 'Send notification on state change for Time of Day'
+  trigger:
+    platform: state
+    entity_id: input_select.time_of_day
+  action:
+    - service: notify.mail
+      data:
+        title: 'Time of Day'
+        message: 'Time of Day changed to {{states.input_select.time_of_day.state}}'
+
+- id: '12'
+  alias: 'Wakeup alarm'
+  trigger:
+    platform: time
+    at: '06:00:00'
+  condition:
+    condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.sleep_state
+        option: Awake
+
+- id: '13'
+  alias: 'Wakeup alarm non-working'
+  trigger:
+    platform: time
+    at: '09:00:00'
+  condition:
+    condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'off'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.sleep_state
+        option: Awake

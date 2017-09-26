@@ -80,6 +80,16 @@ logbook:
 # Track the sun
 sun:
 
+alarm_control_panel:
+  - platform: manual
+    name: Home Alarm
+    code: !secret alarm_control_panel_code
+    pending_time: 30
+    armed_home:
+      pending_time: 0
+    triggered:
+      pending_time: 20
+    trigger_time: 4 
 
 # Weather prediction
 sensor:
@@ -104,6 +114,10 @@ sensor:
     unit_of_measurement: "%"
     value_template: '{{ value_json.batt }}'
 
+binary_sensor:
+  - platform: workday
+    country: 'NO'
+
 media_player:
   - platform: sonos
   - platform: cast
@@ -116,6 +130,20 @@ verisure:
 # Text to speech
 tts:
   - platform: google
+
+input_select:
+  time_of_day:
+    name: Time of Day
+    options:
+      - Night
+      - Morning
+      - Day
+      - Evening
+  sleep_state:
+    name: Sleep State
+    options:
+      - Awake
+      - Sleeping
 
 notify:
   - name: mail
