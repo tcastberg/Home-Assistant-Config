@@ -12,6 +12,8 @@ sensor.hallway_pressure:
   icon: mdi:airballoon
 sensor.kitchen_pressure:
   icon: mdi:airballoon
+sensor.battery_tor_magnus:
+  icon: mdi:battery-70
 binary_sensor.hoveddr:
   device_class: opening
   friendly_name: "Front door"

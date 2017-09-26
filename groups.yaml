@@ -149,21 +149,24 @@ tormagnus:
   name: Tor Magnus
   icon: mdi:account
   entities:
+    - device_tracker.tmc_phone
+    - sensor.battery_tor_magnus
+    - device_tracker.phone__tmc
+    - device_tracker.laptop__tmc
     - sensor.steps
     - sensor.weight
     - sensor.resting_heart_rate
     - sensor.sleep_minutes_asleep
-    - device_tracker.tmc_phone
-    - device_tracker.phone__tmc
-    - device_tracker.laptop__tmc
 lande:
   name: Lande
   icon: mdi:account
   entities:
     - device_tracker.phone__lande
-    - device_tracker.samsunggalaxys7
+    - device_tracker.phone__lande_2
+    - device_tracker.pad__lande
+    - device_tracker.laptop__lande
 ingridsofia:
   name: Ingrid Sofia
   icon: mdi:account
   entities:
-    - device_tracker.ingrid_ipad
+    - device_tracker.ipad__ingrid

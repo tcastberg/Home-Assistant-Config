@@ -98,6 +98,11 @@ sensor:
       - "activities/heart"
       - "body/weight"
       - "sleep/minutesAsleep"
+  - platform: mqtt
+    state_topic: "owntracks/tmc/phone"
+    name: "Battery Tor Magnus"
+    unit_of_measurement: "%"
+    value_template: '{{ value_json.batt }}'
 
 media_player:
   - platform: sonos
@@ -128,7 +133,11 @@ switch:
   platform: flux
   lights:
     - light.fibaro_system_fgrgbwm441_rgbw_controller_level
-  name: Fluxer
+  name: Fluxed TV Backlight
+  start_time: '06:00'
+  start_colortemp: 7000
+  sunset_colortemp: 3000
+  stop_colortemp: 1500
   mode: rgb
 
 group: !include groups.yaml
