@@ -1,22 +1,16 @@
-light_flash_on:
-  alias: Light flash on
+light_flash:
+  alias: Light flash
   sequence:
     - service: homeassistant.turn_on
       data:
         entity_id: group.all_lights
     - delay:
-        seconds: 1
-    - service: script.turn_on
-      data:
-        entity_id: script.light_loop_off
-light_flash_off:
-  alias: Light flash off
-  sequence:
+        seconds: 2
     - service: homeassistant.turn_off
       data:
         entity_id: group.all_lights
     - delay:
-        seconds: 1
+        seconds: 2
     - service: script.turn_on
       data:
-        entity_id: script.light_flash_on
+        entity_id: script.light_flash

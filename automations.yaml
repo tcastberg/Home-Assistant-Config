@@ -74,7 +74,7 @@
     to: 'triggered'
   action:
     - service: script.turn_on
-      entity_id: script.light_flash_on
+      entity_id: script.light_flash
     - service: notify.mail
       data:
         title: 'Home Alarm Triggered'
@@ -88,7 +88,7 @@
     to: 'disarmed'
   action:
     - service: script.turn_off
-      entity_id: script.light_flash_off
+      entity_id: script.light_flash
     - service: notify.mail
       data:
         title: 'Home Alarm Disarmed'
@@ -178,6 +178,17 @@
       data:
         entity_id: input_select.sleep_state
         option: Awake
+    - service: light.turn_on
+      entity_id:
+        - light.fibaro_system_fgrgbwm441_rgbw_controller_level
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.changing_room
+        volume_level: 0.35
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.changing_room
+        source: 'BBC World Service News'
 
 - id: '13'
   alias: 'Wakeup alarm non-working'
@@ -193,3 +204,13 @@
       data:
         entity_id: input_select.sleep_state
         option: Awake
+
+- id: '14'
+  alias: 'Starting Home Assistant'
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    - service: switch.turn_on
+      entity_id: switch.fluxed_tv_backlight
+    

@@ -69,3 +69,5 @@ sensor.fibaro_system_fgrgbwm441_rgbw_controller_power:
   hidden: true
 sensor.fibaro_system_fgrgbwm441_rgbw_controller_power_2:
   hidden: true
+binary_sensor.workday_sensor:
+  hidden: true

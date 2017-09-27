@@ -79,7 +79,6 @@ familybath:
   name: Family bathroom
 changingroom:
   name: Changing room
-    - media_player.dining_room
 masterbath:
   name: Master bathroom
 
@@ -98,6 +97,7 @@ masterbed:
     - sensor.master_bedroom_humidity
     - sensor.master_bedroom_temperature
     - media_player.master_bedroom
+    - media_player.changing_room
     - binary_sensor.verandadr_mastersoverom
     - binary_sensor.sensative_strips_sensor
     - light.fibaro_system_fgrgbwm441_rgbw_controller_level
