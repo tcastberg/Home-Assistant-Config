@@ -33,6 +33,11 @@ mqtt:
   port: 18883
   certificate: /config/owntracks.crt
 
+prometheus:
+  exclude:
+    entities:
+      - device_tracker.tmc_phone
+
 device_tracker:
   - platform: owntracks
   - platform: unifi
@@ -117,6 +122,13 @@ sensor:
 binary_sensor:
   - platform: workday
     country: 'NO'
+  - platform: template
+    sensors:
+      balcony_door_sensor_2:
+        device_class: opening
+        friendly_name: "Balcony door"
+        value_template: >
+          {{ states.sensor.balcony_door_access_control.state == '23' }}
 
 media_player:
   - platform: sonos
@@ -160,7 +172,7 @@ shell_command:
 switch:
   platform: flux
   lights:
-    - light.fibaro_system_fgrgbwm441_rgbw_controller_level
+    - light.bedroom_tv_backlight_level
   name: Fluxed TV Backlight
   start_time: '06:00'
   start_colortemp: 7000
@@ -169,5 +181,5 @@ switch:
   mode: rgb
 
 group: !include groups.yaml
-automation: !include automations.yaml
+automation: !include_dir_merge_list automation/
 script: !include scripts.yaml

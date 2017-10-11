@@ -1,0 +1,109 @@
+- id: '1'
+  alias: 'message'
+  trigger:
+    platform: zone
+    entity_id: device_tracker.tmc_phone
+    zone: zone.tor_magnus_work
+    event: enter
+  action:
+    service: notify.mail
+    data:
+      title: 'Tor Magnus at work'
+      message: 'Tor Magnus is now arriving at work.'
+
+- id: '12'
+  alias: 'Wakeup alarm'
+  trigger:
+    platform: time
+    at: '06:00:00'
+  condition:
+    condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+  action:
+    - service: light.turn_on
+      entity_id:
+        - light.bedroom_tv_backlight_level
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.changing_room
+        volume_level: 0.35
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.changing_room
+        source: 'BBC World Service News'
+
+- id: '13'
+  alias: 'Wakeup alarm non-working'
+  trigger:
+    platform: time
+    at: '09:00:00'
+  condition:
+    condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'off'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.sleep_state
+        option: Awake
+
+- id: '14'
+  alias: 'Starting Home Assistant'
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    - service: switch.turn_on
+      entity_id: switch.fluxed_tv_backlight
+
+- id: '15'    
+  alias: 'Lights off when leaving'
+  trigger:
+  - entity_id: alarm_control_panel.home_alarm
+    platform: state
+    to: 'armed_away'
+  action:
+    - service: light.turn_off
+      entity_id: group.all_lights
+
+- id: '16'    
+  alias: 'Movement in dressing room'
+  trigger:
+  - entity_id: binary_sensor.dressingroom_motion_sensor_sensor
+    platform: state
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.sleep_state
+        state: 'Sleeping'
+      - condition: time
+        after: '05:00:00'
+        before: '20:00:00'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.sleep_state
+        option: 'Awake'
+
+- id: '17'
+  alias: 'House Awake'
+  trigger:
+  - platform: state
+    entity_id: input_select.sleep_state
+    to: 'Awake'
+  action:
+    - service: light.turn_on
+      entity_id: group.all_lights
+
+- id: '17'
+  alias: 'House Sleeping'
+  trigger:
+  - platform: state
+    entity_id: input_select.sleep_state
+    to: 'Sleeping'
+  action:
+    - service: light.turn_off
+      entity_id: group.all_lights

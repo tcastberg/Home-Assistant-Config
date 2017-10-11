@@ -2,27 +2,40 @@ sensor.broken_pressure:
   hidden: true
 sensor.broken_temperature:
   hidden: true
-sensor.bedroom_pressure:
-  icon: mdi:airballoon
 sensor.bedroom_humidity:
   icon: mdi:water-percent
 sensor.hallway_humidity:
+  icon: mdi:water-percent
+sensor.kitchen_hallway_humidity:
+  icon: mdi:water-percent
+sensor.tv_hallway_humidity:
+  icon: mdi:water-percent
+sensor.master_bedroom_humidity:
+  icon: mdi:water-percent
+sensor.training_room_humidity:
   icon: mdi:water-percent
 sensor.hallway_pressure:
   icon: mdi:airballoon
 sensor.kitchen_pressure:
   icon: mdi:airballoon
+sensor.bedroom_pressure:
+  icon: mdi:airballoon
+sensor.storage_room_pressure:
+  icon: mdi:airballoon
 sensor.battery_tor_magnus:
   icon: mdi:battery-70
-binary_sensor.hoveddr:
+binary_sensor.front_door:
   device_class: opening
-  friendly_name: "Front door"
+  friendly_name: "VS Hallway front door"
 binary_sensor.verandadr_mastersoverom:
   device_class: opening
-  friendly_name: "Garden door"
+  friendly_name: "VS Bedroom garden door"
 binary_sensor.backhall_garden_door_sensor:
   device_class: opening
-  friendly_name: "Garden door"
+  friendly_name: "Hallway garden door"
+binary_sensor.dressingroom_motion_sensor_sensor:
+  device_class: motion
+  friendly_name: "Dressing room motion"
 sensor.backhall_garden_door_access_control:
   hidden: true
 sensor.backhall_garden_door_alarm_level:
@@ -33,41 +46,77 @@ sensor.backhall_garden_door_burglar:
   hidden: true
 sensor.backhall_garden_door_sourcenodeid:
   hidden: true
-binary_sensor.sensative_strips_sensor:
+binary_sensor.bedroom_garden_door_sensor:
   device_class: opening
-  friendly_name: "Garden door"
-sensor.sensative_strips_access_control:
+  friendly_name: "Bedroom garden door"
+sensor.bedroom_garden_door_access_control:
   hidden: true
-sensor.sensative_strips_alarm_level:
+sensor.bedroom_garden_door_alarm_level:
   hidden: true
-sensor.sensative_strips_alarm_type:
+sensor.bedroom_garden_door_alarm_type:
   hidden: true
-sensor.sensative_strips_burglar:
+sensor.bedroom_garden_door_burglar:
   hidden: true
-sensor.sensative_strips_sourcenodeid:
+sensor.bedroom_garden_door_sourcenodeid:
   hidden: true
+binary_sensor.kitchen_window_3_sensor:
+  device_class: opening
+  friendly_name: "Kitchen Window 3"
+sensor.kitchen_window_3_access_control:
+  hidden: true
+sensor.kitchen_window_3_alarm_level:
+  hidden: true
+sensor.kitchen_window_3_alarm_type:
+  hidden: true
+sensor.kitchen_window_3_burglar:
+  hidden: true
+sensor.kitchen_window_3_sourcenodeid:
+  hidden: true
+binary_sensor.balcony_door_sensor:
+  hidden: true
+sensor.balcony_door_access_control:
+  hidden: true
+sensor.balcony_door_alarm_level:
+  hidden: true
+sensor.balcony_door_alarm_type:
+  hidden: true
+sensor.balcony_door_burglar:
+  hidden: true
+sensor.balcony_door_heat:
+  hidden: true
+sensor.balcony_door_power_management:
+  hidden: true
+sensor.balcony_door_sourcenodeid:
+  hidden: true
+sensor.balcony_door_temperature:
+  friendly_name: "Balcony door"
+sensor.dressingroom_motion_sensor_temperature:
+  friendly_name: "Dressing room"
+sensor.dressingroom_motion_sensor_luminance:
+  icon: mdi:brightness-5
+  friendly_name: "Dressing room"
 switch.entryway:
   hidden: true
-light.fibaro_system_fgrgbwm441_rgbw_controller_level:
+light.bedroom_tv_backlight_level:
   friendly_name: TV backlight
-light.fibaro_system_fgrgbwm441_rgbw_controller_level_2:
+light.bedroom_tv_backlight_level_2:
   friendly_name: RGBW Light - Main
-light.fibaro_system_fgrgbwm441_rgbw_controller_level_3:
+light.bedroom_tv_backlight_level_3:
   friendly_name: RGBW Light - Red
-light.fibaro_system_fgrgbwm441_rgbw_controller_level_4:
+light.bedroom_tv_backlight_level_4:
   friendly_name: RGBW Light - Green
-light.fibaro_system_fgrgbwm441_rgbw_controller_level_5:
+light.bedroom_tv_backlight_level_5:
   friendly_name: RGBW Light - Blue
-light.fibaro_system_fgrgbwm441_rgbw_controller_level_6:
+light.bedroom_tv_backlight_level_6:
   friendly_name: RGBW Light - White
   hidden: true
-sensor.fibaro_system_fgrgbwm441_rgbw_controller_energy:
+sensor.bedroom_tv_backlight_energy:
   hidden: true
-sensor.fibaro_system_fgrgbwm441_rgbw_controller_exporting:
+sensor.bedroom_tv_backlight_exporting:
   hidden: true
-sensor.fibaro_system_fgrgbwm441_rgbw_controller_power:
+sensor.bedroom_tv_backlight_power:
   hidden: true
-sensor.fibaro_system_fgrgbwm441_rgbw_controller_power_2:
+sensor.bedroom_tv_backlight_power_2:
   hidden: true
 binary_sensor.workday_sensor:
   hidden: true

@@ -1,0 +1,82 @@
+- id: '2'
+  alias: 'Picture on open front door'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.hoverdr
+    to: open
+  action:
+    - service: shell_command.snapshot
+      data:
+        filename: /tmp/snapshot.jpg
+    - delay:
+        seconds: 1
+    - service: notify.mail
+      data:
+        title: 'Door opened'
+        message: 'The front door was opened'
+        data:
+          images:
+            - /tmp/snapshot.jpg
+
+- id: '3'
+  alias: 'Trigger alarm while armed away'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.backhall_garden_door_sensor
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.sensative_strips_sensor
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_away
+  action:
+    service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+
+- id: '4'
+  alias: 'Trigger alarm while armed home'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.backhall_garden_door_sensor
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.sensative_strips_sensor
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_home
+  action:
+    service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+
+
+- id: '5'
+  alias: 'Triggered Flash'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: 'triggered'
+  action:
+    - service: script.turn_on
+      entity_id: script.light_flash
+    - service: notify.mail
+      data:
+        title: 'Home Alarm Triggered'
+        message: 'Home Alarm Triggered {{now().strftime("%Y%m%d-%H%M%S")}}'
+
+- id: '6'
+  alias: 'Disarmed Off'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: 'disarmed'
+  action:
+    - service: script.turn_off
+      entity_id: script.light_flash
+    - service: notify.mail
+      data:
+        title: 'Home Alarm Disarmed'
+        message: 'Home Alarm Reset {{now().strftime("%Y%m%d-%H%M%S")}}'

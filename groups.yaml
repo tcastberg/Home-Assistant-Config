@@ -31,7 +31,7 @@ fronthall:
     - sensor.hallway_pressure
     - sensor.hallway_humidity
     - sensor.hallway_temperature
-    - binary_sensor.hoveddr
+    - binary_sensor.front_door
     - alarm_control_panel.holmsens_vei_alarm
     - alarm_control_panel.home_alarm
 toilet:
@@ -41,10 +41,11 @@ laundry:
 kitchen:
   name: Kitchen
   entities:
-    - sensor.kitchen_humidity
     - sensor.kitchen_temperature
-    - sensor.kitchen_temperature_2
+    - sensor.kitchen_hallway_temperature
+    - sensor.kitchen_hallway_humidity
     - media_player.kitchen
+    - binary_sensor.kitchen_window_3_sensor
 
 
 diningfloor:
@@ -56,6 +57,8 @@ diningfloor:
 diningroom:
   name: Dining room
   entities:
+    - sensor.balcony_door_temperature
+    - binary_sensor.balcony_door_sensor_2
 office:
   name: Office area
 
@@ -72,13 +75,17 @@ tvroom:
   name: TV area
   entities:
     - media_player.tv_room
-    - sensor.tv_lounge_humidity
-    - sensor.tv_lounge_temperature
-    - sensor.tv_lounge_temperature_2
+    - sensor.tv_hallway_humidity
+    - sensor.tv_hallway_temperature
+    - sensor.stairs_temperature
 familybath:
   name: Family bathroom
 changingroom:
   name: Changing room
+  entities:
+    - binary_sensor.dressingroom_motion_sensor_sensor
+    - sensor.dressingroom_motion_sensor_temperature
+    - sensor.dressingroom_motion_sensor_luminance
 masterbath:
   name: Master bathroom
 
@@ -94,15 +101,13 @@ bedfloor:
 masterbed:
   name: Master bedroom
   entities:
+    - input_select.sleep_state
     - sensor.master_bedroom_humidity
     - sensor.master_bedroom_temperature
     - media_player.master_bedroom
     - media_player.changing_room
-    - binary_sensor.verandadr_mastersoverom
-    - binary_sensor.sensative_strips_sensor
-    - light.fibaro_system_fgrgbwm441_rgbw_controller_level
-    - light.fibaro_system_fgrgbwm441_rgbw_controller_level_2
-    - switch.fluxer
+    - binary_sensor.bedroom_garden_door_sensor
+    - light.bedroom_tv_backlight_level
 ingridbed:
   name: Ingrid bedroom
   entities:
@@ -172,3 +177,32 @@ ingridsofia:
   entities:
     - device_tracker.ipad__ingrid
 
+doors:
+  name: Door sensors
+  icon: mdi:robot
+  entities:
+    - binary_sensor.front_door
+    - binary_sensor.balcony_door_sensor_2
+    - binary_sensor.bedroom_garden_door_sensor
+    - binary_sensor.backhall_garden_door_sensor
+
+windows:
+  name: Window sensors
+  icon: mdi:robot
+  entities:
+    - binary_sensor.kitchen_window_3_sensor
+
+motion:
+  name: Motion sensors
+  icon: mdi:robot
+  entities:
+    - binary_sensor.dressingroom_motion_sensor_sensor
+
+all_sensors:
+  name: Sensors
+  view: yes
+  icon: mdi:robot
+  entities:
+    - group.doors
+    - group.windows
+    - group.motion

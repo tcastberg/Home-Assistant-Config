@@ -1,5 +1,6 @@
 *
 !*.yaml
+!automation
 !scenes
 !.gitignore
 secrets.yaml
