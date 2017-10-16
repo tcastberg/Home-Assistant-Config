@@ -1,0 +1,24 @@
+#- id: '27'
+#  alias: 'Ventilation speed'
+#  trigger:
+#  - entity_id: sensor.family_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
+#    platform: state
+#  action:
+#    - service: light.turn_on
+#      entity_id: light.house_ventilation_dimmer_level
+#      data_template:
+#        brightness: >
+#          {% set average = states.sensor.average_humidity.state|float%}
+#          {% set family = states.sensor.family_bathroom_multisensor_relative_humidity.state|float %}
+#          {% set laundry = states.sensor.laundry_multisensor_relative_humidity.state|float %}
+#          {% if laundry-average > 5%}
+#           255
+#          {% elif family-average > 5%}
+#           255
+#          {% elif laundry-average > 2%}
+#           128
+#          {% elif family-average > 2%}
+#           128
+#          {% else %}
+#            0
+#          {% endif %}

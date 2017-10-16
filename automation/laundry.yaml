@@ -1,0 +1,21 @@
+- id: '25'    
+  alias: 'Movement in laundry'
+  trigger:
+  - entity_id: binary_sensor.laundry_multisensor_sensor
+    platform: state
+    to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.laundry_dimmer_level
+      data:
+        brightness: 200
+
+- id: '26'    
+  alias: 'Stop motion in laundry'
+  trigger:
+  - entity_id: binary_sensor.laundry_multisensor_sensor
+    platform: state
+    to: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.laundry_dimmer_level

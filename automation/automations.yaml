@@ -58,16 +58,6 @@
       entity_id: switch.fluxed_tv_backlight
 
 - id: '15'    
-  alias: 'Lights off when leaving'
-  trigger:
-  - entity_id: alarm_control_panel.home_alarm
-    platform: state
-    to: 'armed_away'
-  action:
-    - service: light.turn_off
-      entity_id: group.all_lights
-
-- id: '16'    
   alias: 'Movement in dressing room'
   trigger:
   - entity_id: binary_sensor.dressingroom_motion_sensor_sensor
@@ -88,7 +78,7 @@
         entity_id: input_select.sleep_state
         option: 'Awake'
 
-- id: '17'
+- id: '16'
   alias: 'House Awake'
   trigger:
   - platform: state
@@ -96,7 +86,9 @@
     to: 'Awake'
   action:
     - service: light.turn_on
-      entity_id: group.all_lights
+      entity_id: group.masterbed
+    - service: shell_command.set_awake_tor
+    - service: shell_command.set_awake_lande
 
 - id: '17'
   alias: 'House Sleeping'
@@ -107,3 +99,25 @@
   action:
     - service: light.turn_off
       entity_id: group.all_lights
+    - service: shell_command.set_sleep_tor
+    - service: shell_command.set_sleep_lande
+
+- id: '18'
+  alias: 'House status away'
+  trigger:
+  - platform: state
+    entity_id: input_select.home_state
+    to: 'Away'
+  action:
+    - service: light.turn_off
+      entity_id: group.all_lights
+
+- id: '19'
+  alias: 'House status home'
+  trigger:
+  - platform: state
+    entity_id: input_select.home_state
+    to: 'Home'
+  action:
+    - service: light.turn_on
+      entity_id: group.masterbed

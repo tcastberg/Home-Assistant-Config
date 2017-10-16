@@ -1,0 +1,20 @@
+windows_open:
+  name: One or more windows are open
+  done_message: All windows are closed
+  entity_id: group.windows
+  state: 'on'
+  repeat: 30
+  can_acknowledge: True
+  skip_first: False
+  notifiers:
+    - mail
+doors_open:
+  name: One or more doors are open
+  done_message: All doors are closed
+  entity_id: group.doors
+  state: 'on'
+  repeat: 30
+  can_acknowledge: True
+  skip_first: False
+  notifiers:
+    - mail

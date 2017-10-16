@@ -34,10 +34,17 @@ fronthall:
     - binary_sensor.front_door
     - alarm_control_panel.holmsens_vei_alarm
     - alarm_control_panel.home_alarm
+    - input_select.home_state
 toilet:
   name: Toilet
 laundry:
   name: Laundry
+  entities:
+    - binary_sensor.laundry_multisensor_sensor
+    - sensor.laundry_multisensor_temperature
+    - sensor.laundry_multisensor_relative_humidity
+    - sensor.laundry_multisensor_luminance
+    - light.laundry_dimmer_level
 kitchen:
   name: Kitchen
   entities:
@@ -80,6 +87,13 @@ tvroom:
     - sensor.stairs_temperature
 familybath:
   name: Family bathroom
+  entities:
+    - binary_sensor.family_bathroom_multisensor_sensor
+    - sensor.family_bathroom_multisensor_temperature
+    - sensor.family_bathroom_multisensor_relative_humidity
+    - sensor.family_bathroom_multisensor_luminance
+    - light.family_bathroom_dimmer_level
+
 changingroom:
   name: Changing room
   entities:
@@ -197,6 +211,8 @@ motion:
   icon: mdi:robot
   entities:
     - binary_sensor.dressingroom_motion_sensor_sensor
+    - binary_sensor.family_bathroom_multisensor_sensor
+    - binary_sensor.laundry_multisensor_sensor
 
 all_sensors:
   name: Sensors
@@ -206,3 +222,20 @@ all_sensors:
     - group.doors
     - group.windows
     - group.motion
+
+
+power:
+  name: Power consumption
+  icon: mdi:flash
+  entities:
+    - sensor.bedroom_tv_backlight_power
+    - sensor.family_bathroom_dimmer_power
+    - sensor.laundry_dimmer_power
+
+consumption:
+  name: Energy consumed
+  icon: mdi:flash
+  entities:
+    - sensor.bedroom_tv_backlight_energy
+    - sensor.family_bathroom_dimmer_energy
+    - sensor.laundry_dimmer_energy

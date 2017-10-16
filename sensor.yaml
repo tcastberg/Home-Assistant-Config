@@ -1,0 +1,37 @@
+- platform: yr
+
+- platform: onewire
+  names:
+    '12.385D67000000': Storage room
+    '12.9D5967000000': Broken
+    '26.984585000000': Hallway
+    '26.A78785000000': Bedroom
+  mount_dir: /onewire
+
+- platform: fitbit
+  clock_format: 24H
+  monitored_resources:
+    - "activities/steps"
+    - "activities/heart"
+    - "body/weight"
+    - "sleep/minutesAsleep"
+
+- platform: mqtt
+  state_topic: "owntracks/tmc/phone"
+  name: "Battery Tor Magnus"
+  unit_of_measurement: "charge"
+  value_template: '{{ value_json.batt }}'
+
+- platform: template
+  sensors:
+    average_humidity:
+      friendly_name: "Average house humidity"
+      unit_of_measurement: "average percent"
+      icon_template: mdi:water-percent
+      value_template: >
+        {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|map(attribute='state')|map('float')|sum %}
+        {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|list|count %}
+        {% set totalaverage = totalvalue / totalcount %}
+        {{totalaverage|round(1)}}
+
+

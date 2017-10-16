@@ -20,6 +20,11 @@ frontend:
 
 config:
 
+recorder:
+  exclude:
+    entities:
+      - sensor.bedroom_tv_backlight_exporting
+      - sensor.family_bathroom_dimmer_exporting
 http:
   api_password: !secret http_api_password
   base_url: !secret http_base_url
@@ -79,6 +84,9 @@ camera:
 # Enables support for tracking state changes over time
 history:
 
+#logger:
+#  default: info
+
 # View all events in a logbook
 logbook:
 
@@ -97,27 +105,6 @@ alarm_control_panel:
     trigger_time: 4 
 
 # Weather prediction
-sensor:
-  - platform: yr
-  - platform: onewire
-    names:
-      '12.385D67000000': Storage room
-      '12.9D5967000000': Broken
-      '26.984585000000': Hallway
-      '26.A78785000000': Bedroom
-    mount_dir: /onewire
-  - platform: fitbit
-    clock_format: 24H
-    monitored_resources:
-      - "activities/steps"
-      - "activities/heart"
-      - "body/weight"
-      - "sleep/minutesAsleep"
-  - platform: mqtt
-    state_topic: "owntracks/tmc/phone"
-    name: "Battery Tor Magnus"
-    unit_of_measurement: "%"
-    value_template: '{{ value_json.batt }}'
 
 binary_sensor:
   - platform: workday
@@ -146,6 +133,7 @@ tts:
 input_select:
   time_of_day:
     name: Time of Day
+    icon: mdi:chart-timeline
     options:
       - Night
       - Morning
@@ -153,9 +141,16 @@ input_select:
       - Evening
   sleep_state:
     name: Sleep State
+    icon: mdi:sleep
     options:
       - Awake
       - Sleeping
+  home_state:
+    name: Home State
+    icon: mdi:home-circle
+    options:
+      - Home
+      - Away
 
 notify:
   - name: mail
@@ -168,6 +163,12 @@ notify:
 
 shell_command:
   snapshot: !secret shell_command_snapshot
+  set_sleep_tor: !secret fibaro_set_sleep_tor
+  set_awake_tor: !secret fibaro_set_awake_tor
+  set_sleep_lande: !secret fibaro_set_sleep_lande
+  set_awake_lande: !secret fibaro_set_awake_lande
+  set_sleep_house: !secret fibaro_set_sleep_house
+  set_awake_house: !secret fibaro_set_awake_house
 
 switch:
   platform: flux
@@ -180,6 +181,8 @@ switch:
   stop_colortemp: 1500
   mode: rgb
 
+sensor: !include sensor.yaml
 group: !include groups.yaml
 automation: !include_dir_merge_list automation/
 script: !include scripts.yaml
+alert: !include alerts.yaml
