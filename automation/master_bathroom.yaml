@@ -1,0 +1,30 @@
+- id: '28'    
+  alias: 'Movement in master bathroom'
+  trigger:
+  - entity_id: binary_sensor.master_bathroom_multisensor_sensor
+    platform: state
+    to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.master_bathroom_dimmer_level
+      data_template:
+        brightness: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            175
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            255
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            200
+          {%- else %}
+            125
+          {%- endif %}
+
+- id: '29'    
+  alias: 'Stop motion in master bathroom'
+  trigger:
+  - entity_id: binary_sensor.master_bathroom_multisensor_sensor
+    platform: state
+    to: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.master_bathroom_dimmer_level

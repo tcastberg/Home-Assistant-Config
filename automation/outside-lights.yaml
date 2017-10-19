@@ -1,0 +1,42 @@
+- id: '30'    
+  alias: 'Turning outside lights on'
+  trigger:
+  - entity_id: sun.sun
+    platform: state
+    to: 'below_horizon'
+  - platform: state
+    entity_id: input_select.sleep_state
+    to: 'Awake'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: 'below_horizon'
+      - condition: state
+        entity_id: input_select.sleep_state
+        state: 'Awake'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.entrance_outside_light_switch
+    - service: switch.turn_on
+      entity_id: switch.balcony_outside_light_switch
+    - service: switch.turn_on
+      entity_id: switch.terrace_outside_light_switch
+
+- id: '31'    
+  alias: 'Turning outside lights off'
+  trigger:
+  - entity_id: sun.sun
+    platform: state
+    to: 'above_horizon'
+  - platform: state
+    entity_id: input_select.sleep_state
+    to: 'Sleeping'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.terrace_outside_light_switch
+    - service: switch.turn_off
+      entity_id: switch.balcony_outside_light_switch
+    - service: switch.turn_off
+      entity_id: switch.entrance_outside_light_switch

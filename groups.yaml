@@ -1,161 +1,59 @@
-outside:
-  name: Outside
+state:
+  name: State
   view: yes
+  icon: mdi:home-assistant
+  entities:
+    - group.status
+status:
+  name: Status
+  entities:
+    - camera.hallway_camera
+    - alarm_control_panel.holmsens_vei_alarm
+    - alarm_control_panel.home_alarm
+    - input_select.home_state
+    - input_select.sleep_state
+
+
+lights:
+  name: Lights
+  view: yes
+  icon: mdi:lightbulb
   entities:
     - group.front_yard
+    - group.laundry
     - group.back_yard
+    - group.familybath
+    - group.masterbath
+    - group.masterbed
     - group.balcony
 front_yard:
   name: Front Yard
   entities:
-    - sensor.yr_symbol
-    - sun.sun
-back_yard:
-  name: Back Yard
-balcony:
-  name: Balcony
-
-
-topfloor:
-  name: Top Floor
-  view: yes
-  entities:
-    - group.fronthall
-    - group.toilet
-    - group.laundry
-    - group.kitchen
-fronthall:
-  name: Hallway
-  entities:
-    - camera.hallway_camera
-    - sensor.hallway_pressure
-    - sensor.hallway_humidity
-    - sensor.hallway_temperature
-    - binary_sensor.front_door
-    - alarm_control_panel.holmsens_vei_alarm
-    - alarm_control_panel.home_alarm
-    - input_select.home_state
-toilet:
-  name: Toilet
+    - switch.entrance_outside_light_switch
 laundry:
   name: Laundry
   entities:
-    - binary_sensor.laundry_multisensor_sensor
-    - sensor.laundry_multisensor_temperature
-    - sensor.laundry_multisensor_relative_humidity
-    - sensor.laundry_multisensor_luminance
     - light.laundry_dimmer_level
-kitchen:
-  name: Kitchen
+balcony:
+  name: Balcony
   entities:
-    - sensor.kitchen_temperature
-    - sensor.kitchen_hallway_temperature
-    - sensor.kitchen_hallway_humidity
-    - media_player.kitchen
-    - binary_sensor.kitchen_window_3_sensor
-
-
-diningfloor:
-  name: Dining Floor
-  view: yes
-  entities:
-    - group.diningroom
-    - group.office
-diningroom:
-  name: Dining room
-  entities:
-    - sensor.balcony_door_temperature
-    - binary_sensor.balcony_door_sensor_2
-office:
-  name: Office area
-
-
-bathfloor:
-  name: Bathroom Floor
-  view: yes
-  entities:
-    - group.tvroom
-    - group.familybath
-    - group.changingroom
-    - group.masterbath
-tvroom:
-  name: TV area
-  entities:
-    - media_player.tv_room
-    - sensor.tv_hallway_humidity
-    - sensor.tv_hallway_temperature
-    - sensor.stairs_temperature
+    - switch.balcony_outside_light_switch
 familybath:
   name: Family bathroom
   entities:
-    - binary_sensor.family_bathroom_multisensor_sensor
-    - sensor.family_bathroom_multisensor_temperature
-    - sensor.family_bathroom_multisensor_relative_humidity
-    - sensor.family_bathroom_multisensor_luminance
     - light.family_bathroom_dimmer_level
-
-changingroom:
-  name: Changing room
-  entities:
-    - binary_sensor.dressingroom_motion_sensor_sensor
-    - sensor.dressingroom_motion_sensor_temperature
-    - sensor.dressingroom_motion_sensor_luminance
 masterbath:
   name: Master bathroom
-
-
-bedfloor:
-  name: Bedroom Floor
-  view: yes
   entities:
-    - group.masterbed
-    - group.ingridbed
-    - group.backhall
-    - group.guestbed
+    - light.master_bathroom_dimmer_level
 masterbed:
   name: Master bedroom
   entities:
-    - input_select.sleep_state
-    - sensor.master_bedroom_humidity
-    - sensor.master_bedroom_temperature
-    - media_player.master_bedroom
-    - media_player.changing_room
-    - binary_sensor.bedroom_garden_door_sensor
     - light.bedroom_tv_backlight_level
-ingridbed:
-  name: Ingrid bedroom
+back_yard:
+  name: Back Yard
   entities:
-    - sensor.bedroom_pressure
-    - sensor.bedroom_humidity
-    - sensor.bedroom_temperature
-backhall:
-  name: Back hallway
-  entities:
-    - binary_sensor.backhall_garden_door_sensor
-guestbed:
-  name: Guest bedroom
-
-
-basefloor:
-  name: Basement Floor
-  view: yes
-  entities:
-    - group.trainingroom
-    - group.hobbyroom
-    - group.storageroom
-trainingroom:
-  name: Training room
-  entities:
-    - sensor.training_room_humidity
-    - sensor.training_room_temperature
-hobbyroom:
-  name: Hobby room
-storageroom:
-  name: Storage room
-  entities:
-    - sensor.storage_room_pressure
-    - sensor.storage_room_temperature
-
+    - switch.terrace_outside_light_switch
 
 people:
   name: The Castbergs
@@ -191,28 +89,78 @@ ingridsofia:
   entities:
     - device_tracker.ipad__ingrid
 
-doors:
-  name: Door sensors
-  icon: mdi:robot
-  entities:
-    - binary_sensor.front_door
-    - binary_sensor.balcony_door_sensor_2
-    - binary_sensor.bedroom_garden_door_sensor
-    - binary_sensor.backhall_garden_door_sensor
 
-windows:
-  name: Window sensors
-  icon: mdi:robot
+entertainment:
+  name: Entertainment
+  view: yes
+  icon: mdi:television-classic
   entities:
-    - binary_sensor.kitchen_window_3_sensor
+    - media_player.kitchen
+    - media_player.tv_room
+    - media_player.changing_room
+    - media_player.master_bedroom
 
-motion:
-  name: Motion sensors
-  icon: mdi:robot
+
+climate:
+  name: Climate
+  view: yes
+  icon: mdi:weather-cloudy
   entities:
-    - binary_sensor.dressingroom_motion_sensor_sensor
-    - binary_sensor.family_bathroom_multisensor_sensor
-    - binary_sensor.laundry_multisensor_sensor
+    - group.weather
+    - group.humidity
+    - group.temperature
+    - group.luminance
+    - group.pressure
+weather:
+  name: Weather
+  entities:
+    - sensor.yr_symbol
+    - sun.sun
+temperature:
+  name: Temperature
+  entities:
+    - sensor.1w_hallway_temperature
+    - sensor.laundry_multisensor_temperature
+    - sensor.kitchen_temperature
+    - sensor.kitchen_hallway_temperature
+    - sensor.balcony_door_temperature
+    - sensor.tv_hallway_temperature
+    - sensor.stairs_temperature
+    - sensor.family_bathroom_multisensor_temperature
+    - sensor.master_bathroom_multisensor_temperature
+    - sensor.dressingroom_motion_sensor_temperature
+    - sensor.master_bedroom_temperature
+    - sensor.1w_bedroom_temperature
+    - sensor.1w_training_room_temperature
+    - sensor.1w_storage_room_temperature
+humidity:
+  name: Humidity
+  entities:
+    - sensor.average_humidity
+    - sensor.divergence_humidity
+    - sensor.1w_hallway_humidity
+    - sensor.laundry_multisensor_relative_humidity
+    - sensor.kitchen_hallway_humidity
+    - sensor.tv_hallway_humidity
+    - sensor.family_bathroom_multisensor_relative_humidity
+    - sensor.master_bathroom_multisensor_relative_humidity
+    - sensor.master_bedroom_humidity
+    - sensor.1w_bedroom_humidity
+    - sensor.1w_training_room_humidity
+luminance:
+  name: Luminance
+  entities:
+    - sensor.laundry_multisensor_luminance
+    - sensor.family_bathroom_multisensor_luminance
+    - sensor.master_bathroom_multisensor_luminance
+    - sensor.dressingroom_motion_sensor_luminance
+pressure:
+  name: Pressure
+  entities:
+    - sensor.1w_hallway_pressure
+    - sensor.1w_bedroom_pressure
+    - sensor.1w_storage_room_pressure
+
 
 all_sensors:
   name: Sensors
@@ -222,20 +170,57 @@ all_sensors:
     - group.doors
     - group.windows
     - group.motion
+doors:
+  name: Door sensors
+  icon: mdi:robot
+  entities:
+    - binary_sensor.front_door
+    - binary_sensor.balcony_door_sensor_2
+    - binary_sensor.bedroom_garden_door_sensor
+    - binary_sensor.backhall_garden_door_sensor
+windows:
+  name: Window sensors
+  icon: mdi:robot
+  entities:
+    - binary_sensor.kitchen_window_3_sensor
+motion:
+  name: Motion sensors
+  icon: mdi:robot
+  entities:
+    - binary_sensor.dressingroom_motion_sensor_sensor
+    - binary_sensor.family_bathroom_multisensor_sensor
+    - binary_sensor.master_bathroom_multisensor_sensor
+    - binary_sensor.laundry_multisensor_sensor
 
 
+power_usage:
+  name: Power
+  view: yes
+  icon: mdi:flash
+  entities:
+    - group.power
+    - group.energy
 power:
-  name: Power consumption
+  name: Current power usage
   icon: mdi:flash
   entities:
     - sensor.bedroom_tv_backlight_power
     - sensor.family_bathroom_dimmer_power
+    - sensor.master_bathroom_dimmer_power
     - sensor.laundry_dimmer_power
-
-consumption:
-  name: Energy consumed
+    - sensor.house_ventilation_dimmer_power
+    - sensor.balcony_outside_light_power
+    - sensor.terrace_outside_light_power
+    - sensor.entrance_outside_light_power
+energy:
+  name: Total power usage
   icon: mdi:flash
   entities:
     - sensor.bedroom_tv_backlight_energy
     - sensor.family_bathroom_dimmer_energy
+    - sensor.master_bathroom_dimmer_energy
     - sensor.laundry_dimmer_energy
+    - sensor.house_ventilation_dimmer_energy
+    - sensor.balcony_outside_light_energy
+    - sensor.terrace_outside_light_energy
+    - sensor.entrance_outside_light_energy

@@ -1,16 +1,16 @@
-light_flash:
-  alias: Light flash
-  sequence:
-    - service: homeassistant.turn_on
-      data:
-        entity_id: group.all_lights
-    - delay:
-        seconds: 2
-    - service: homeassistant.turn_off
-      data:
-        entity_id: group.all_lights
-    - delay:
-        seconds: 2
-    - service: script.turn_on
-      data:
-        entity_id: script.light_flash
+#light_flash:
+#  alias: Light flash
+#  sequence:
+#    - service: homeassistant.turn_on
+#      data:
+#        entity_id: group.all_lights
+#    - delay:
+#        seconds: 2
+#    - service: homeassistant.turn_off
+#      data:
+#        entity_id: group.all_lights
+#    - delay:
+#        seconds: 2
+#    - service: script.turn_on
+#      data:
+#        entity_id: script.light_flash

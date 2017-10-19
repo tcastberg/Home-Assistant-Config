@@ -17,9 +17,14 @@
     platform: time
     at: '06:00:00'
   condition:
-    condition: state
-    entity_id: binary_sensor.workday_sensor
-    state: 'on'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'on'
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
   action:
     - service: light.turn_on
       entity_id:
@@ -53,6 +58,10 @@
   trigger:
     platform: homeassistant
     event: start
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
   action:
     - service: switch.turn_on
       entity_id: switch.fluxed_tv_backlight
@@ -84,6 +93,10 @@
   - platform: state
     entity_id: input_select.sleep_state
     to: 'Awake'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
   action:
     - service: light.turn_on
       entity_id: group.masterbed

@@ -1,11 +1,15 @@
 - platform: yr
+- platform: plex
+  host: plex.continually-evolving.net
+  username: !secret plex_username
+  password: !secret plex_password
 
 - platform: onewire
   names:
-    '12.385D67000000': Storage room
-    '12.9D5967000000': Broken
-    '26.984585000000': Hallway
-    '26.A78785000000': Bedroom
+    '12.385D67000000': 1W Storage room
+    '12.9D5967000000': 1W Broken
+    '26.984585000000': 1W Hallway
+    '26.A78785000000': 1W Bedroom
   mount_dir: /onewire
 
 - platform: fitbit
@@ -26,12 +30,29 @@
   sensors:
     average_humidity:
       friendly_name: "Average house humidity"
-      unit_of_measurement: "average percent"
+      unit_of_measurement: "% avg"
       icon_template: mdi:water-percent
       value_template: >
-        {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|map(attribute='state')|map('float')|sum %}
-        {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|list|count %}
-        {% set totalaverage = totalvalue / totalcount %}
-        {{totalaverage|round(1)}}
+        {% if states.sensor %}
+          {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","defined")|map(attribute='state')|map('float')|sum %}
+          {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","defined")|list|count %}
+          {% set totalaverage = totalvalue / totalcount %}
+          {{totalaverage|round(1)}}
+        {% else %}
+          40
+        {% endif %}
 
-
+    divergence_humidity:
+      friendly_name: "Divergence from average house humidity"
+      unit_of_measurement: "% div"
+      icon_template: mdi:water-percent
+      value_template: >
+          {% if states.sensor.average_humidity.state and states.sensor.family_bathroom_multisensor_relative_humidity.state and states.sensor.master_bathroom_multisensor_relative_humidity.state and states.sensor.laundry_multisensor_relative_humidity.state %}
+            {% set average = states.sensor.average_humidity.state|float %}
+            {% set family = states.sensor.family_bathroom_multisensor_relative_humidity.state|float - average %}
+            {% set master = states.sensor.master_bathroom_multisensor_relative_humidity.state|float - average %}
+            {% set laundry = states.sensor.laundry_multisensor_relative_humidity.state|float - average %}
+            {{[family,master,laundry]|max|round(1)}}
+          {% else %}
+            0
+          {% endif %}
