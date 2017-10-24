@@ -14,3 +14,38 @@
 #    - service: script.turn_on
 #      data:
 #        entity_id: script.light_flash
+
+sonos_tts_test:
+  sequence:
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'changing_room'
+          what: 'This is a test and it is too short'
+
+say_sonos:
+  sequence:
+    - service: media_player.sonos_snapshot
+      data_template:
+        entity_id: "{{ 'media_player.' ~ where }}"
+
+    - service: media_player.volume_set
+      data_template:
+        entity_id: "{{ 'media_player.' ~ where }}"
+        volume_level: 0.5
+
+    - service: tts.google_say
+      data_template:
+        entity_id: "{{ 'media_player.' ~ where }}"
+        message: "{{ what }}"
+
+    - delay: '00:00:02'
+
+    - wait_template: "{{ not is_state('media_player.'~where, 'playing') }}"
+      
+    - delay: '00:00:01'
+
+    - service: media_player.sonos_restore
+      data_template:
+        entity_id: "{{ 'media_player.' ~ where }}"

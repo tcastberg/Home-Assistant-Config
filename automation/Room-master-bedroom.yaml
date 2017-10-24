@@ -1,0 +1,92 @@
+- id: '40'    
+  alias: 'Master bedroom morning'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Morning'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: light.turn_on
+      entity_id: light.bedside_lamp_dimmer_level
+      data:
+        brightness: 150
+    - service: light.turn_on
+      entity_id: light.bedroom_tv_backlight_level
+    - service: switch.turn_on
+      entity_id: switch.dressing_table_lamp_switch
+    - service: switch.turn_on
+      entity_id: switch.dressing_room_wardrobes_switch
+
+- id: '41'    
+  alias: 'Master bedroom day'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Day'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: light.turn_off
+      entity_id: light.bedside_lamp_dimmer_level
+    - service: light.turn_off
+      entity_id: light.bedroom_tv_backlight_level
+    - service: switch.turn_off
+      entity_id: switch.dressing_table_lamp_switch
+    - service: switch.turn_on
+      entity_id: switch.dressing_room_wardrobes_switch
+
+- id: '42'    
+  alias: 'Master bedroom evening'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Evening'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: light.turn_on
+      entity_id: light.bedside_lamp_dimmer_level
+      data:
+        brightness: 150
+    - service: light.turn_on
+      entity_id: light.bedroom_tv_backlight_level
+    - service: switch.turn_on
+      entity_id: switch.dressing_table_lamp_switch
+    - service: switch.turn_on
+      entity_id: switch.dressing_room_wardrobes_switch
+
+- id: '43'    
+  alias: 'Master bedroom off'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+  action:
+    - service: light.turn_off
+      entity_id: light.bedside_lamp_dimmer_level
+    - service: light.turn_off
+      entity_id: light.bedroom_tv_backlight_level
+    - service: switch.turn_off
+      entity_id: switch.dressing_table_lamp_switch
+    - service: switch.turn_off
+      entity_id: switch.dressing_room_wardrobes_switch
+

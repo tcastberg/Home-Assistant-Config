@@ -1,0 +1,27 @@
+- platform: workday
+  country: 'NO'
+- platform: template
+  sensors:
+    balcony_door_sensor_2:
+      device_class: opening
+      friendly_name: "Balcony door"
+      value_template: >
+        {{ states.sensor.balcony_door_access_control.state == '23' }}
+  
+    washing_machine_activity:
+      friendly_name: "Washing machine running state"
+      delay_on:
+        minutes: 1
+      delay_off:
+        minutes: 5
+      value_template: >
+        {{ states.sensor.washing_machine_power.state | float > 45 }}
+  
+    dryer_activity:
+      friendly_name: "Dryer running state"
+      delay_on:
+        minutes: 1
+      delay_off:
+        minutes: 2
+      value_template: >
+        {{ states.sensor.dryer_power.state | float > 45 }}

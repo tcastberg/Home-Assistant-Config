@@ -84,11 +84,16 @@ camera:
 # Enables support for tracking state changes over time
 history:
 
-#logger:
-#  default: info
+logger:
+  default: warning
+  logs:
+    homeassistant.components.automation: info
+    homeassistant.components.switch: info
+    homeassistant.components.switch.flux: warning
+    homeassistant.components.light: info 
 
 # View all events in a logbook
-logbook:
+#logbook:
 
 # Track the sun
 sun:
@@ -104,18 +109,6 @@ alarm_control_panel:
       pending_time: 20
     trigger_time: 4 
 
-# Weather prediction
-
-binary_sensor:
-  - platform: workday
-    country: 'NO'
-  - platform: template
-    sensors:
-      balcony_door_sensor_2:
-        device_class: opening
-        friendly_name: "Balcony door"
-        value_template: >
-          {{ states.sensor.balcony_door_access_control.state == '23' }}
 
 media_player:
   - platform: sonos
@@ -159,6 +152,10 @@ notify:
     recipient: !secret notify_mail_recipient
     server: !secret notify_mail_server
     port: 25
+  - name: Home Assistant
+    platform: html5
+    gcm_api_key: !secret gcm_sender_key
+    gcm_sender_id: !secret gcm_sender_id
 
 shell_command:
   snapshot: !secret shell_command_snapshot
@@ -180,6 +177,7 @@ switch:
   stop_colortemp: 1500
   mode: rgb
 
+binary_sensor: !include binary-sensor.yaml
 sensor: !include sensor.yaml
 group: !include groups.yaml
 automation: !include_dir_merge_list automation/

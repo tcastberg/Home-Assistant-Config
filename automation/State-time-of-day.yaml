@@ -2,19 +2,38 @@
 # Control Time of Day
 ###
 - id: '7'
+  alias: 'Set Time of Day to Morning'
+  trigger:
+    platform: state
+    entity_id: input_select.sleep_state
+    to: 'Awake'
+  condition:
+    condition: and
+    conditions:
+      - condition: sun
+        before: sunrise
+      - condition: time
+        before: '09:00:00'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.time_of_day
+        option: Morning
+
+- id: '8'
   alias: 'Set Time of Day to Day'
   trigger:
     - platform: sun
       event: sunrise
     - platform: time
-      at: '09:00:00'    
+      at: '09:00:00'   
   action:
     - service: input_select.select_option
       data:
         entity_id: input_select.time_of_day
         option: Day
 
-- id: '8'
+- id: '9'
   alias: 'Set Time of Day to Evening'
   trigger:
     - platform: sun
@@ -27,21 +46,6 @@
         entity_id: input_select.time_of_day
         option: Evening
 
-- id: '9'
-  alias: 'Set Time of Day to Morning'
-  trigger:
-    platform: state
-    entity_id: input_select.sleep_state
-    to: 'Awake'
-  condition:
-    condition: sun
-    before: sunrise
-  action:
-    - service: input_select.select_option
-      data:
-        entity_id: input_select.time_of_day
-        option: Morning
-
 - id: '10'
   alias: 'Set Time of Day to Night'
   trigger:
@@ -49,21 +53,11 @@
     entity_id: input_select.sleep_state
     to: 'Sleeping'
   condition:
-    condition: sun
-    before: sunset
+    condition: state
+    entity_id: input_select.sleep_state
+    state: 'Sleeping'
   action:
     - service: input_select.select_option
       data:
         entity_id: input_select.time_of_day
         option: Night
-
-- id: '11'
-  alias: 'Send notification on state change for Time of Day'
-  trigger:
-    platform: state
-    entity_id: input_select.time_of_day
-  action:
-    - service: notify.mail
-      data:
-        title: 'Time of Day'
-        message: 'Time of Day changed to {{states.input_select.time_of_day.state}}'

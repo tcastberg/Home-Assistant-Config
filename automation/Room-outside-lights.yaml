@@ -1,5 +1,5 @@
 - id: '30'    
-  alias: 'Turning outside lights on'
+  alias: 'Outside lights on'
   trigger:
   - entity_id: sun.sun
     platform: state
@@ -25,7 +25,7 @@
       entity_id: switch.terrace_outside_light_switch
 
 - id: '31'    
-  alias: 'Turning outside lights off'
+  alias: 'Outside lights off'
   trigger:
   - entity_id: sun.sun
     platform: state

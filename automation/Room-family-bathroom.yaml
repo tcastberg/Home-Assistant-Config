@@ -1,5 +1,5 @@
 - id: '23'    
-  alias: 'Movement in family bathroom'
+  alias: 'Family bathroom on'
   trigger:
   - entity_id: binary_sensor.family_bathroom_multisensor_sensor
     platform: state
@@ -16,11 +16,11 @@
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
             200
           {%- else %}
-          125
+            125
           {%- endif %}
 
 - id: '24'    
-  alias: 'Stop motion in family bathroom'
+  alias: 'Family bathroom off'
   trigger:
   - entity_id: binary_sensor.family_bathroom_multisensor_sensor
     platform: state

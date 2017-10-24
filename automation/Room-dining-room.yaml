@@ -1,0 +1,64 @@
+- id: '44'    
+  alias: 'Dining room morning'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Morning'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.dining_room_standing_lamp_switch, switch.corner_standing_lamp_switch, switch.cabinet_lights_switch, switch.serving_table_lamp_switch
+
+- id: '45'    
+  alias: 'Dining room day'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Day'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.dining_room_standing_lamp_switch, switch.corner_standing_lamp_switch, switch.cabinet_lights_switch, switch.serving_table_lamp_switch
+
+- id: '46'    
+  alias: 'Dining room evening'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Evening'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.dining_room_standing_lamp_switch, switch.corner_standing_lamp_switch, switch.cabinet_lights_switch, switch.serving_table_lamp_switch
+
+- id: '47'    
+  alias: 'Dining room off'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.dining_room_standing_lamp_switch, switch.corner_standing_lamp_switch, switch.cabinet_lights_switch, switch.serving_table_lamp_switch
+

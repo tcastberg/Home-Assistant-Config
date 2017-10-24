@@ -1,5 +1,5 @@
 - id: '25'    
-  alias: 'Movement in laundry'
+  alias: 'Laundry on'
   trigger:
   - entity_id: binary_sensor.laundry_multisensor_sensor
     platform: state
@@ -11,7 +11,7 @@
         brightness: 200
 
 - id: '26'    
-  alias: 'Stop motion in laundry'
+  alias: 'Laundry off'
   trigger:
   - entity_id: binary_sensor.laundry_multisensor_sensor
     platform: state

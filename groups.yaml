@@ -1,4 +1,4 @@
-state:
+default_view:
   name: State
   view: yes
   icon: mdi:home-assistant
@@ -12,6 +12,7 @@ status:
     - alarm_control_panel.home_alarm
     - input_select.home_state
     - input_select.sleep_state
+    - input_select.time_of_day
 
 
 lights:
@@ -21,11 +22,14 @@ lights:
   entities:
     - group.front_yard
     - group.laundry
-    - group.back_yard
+    - group.dining_room
+    - group.balcony
     - group.familybath
     - group.masterbath
     - group.masterbed
-    - group.balcony
+    - group.downstairs_hallway
+    - group.back_yard
+    - group.utility
 front_yard:
   name: Front Yard
   entities:
@@ -34,6 +38,15 @@ laundry:
   name: Laundry
   entities:
     - light.laundry_dimmer_level
+    - binary_sensor.washing_machine_activity
+    - binary_sensor.dryer_activity
+dining_room:
+  name: Dining room
+  entities:
+    - switch.dining_room_standing_lamp_switch
+    - switch.corner_standing_lamp_switch
+    - switch.cabinet_lights_switch
+    - switch.serving_table_lamp_switch
 balcony:
   name: Balcony
   entities:
@@ -50,10 +63,21 @@ masterbed:
   name: Master bedroom
   entities:
     - light.bedroom_tv_backlight_level
+    - light.bedside_lamp_dimmer_level
+    - switch.dressing_table_lamp_switch
+    - switch.dressing_room_wardrobes_switch
+downstairs_hallway:
+  name: Downstairs hallway
+  entities:
+    - light.downstairs_hallway_pendant_level
 back_yard:
   name: Back Yard
   entities:
     - switch.terrace_outside_light_switch
+utility:
+  name: Utility
+  entities:
+    - light.house_ventilation_dimmer_level
 
 people:
   name: The Castbergs
@@ -95,10 +119,19 @@ entertainment:
   view: yes
   icon: mdi:television-classic
   entities:
+    - group.video
+    - group.audio
+video:
+  name: Video
+  entities:
+    - sensor.plex
     - media_player.kitchen
     - media_player.tv_room
-    - media_player.changing_room
     - media_player.master_bedroom
+audio:
+  name: Audio
+  entities:
+    - media_player.changing_room
 
 
 climate:
@@ -116,9 +149,12 @@ weather:
   entities:
     - sensor.yr_symbol
     - sun.sun
+    - sensor.sunrise
+    - sensor.sunset
 temperature:
   name: Temperature
   entities:
+    - sensor.average_temperature
     - sensor.1w_hallway_temperature
     - sensor.laundry_multisensor_temperature
     - sensor.kitchen_temperature
@@ -210,8 +246,15 @@ power:
     - sensor.laundry_dimmer_power
     - sensor.house_ventilation_dimmer_power
     - sensor.balcony_outside_light_power
+    - sensor.dining_room_standing_lamp_power
+    - sensor.corner_standing_lamp_power
+    - sensor.cabinet_lights_power
+    - sensor.serving_table_lamp_power
     - sensor.terrace_outside_light_power
     - sensor.entrance_outside_light_power
+    - sensor.washing_machine_power
+    - sensor.dryer_power
+    - sensor.downstairs_hallway_pendant_power
 energy:
   name: Total power usage
   icon: mdi:flash
@@ -222,5 +265,12 @@ energy:
     - sensor.laundry_dimmer_energy
     - sensor.house_ventilation_dimmer_energy
     - sensor.balcony_outside_light_energy
+    - sensor.dining_room_standing_lamp_energy
+    - sensor.corner_standing_lamp_energy
+    - sensor.cabinet_lights_energy
+    - sensor.serving_table_lamp_energy
     - sensor.terrace_outside_light_energy
     - sensor.entrance_outside_light_energy
+    - sensor.washing_machine_energy
+    - sensor.dryer_energy
+    - sensor.downstairs_hallway_pendant_energy

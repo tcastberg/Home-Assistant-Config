@@ -1,0 +1,60 @@
+- id: '36'
+  alias: 'Washing machine started'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.washing_machine_activity
+    from: "off"
+    to: "on"
+  action:
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'changing_room'
+          what: 'I believe the washing machine has started'
+
+- id: '37'
+  alias: 'Washing machine stopped'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.washing_machine_activity
+    from: "on"
+    to: "off"
+  action:
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'changing_room'
+          what: 'I believe the washing machine has finished'
+
+- id: '38'
+  alias: 'Dryer started'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.dryer_activity
+    from: "off"
+    to: "on"
+  action:
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'changing_room'
+          what: 'I believe the dryer has started'
+
+- id: '39'
+  alias: 'Dryer stopped'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.dryer_activity
+    from: "on"
+    to: "off"
+  action:
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'changing_room'
+          what: 'I believe the dryer has finished'
+

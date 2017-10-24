@@ -51,8 +51,31 @@
             {% set average = states.sensor.average_humidity.state|float %}
             {% set family = states.sensor.family_bathroom_multisensor_relative_humidity.state|float - average %}
             {% set master = states.sensor.master_bathroom_multisensor_relative_humidity.state|float - average %}
-            {% set laundry = states.sensor.laundry_multisensor_relative_humidity.state|float - average %}
+            {% set laundry = (states.sensor.laundry_multisensor_relative_humidity.state|float - average) - 4 %}
             {{[family,master,laundry]|max|round(1)}}
           {% else %}
             0
           {% endif %}
+
+    average_temperature:
+      friendly_name: "Average house temperature"
+      unit_of_measurement: "°C avg"
+      icon_template: mdi:water-percent
+      value_template: >
+        {% if states.sensor %}
+          {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","°C")|map(attribute='state')|map('float')|sum %}
+          {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","°C")|list|count %}
+        {% set totalaverage = totalvalue / totalcount %}
+          {{totalaverage|round(1)}}
+        {% else %}
+          20
+        {% endif %}
+
+    sunrise:
+      friendly_name: "Sunrise at"
+      icon_template: mdi:weather-sunset-up
+      value_template: '{{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom("%H:%M") }}'
+    sunset:
+      friendly_name: "Sunset at"
+      icon_template: mdi:weather-sunset-down
+      value_template: '{{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom("%H:%M") }}'

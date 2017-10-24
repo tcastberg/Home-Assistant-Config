@@ -18,11 +18,11 @@
         brightness: >
           {% set divergence = states.sensor.divergence_humidity.state|float %}
           {% set speed = states.light.house_ventilation_dimmer_level.attributes.brightness %}
-          {% if divergence > 7 %}
+          {% if divergence > 9 %}
             255
-          {% elif divergence > 5 and speed > 200  %}
+          {% elif divergence > 6 and speed > 200  %}
             255
-          {% elif divergence > 3 %}
+          {% elif divergence > 4 %}
             118
           {% elif divergence > 2 and speed > 100 %}
             118
@@ -47,9 +47,9 @@
       data_template:
         brightness: >
           {% set divergence = states.sensor.divergence_humidity.state|float %}
-          {% if divergence > 7 %}
+          {% if divergence > 9 %}
             255
-          {% elif divergence > 3 %}
+          {% elif divergence > 4 %}
             118
           {% endif %}
 

@@ -53,6 +53,8 @@ sensor.storage_room_pressure:
   icon: mdi:airballoon
 sensor.battery_tor_magnus:
   icon: mdi:battery-70
+sensor.average_temperature:
+  icon: mdi:thermometer
 sensor.balcony_door_temperature:
   friendly_name: "Balcony door temperature"
 sensor.dressingroom_motion_sensor_temperature:
@@ -117,3 +119,6 @@ light.bedroom_tv_backlight_level_5:
   friendly_name: RGBW Light - Blue
 light.bedroom_tv_backlight_level_6:
   friendly_name: RGBW Light - White
+
+media_player.changing_room:
+  entity_picture: ''

@@ -1,5 +1,5 @@
 - id: '28'    
-  alias: 'Movement in master bathroom'
+  alias: 'Master bathroom on'
   trigger:
   - entity_id: binary_sensor.master_bathroom_multisensor_sensor
     platform: state
@@ -20,7 +20,7 @@
           {%- endif %}
 
 - id: '29'    
-  alias: 'Stop motion in master bathroom'
+  alias: 'Master bathroom off'
   trigger:
   - entity_id: binary_sensor.master_bathroom_multisensor_sensor
     platform: state

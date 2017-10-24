@@ -1,0 +1,68 @@
+- id: '48'
+  alias: 'Downstairs hallway morning'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Morning'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: light.turn_on
+      entity_id: light.downstairs_hallway_pendant_level
+      data:
+        brightness: 200
+
+- id: '49'    
+  alias: 'Downstairs hallway day'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Day'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: light.turn_off
+      entity_id: light.downstairs_hallway_pendant_level
+
+- id: '50'    
+  alias: 'Downstairs hallway evening'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Evening'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: light.turn_on
+      entity_id: light.downstairs_hallway_pendant_level
+      data:
+        brightness: 150
+
+- id: '51'    
+  alias: 'Downstairs hallway off'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+  action:
+    - service: light.turn_off
+      entity_id: light.downstairs_hallway_pendant_level
+

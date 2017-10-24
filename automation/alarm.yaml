@@ -101,6 +101,22 @@
         entity_id: input_select.home_state
         option: Away
 
+- id: '34'
+  alias: 'Home Alarm disarmed'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: 'disarmed'
+  action:
+    - service: notify.mail
+      data:
+        title: 'Home Alarm disarmed'
+        message: 'Home Alarm disarmed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.home_state
+        option: Home
+
 - id: '21'
   alias: 'Verisure armed_away to Home armed_away'
   trigger:
@@ -119,6 +135,9 @@
     platform: state
     entity_id: alarm_control_panel.holmsens_vei_alarm
     to: 'disarmed'
+  condition:
+    condition: template
+    value_template: "{{not is_state('alarm_control_panel.home_alarm','disarmed')}}"
   action:
     - service: alarm_control_panel.alarm_disarm
       entity_id: alarm_control_panel.home_alarm
