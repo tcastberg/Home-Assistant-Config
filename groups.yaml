@@ -4,6 +4,7 @@ default_view:
   icon: mdi:home-assistant
   entities:
     - group.status
+    - group.weather
 status:
   name: Status
   entities:
@@ -13,6 +14,18 @@ status:
     - input_select.home_state
     - input_select.sleep_state
     - input_select.time_of_day
+weather:
+  name: Weather
+  entities:
+    - sun.sun
+    - sensor.sunrise
+    - sensor.sunset
+    - sensor.weather_symbol
+    - sensor.weather_temperature
+    - sensor.weather_humidity
+    - sensor.weather_precipitation
+    - sensor.weather_pressure
+    - sensor.weather_wind_speed
 
 
 lights:
@@ -139,18 +152,10 @@ climate:
   view: yes
   icon: mdi:weather-cloudy
   entities:
-    - group.weather
     - group.humidity
     - group.temperature
     - group.luminance
     - group.pressure
-weather:
-  name: Weather
-  entities:
-    - sensor.yr_symbol
-    - sun.sun
-    - sensor.sunrise
-    - sensor.sunset
 temperature:
   name: Temperature
   entities:
