@@ -22,9 +22,7 @@ weather:
     - sensor.sunset
     - sensor.weather_symbol
     - sensor.weather_temperature
-    - sensor.weather_humidity
     - sensor.weather_precipitation
-    - sensor.weather_pressure
     - sensor.weather_wind_speed
 
 

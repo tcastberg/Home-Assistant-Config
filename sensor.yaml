@@ -1,14 +1,11 @@
 - platform: yr
   name: Weather
-  forecast: 24
+  forecast: 2
   monitored_conditions:
     - temperature
     - symbol
     - precipitation
     - windSpeed
-    - pressure
-    - humidity
-    - dewpointTemperature
 
 - platform: plex
   host: plex.continually-evolving.net
