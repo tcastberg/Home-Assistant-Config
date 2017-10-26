@@ -92,7 +92,10 @@ binary_sensor.dressingroom_motion_sensor_sensor:
   friendly_name: "Dressing room motion"
 binary_sensor.tv_area_motion_sensor_sensor:
   device_class: motion
-  friendly_name: "TV area motion"
+  friendly_name: "TV lounge motion"
+sensor.tv_area_motion_sensor_luminance:
+  icon: mdi:brightness-5
+  friendly_name: "TV lounge luminance"
 binary_sensor.family_bathroom_multisensor_sensor:
   device_class: motion
   friendly_name: "Family bathroom motion"

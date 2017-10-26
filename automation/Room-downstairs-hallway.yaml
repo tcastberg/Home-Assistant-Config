@@ -1,5 +1,5 @@
 - id: '48'
-  alias: 'Downstairs hallway morning'
+  alias: 'Downstairs hallway on'
   trigger:
     - platform: state
       entity_id: input_select.time_of_day
@@ -7,51 +7,32 @@
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
+    - platform: numeric_state
+      entity_id: sensor.dining_room_motion_sensor_luminance
+      below: 200
   condition:
-    condition: state
-    entity_id: input_select.home_state
-    state: 'Home'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: numeric_state
+        entity_id: sensor.dining_room_motion_sensor_luminance
+        below: 200
   action:
     - service: light.turn_on
       entity_id: light.downstairs_hallway_pendant_level
-      data:
-        brightness: 200
-
-- id: '49'    
-  alias: 'Downstairs hallway day'
-  trigger:
-    - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Day'
-    - platform: state
-      entity_id: input_select.home_state
-      to: 'Home'
-  condition:
-    condition: state
-    entity_id: input_select.home_state
-    state: 'Home'
-  action:
-    - service: light.turn_off
-      entity_id: light.downstairs_hallway_pendant_level
-
-- id: '50'    
-  alias: 'Downstairs hallway evening'
-  trigger:
-    - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Evening'
-    - platform: state
-      entity_id: input_select.home_state
-      to: 'Home'
-  condition:
-    condition: state
-    entity_id: input_select.home_state
-    state: 'Home'
-  action:
-    - service: light.turn_on
-      entity_id: light.downstairs_hallway_pendant_level
-      data:
-        brightness: 150
+      data_template:
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            75
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            100
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            35
+          {%- else %}
+            5
+          {%- endif %}
 
 - id: '51'    
   alias: 'Downstairs hallway off'
@@ -62,7 +43,9 @@
     - platform: state
       entity_id: input_select.home_state
       to: 'Away'
+    - platform: numeric_state
+      entity_id: sensor.dining_room_motion_sensor_luminance
+      above: 200
   action:
     - service: light.turn_off
       entity_id: light.downstairs_hallway_pendant_level
-
