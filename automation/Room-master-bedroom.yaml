@@ -19,7 +19,7 @@
     - service: light.turn_on
       entity_id: light.bedroom_tv_backlight_level
     - service: switch.turn_on
-      entity_id: switch.dressing_table_lamp_switch
+      entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
 
@@ -42,7 +42,7 @@
     - service: light.turn_off
       entity_id: light.bedroom_tv_backlight_level
     - service: switch.turn_off
-      entity_id: switch.dressing_table_lamp_switch
+      entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
 
@@ -67,7 +67,7 @@
     - service: light.turn_on
       entity_id: light.bedroom_tv_backlight_level
     - service: switch.turn_on
-      entity_id: switch.dressing_table_lamp_switch
+      entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
 
@@ -86,7 +86,7 @@
     - service: light.turn_off
       entity_id: light.bedroom_tv_backlight_level
     - service: switch.turn_off
-      entity_id: switch.dressing_table_lamp_switch
+      entity_id: switch.dressing_table_light_switch
     - service: switch.turn_off
       entity_id: switch.dressing_room_wardrobes_switch
 

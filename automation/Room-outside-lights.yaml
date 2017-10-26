@@ -5,7 +5,7 @@
     platform: state
     to: 'below_horizon'
   - platform: state
-    entity_id: input_select.sleep_state
+    entity_id: input_select.sleep_state_house
     to: 'Awake'
   condition:
     condition: and
@@ -14,7 +14,7 @@
         entity_id: sun.sun
         state: 'below_horizon'
       - condition: state
-        entity_id: input_select.sleep_state
+        entity_id: input_select.sleep_state_house
         state: 'Awake'
   action:
     - service: switch.turn_on
@@ -31,7 +31,7 @@
     platform: state
     to: 'above_horizon'
   - platform: state
-    entity_id: input_select.sleep_state
+    entity_id: input_select.sleep_state_house
     to: 'Sleeping'
   action:
     - service: switch.turn_off

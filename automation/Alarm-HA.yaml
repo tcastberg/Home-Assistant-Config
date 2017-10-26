@@ -36,26 +36,6 @@
         entity_id: input_select.home_state
         option: 'Home'
 
-- id: '2'
-  alias: 'Picture on open front door'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.hoverdr
-    to: open
-  action:
-    - service: shell_command.snapshot
-      data:
-        filename: /tmp/snapshot.jpg
-    - delay:
-        seconds: 1
-    - service: notify.mail
-      data:
-        title: 'Door opened'
-        message: 'The front door was opened'
-        data:
-          images:
-            - /tmp/snapshot.jpg
-
 - id: '3'
   alias: 'Trigger alarm while armed away'
   trigger:
@@ -87,7 +67,6 @@
     service: alarm_control_panel.alarm_trigger
     entity_id: alarm_control_panel.home_alarm
 
-
 - id: '5'
   alias: 'Triggered Flash'
   trigger:
@@ -100,14 +79,22 @@
         title: 'Home Alarm Triggered'
         message: 'Home Alarm Triggered {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
 
-- id: '6'
-  alias: 'Home Alarm disarmed'
+- id: '2'
+  alias: 'Picture on open front door'
   trigger:
     platform: state
-    entity_id: alarm_control_panel.home_alarm
-    to: 'disarmed'
+    entity_id: binary_sensor.hoverdr
+    to: open
   action:
+    - service: shell_command.snapshot
+      data:
+        filename: /tmp/snapshot.jpg
+    - delay:
+        seconds: 1
     - service: notify.mail
       data:
-        title: 'Home Alarm Disarmed'
-        message: 'Home Alarm disarmed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
+        title: 'Door opened'
+        message: 'The front door was opened'
+        data:
+          images:
+            - /tmp/snapshot.jpg

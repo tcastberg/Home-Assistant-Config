@@ -5,7 +5,7 @@
   alias: 'Set Time of Day to Morning'
   trigger:
     platform: state
-    entity_id: input_select.sleep_state
+    entity_id: input_select.sleep_state_house
     to: 'Awake'
   condition:
     condition: and
@@ -50,11 +50,11 @@
   alias: 'Set Time of Day to Night'
   trigger:
     platform: state
-    entity_id: input_select.sleep_state
+    entity_id: input_select.sleep_state_house
     to: 'Sleeping'
   condition:
     condition: state
-    entity_id: input_select.sleep_state
+    entity_id: input_select.sleep_state_house
     state: 'Sleeping'
   action:
     - service: input_select.select_option

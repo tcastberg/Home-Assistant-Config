@@ -11,6 +11,19 @@
       title: 'Tor Magnus at work'
       message: 'Tor Magnus is now arriving at work.'
 
+- id: '14'
+  alias: 'Starting Home Assistant'
+  trigger:
+    platform: homeassistant
+    event: start
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.fluxed_tv_backlight
+
 - id: '35'
   alias: 'Wakeup alarm 1'
   trigger:
@@ -59,65 +72,6 @@
         entity_id: media_player.changing_room
         source: 'BBC World Service News'
     - service: switch.turn_on
-      entity_id: switch.dressing_table_lamp_switch
+      entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobe_switch
-
-- id: '13'
-  alias: 'Wakeup alarm non-working'
-  trigger:
-    platform: time
-    at: '09:00:00'
-  condition:
-    condition: state
-    entity_id: binary_sensor.workday_sensor
-    state: 'off'
-  action:
-    - service: input_select.select_option
-      data:
-        entity_id: input_select.sleep_state
-        option: Awake
-
-- id: '14'
-  alias: 'Starting Home Assistant'
-  trigger:
-    platform: homeassistant
-    event: start
-  condition:
-    condition: state
-    entity_id: input_select.home_state
-    state: 'Home'
-  action:
-    - service: switch.turn_on
-      entity_id: switch.fluxed_tv_backlight
-
-- id: '15'    
-  alias: 'Wake up house'
-  trigger:
-  - entity_id: binary_sensor.dressingroom_motion_sensor_sensor
-    platform: state
-    to: 'on'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_select.sleep_state
-        state: 'Sleeping'
-      - condition: time
-        after: '05:00:00'
-        before: '20:00:00'
-  action:
-    - service: input_select.select_option
-      data:
-        entity_id: input_select.sleep_state
-        option: 'Awake'
-
-- id: '17'
-  alias: 'House Sleeping'
-  trigger:
-  - platform: state
-    entity_id: input_select.sleep_state
-    to: 'Sleeping'
-  action:
-    - service: shell_command.set_sleep_tor
-    - service: shell_command.set_sleep_lande

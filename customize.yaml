@@ -62,6 +62,11 @@ sensor.dressingroom_motion_sensor_temperature:
 sensor.dressingroom_motion_sensor_luminance:
   icon: mdi:brightness-5
   friendly_name: "Dressing room luminance"
+sensor.dining_room_motion_sensor_temperature:
+  friendly_name: "Dining room temperature"
+sensor.dining_room_motion_sensor_luminance:
+  icon: mdi:brightness-5
+  friendly_name: "Dining room luminance"
 sensor.bedroom_tv_backlight_power:
   friendly_name: "Master bedroom TV backlight"
 sensor.family_bathroom_dimmer_power:
@@ -85,6 +90,9 @@ binary_sensor.backhall_garden_door_sensor:
 binary_sensor.dressingroom_motion_sensor_sensor:
   device_class: motion
   friendly_name: "Dressing room motion"
+binary_sensor.tv_area_motion_sensor_sensor:
+  device_class: motion
+  friendly_name: "TV area motion"
 binary_sensor.family_bathroom_multisensor_sensor:
   device_class: motion
   friendly_name: "Family bathroom motion"
@@ -94,6 +102,9 @@ binary_sensor.master_bathroom_multisensor_sensor:
 binary_sensor.laundry_multisensor_sensor:
   device_class: motion
   friendly_name: "Laundry motion"
+binary_sensor.dining_room_motion_sensor_sensor:
+  device_class: motion
+  friendly_name: "Dining room motion"
 binary_sensor.bedroom_garden_door_sensor:
   device_class: opening
   friendly_name: "Bedroom garden door"

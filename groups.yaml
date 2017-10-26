@@ -12,7 +12,7 @@ status:
     - alarm_control_panel.holmsens_vei_alarm
     - alarm_control_panel.home_alarm
     - input_select.home_state
-    - input_select.sleep_state
+    - input_select.sleep_state_house
     - input_select.time_of_day
 weather:
   name: Weather
@@ -37,6 +37,7 @@ lights:
     - group.laundry
     - group.dining_room
     - group.balcony
+    - group.tvlounge
     - group.familybath
     - group.masterbath
     - group.masterbed
@@ -60,10 +61,21 @@ dining_room:
     - switch.corner_standing_lamp_switch
     - switch.cabinet_lights_switch
     - switch.serving_table_lamp_switch
+    - switch.office_standing_lamp_switch
+    - switch.side_table_light_switch
+    - light.dining_room_rail_1_level
+    - light.dining_room_rail_2_level
+    - light.dining_room_rail_3_level
 balcony:
   name: Balcony
   entities:
     - switch.balcony_outside_light_switch
+tvlounge:
+  name: TV lounge
+  entities:
+    - light.tv_area_level
+    - light.sofa_area_level
+    - light.hallway_area_level
 familybath:
   name: Family bathroom
   entities:
@@ -77,7 +89,7 @@ masterbed:
   entities:
     - light.bedroom_tv_backlight_level
     - light.bedside_lamp_dimmer_level
-    - switch.dressing_table_lamp_switch
+    - switch.dressing_table_light_switch
     - switch.dressing_room_wardrobes_switch
 downstairs_hallway:
   name: Downstairs hallway
@@ -104,10 +116,10 @@ tormagnus:
   name: Tor Magnus
   icon: mdi:account
   entities:
+    - input_select.sleep_state_tor
     - device_tracker.tmc_phone
     - sensor.battery_tor_magnus
     - device_tracker.phone__tmc
-    - device_tracker.laptop__tmc
     - sensor.steps
     - sensor.weight
     - sensor.resting_heart_rate
@@ -116,14 +128,13 @@ lande:
   name: Lande
   icon: mdi:account
   entities:
-    - device_tracker.phone__lande
+    - input_select.sleep_state_lande
     - device_tracker.phone__lande_2
-    - device_tracker.pad__lande
-    - device_tracker.laptop__lande
 ingridsofia:
   name: Ingrid Sofia
   icon: mdi:account
   entities:
+    - input_select.sleep_state_ingrid
     - device_tracker.ipad__ingrid
 
 
@@ -164,7 +175,9 @@ temperature:
     - sensor.laundry_multisensor_temperature
     - sensor.kitchen_temperature
     - sensor.kitchen_hallway_temperature
+    - sensor.dining_room_motion_sensor_temperature
     - sensor.balcony_door_temperature
+    - sensor.tv_area_motion_sensor_temperature
     - sensor.tv_hallway_temperature
     - sensor.stairs_temperature
     - sensor.family_bathroom_multisensor_temperature
@@ -192,6 +205,8 @@ luminance:
   name: Luminance
   entities:
     - sensor.laundry_multisensor_luminance
+    - sensor.dining_room_motion_sensor_luminance
+    - sensor.tv_area_motion_sensor_luminance
     - sensor.family_bathroom_multisensor_luminance
     - sensor.master_bathroom_multisensor_luminance
     - sensor.dressingroom_motion_sensor_luminance
@@ -229,6 +244,8 @@ motion:
   icon: mdi:robot
   entities:
     - binary_sensor.dressingroom_motion_sensor_sensor
+    - binary_sensor.dining_room_motion_sensor_sensor
+    - binary_sensor.tv_area_motion_sensor_sensor
     - binary_sensor.family_bathroom_multisensor_sensor
     - binary_sensor.master_bathroom_multisensor_sensor
     - binary_sensor.laundry_multisensor_sensor
@@ -255,6 +272,13 @@ power:
     - sensor.corner_standing_lamp_power
     - sensor.cabinet_lights_power
     - sensor.serving_table_lamp_power
+    - sensor.office_standing_lamp_power
+    - sensor.dining_room_rail_1_power
+    - sensor.dining_room_rail_2_power
+    - sensor.dining_room_rail_3_power
+    - sensor.tv_area_power
+    - sensor.sofa_area_power
+    - sensor.hallway_area_power
     - sensor.terrace_outside_light_power
     - sensor.entrance_outside_light_power
     - sensor.washing_machine_power
@@ -274,6 +298,13 @@ energy:
     - sensor.corner_standing_lamp_energy
     - sensor.cabinet_lights_energy
     - sensor.serving_table_lamp_energy
+    - sensor.office_standing_lamp_energy
+    - sensor.dining_room_rail_1_energy
+    - sensor.dining_room_rail_2_energy
+    - sensor.dining_room_rail_3_energy
+    - sensor.tv_area_energy
+    - sensor.sofa_area_energy
+    - sensor.hallway_area_energy
     - sensor.terrace_outside_light_energy
     - sensor.entrance_outside_light_energy
     - sensor.washing_machine_energy

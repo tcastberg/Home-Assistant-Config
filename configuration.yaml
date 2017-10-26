@@ -21,10 +21,10 @@ frontend:
 config:
 
 recorder:
-  exclude:
-    entities:
-      - sensor.bedroom_tv_backlight_exporting
-      - sensor.family_bathroom_dimmer_exporting
+  purge_interval: 1
+  purge_keep_days: 2
+
+
 http:
   api_password: !secret http_api_password
   base_url: !secret http_base_url
@@ -131,7 +131,25 @@ input_select:
       - Morning
       - Day
       - Evening
-  sleep_state:
+  sleep_state_house:
+    name: Sleep State
+    icon: mdi:sleep
+    options:
+      - Awake
+      - Sleeping
+  sleep_state_ingrid:
+    name: Sleep State
+    icon: mdi:sleep
+    options:
+      - Awake
+      - Sleeping
+  sleep_state_lande:
+    name: Sleep State
+    icon: mdi:sleep
+    options:
+      - Awake
+      - Sleeping
+  sleep_state_tor:
     name: Sleep State
     icon: mdi:sleep
     options:

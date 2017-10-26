@@ -1,0 +1,75 @@
+###
+# Control Time of Day
+###
+- id: '52'
+  alias: 'Set house sleep state'
+  trigger:
+    - platform: state
+      entity_id: input_select.sleep_state_ingrid, input_select.sleep_state_lande, input_select.sleep_state_tor
+      to: 'Sleeping'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.sleep_state_ingrid
+        state: 'Sleeping'
+      - condition: state
+        entity_id: input_select.sleep_state_lande
+        state: 'Sleeping'
+      - condition: state
+        entity_id: input_select.sleep_state_tor
+        state: 'Sleeping'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.sleep_state_house
+        option: 'Sleeping'
+
+- id: '13'
+  alias: 'Final wakeup'
+  trigger:
+    platform: time
+    at: '09:00:00'
+  condition:
+    condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'off'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.sleep_state_house, input_select.sleep_state_ingrid, input_select.sleep_state_lande, input_select.sleep_state_tor
+        option: 'Awake'
+
+- id: '15'
+  alias: 'Wake up house'
+  trigger:
+  - entity_id: binary_sensor.dressingroom_motion_sensor_sensor
+    platform: state
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.sleep_state_house
+        state: 'Sleeping'
+      - condition: time
+        after: '05:00:00'
+        before: '20:00:00'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.sleep_state_house
+        option: 'Awake'
+    - service: shell_command.set_awake_tor
+    - service: shell_command.set_awake_lande
+
+- id: '17'
+  alias: 'House Sleeping'
+  trigger:
+  - platform: state
+    entity_id: input_select.sleep_state_house
+    to: 'Sleeping'
+  action:
+    - service: shell_command.set_sleep_tor
+    - service: shell_command.set_sleep_lande
+

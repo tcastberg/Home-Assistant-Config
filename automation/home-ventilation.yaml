@@ -37,7 +37,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: '{{ states.sensor.divergence_humidity.state|float > 3 }}'
+        value_template: '{{ states.sensor.divergence_humidity.state|float > 4 }}'
       - condition: state
         entity_id: light.house_ventilation_dimmer_level
         state: 'off'

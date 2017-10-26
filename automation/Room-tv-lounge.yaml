@@ -1,0 +1,107 @@
+- id: '55'    
+  alias: 'TV lounge on'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: numeric_state
+      entity_id: sensor.tv_area_motion_sensor_luminance
+      below: 200
+    - platform: state
+      entity_id: media_player.tv_room
+      from: 'playing'
+      to: 'idle'
+      for:
+        seconds: 5
+    - platform: state
+      entity_id: media_player.tv_room
+      from: 'playing'
+      to: 'off'
+      for:
+        seconds: 5
+    - platform: state
+      entity_id: media_player.tv_room
+      from: 'paused'
+      to: 'off'
+      for:
+        seconds: 5
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: numeric_state
+        entity_id: sensor.tv_area_motion_sensor_luminance
+        below: 200
+      - condition: template
+        value_template: "{{not is_state('media_player.tv_room','playing')}}"
+  action:
+    - service: light.turn_on
+      entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level
+      data_template:
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            60
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            80
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            40
+          {%- else %}
+            5
+          {%- endif %}
+
+ 
+- id: '57'
+  alias: 'TV lounge chromecast playing'
+  trigger:
+    - platform: state
+      entity_id: media_player.tv_room
+      from: 'idle'
+      to: 'playing'
+      for:
+        seconds: 5
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.tv_area_level
+        state: 'on'
+      - condition: state
+        entity_id: light.sofa_area_level
+        state: 'on'
+      - condition: state
+        entity_id: light.hallway_area_level
+        state: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level
+      data_template:
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            30
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            40
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            20
+          {%- else %}
+            5
+          {%- endif %}
+
+- id: '56'    
+  alias: 'TV lounge off'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: numeric_state
+      entity_id: sensor.tv_area_motion_sensor_luminance
+      above: 200
+  action:
+    - service: light.turn_off
+      entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level

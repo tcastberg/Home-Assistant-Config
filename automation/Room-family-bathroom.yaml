@@ -3,7 +3,10 @@
   trigger:
   - entity_id: binary_sensor.family_bathroom_multisensor_sensor
     platform: state
-    to: 'on'
+  condition:
+    condition: state
+    entity_id: binary_sensor.family_bathroom_multisensor_sensor
+    state: 'on'
   action:
     - service: light.turn_on
       entity_id: light.family_bathroom_dimmer_level
@@ -24,7 +27,10 @@
   trigger:
   - entity_id: binary_sensor.family_bathroom_multisensor_sensor
     platform: state
-    to: 'off'
+  condition:
+    condition: state
+    entity_id: binary_sensor.family_bathroom_multisensor_sensor
+    state: 'off'
   action:
     - service: light.turn_off
       entity_id: light.family_bathroom_dimmer_level
