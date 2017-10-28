@@ -1,9 +1,9 @@
 - id: '21'
   alias: 'Verisure armed_away to Home armed_away'
   trigger:
-    platform: state
-    entity_id: alarm_control_panel.holmsens_vei_alarm
-    to: 'armed_away'
+    platform: numeric_state
+    entity_id: sensor.verisure_status_plug_power
+    above: 0.3
   condition:
     condition: template
     value_template: "{{not is_state('alarm_control_panel.home_alarm','armed_away')}}"
@@ -16,9 +16,9 @@
 - id: '22'
   alias: 'Verisure disarmed to Home disarmed'
   trigger:
-    platform: state
-    entity_id: alarm_control_panel.holmsens_vei_alarm
-    to: 'disarmed'
+    platform: numeric_state
+    entity_id: sensor.verisure_status_plug_power
+    below: 0.3
   condition:
     condition: template
     value_template: "{{not is_state('alarm_control_panel.home_alarm','disarmed')}}"

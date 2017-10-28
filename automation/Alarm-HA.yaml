@@ -8,10 +8,12 @@
     condition: template
     value_template: "{{not is_state('input_select.home_state','Away')}}"
   action:
-    - service: notify.mail
+    - service: notify.html5
       data:
         title: 'Home Alarm armed'
         message: 'Home Alarm armed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
+        data:
+          tag: 'notification-home-alarm-dis-armed'
     - service: input_select.select_option
       data:
         entity_id: input_select.home_state
@@ -27,10 +29,12 @@
     condition: template
     value_template: "{{not is_state('input_select.home_state','Home')}}"
   action:
-    - service: notify.mail
+    - service: notify.html5
       data:
         title: 'Home Alarm disarmed'
         message: 'Home Alarm disarmed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
+        data:
+          tag: 'notification-home-alarm-dis-armed'
     - service: input_select.select_option
       data:
         entity_id: input_select.home_state
@@ -68,13 +72,13 @@
     entity_id: alarm_control_panel.home_alarm
 
 - id: '5'
-  alias: 'Triggered Flash'
+  alias: 'Alarm Triggered'
   trigger:
     platform: state
     entity_id: alarm_control_panel.home_alarm
     to: 'triggered'
   action:
-    - service: notify.mail
+    - service: notify.html5
       data:
         title: 'Home Alarm Triggered'
         message: 'Home Alarm Triggered {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
@@ -83,14 +87,18 @@
   alias: 'Picture on open front door'
   trigger:
     platform: state
-    entity_id: binary_sensor.hoverdr
-    to: open
+    entity_id: lock.front_door_lock_locked
+    to: unlocked
   action:
     - service: shell_command.snapshot
       data:
         filename: /tmp/snapshot.jpg
     - delay:
         seconds: 1
+    - service: notify.html5
+      data:
+        title: 'Door opened'
+        message: 'The front door was opened'
     - service: notify.mail
       data:
         title: 'Door opened'

@@ -9,6 +9,8 @@
     - platform: numeric_state
       entity_id: sensor.tv_area_motion_sensor_luminance
       below: 200
+      for:
+        seconds: 60
     - platform: state
       entity_id: media_player.tv_room
       from: 'playing'
@@ -40,7 +42,7 @@
         value_template: "{{not is_state('media_player.tv_room','playing')}}"
   action:
     - service: light.turn_on
-      entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level
+      entity_id: light.tv_area_level, light.sofa_area_level
       data_template:
         brightness_pct: >
           {%- if is_state('input_select.time_of_day', 'Morning') %}
@@ -49,10 +51,18 @@
             80
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
             40
-          {%- else %}
-            5
           {%- endif %}
-
+    - service: light.turn_on
+      entity_id: light.hallway_area_level
+      data_template:
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            80
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            100
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            60
+          {%- endif %}
  
 - id: '57'
   alias: 'TV lounge chromecast playing'
@@ -77,7 +87,7 @@
         state: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level
+      entity_id: light.tv_area_level, light.sofa_area_level
       data_template:
         brightness_pct: >
           {%- if is_state('input_select.time_of_day', 'Morning') %}
@@ -86,8 +96,17 @@
             40
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
             20
-          {%- else %}
-            5
+          {%- endif %}
+    - service: light.turn_on
+      entity_id: light.hallway_area_level
+      data_template:
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            50
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            60
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            40
           {%- endif %}
 
 - id: '56'    
@@ -102,6 +121,8 @@
     - platform: numeric_state
       entity_id: sensor.tv_area_motion_sensor_luminance
       above: 200
+      for:
+        seconds: 60
   action:
     - service: light.turn_off
       entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level

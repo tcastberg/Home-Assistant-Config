@@ -1,0 +1,76 @@
+- id: '59'    
+  alias: 'Entrance hallway on'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{not is_state('input_select.time_of_day','Night')}}"
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+        state: 'off'
+  action:
+    - service: light.turn_on
+      entity_id: light.entrance_hallway_ceiling_lights_level
+      data:
+        brightness_pct: 5
+ 
+- id: '60'
+  alias: 'Entrance hallway movement'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+      to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.entrance_hallway_ceiling_lights_level
+      data_template:
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            65
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            99
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            50
+          {%- endif %}
+
+- id: '61'    
+  alias: 'Entrance hallway off'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: state
+      entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.home_state
+            state: 'Night'
+          - condition: state
+            entity_id: input_select.home_state
+            state: 'Away'
+  action:
+    - service: light.turn_off
+      entity_id: light.entrance_hallway_ceiling_lights_level

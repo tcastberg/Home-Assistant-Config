@@ -108,6 +108,12 @@ binary_sensor.laundry_multisensor_sensor:
 binary_sensor.dining_room_motion_sensor_sensor:
   device_class: motion
   friendly_name: "Dining room motion"
+binary_sensor.entrance_hallway_motion_sensor__sensor:
+  device_class: motion
+  friendly_name: "Entrance hallway motion"
+sensor.entrance_hallway_motion_sensor__luminance:
+  icon: mdi:brightness-5
+  friendly_name: "Entrance hallway luminance"
 binary_sensor.bedroom_garden_door_sensor:
   device_class: opening
   friendly_name: "Bedroom garden door"

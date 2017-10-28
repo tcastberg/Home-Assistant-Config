@@ -14,6 +14,7 @@ status:
     - input_select.home_state
     - input_select.sleep_state_house
     - input_select.time_of_day
+    - lock.front_door_lock_locked
 weather:
   name: Weather
   entities:
@@ -32,6 +33,7 @@ lights:
   icon: mdi:lightbulb
   entities:
     - group.front_yard
+    - group.entrance_hallway
     - group.laundry
     - group.dining_room
     - group.balcony
@@ -46,6 +48,10 @@ front_yard:
   name: Front Yard
   entities:
     - switch.entrance_outside_light_switch
+entrance_hallway:
+  name: Entrance Hallway
+  entities:
+    - light.entrance_hallway_ceiling_lights_level
 laundry:
   name: Laundry
   entities:
@@ -169,7 +175,7 @@ temperature:
   name: Temperature
   entities:
     - sensor.average_temperature
-    - sensor.1w_hallway_temperature
+    - sensor.entrance_hallway_motion_sensor__temperature
     - sensor.laundry_multisensor_temperature
     - sensor.kitchen_temperature
     - sensor.kitchen_hallway_temperature
@@ -202,6 +208,7 @@ humidity:
 luminance:
   name: Luminance
   entities:
+    - sensor.entrance_hallway_motion_sensor__luminance
     - sensor.laundry_multisensor_luminance
     - sensor.dining_room_motion_sensor_luminance
     - sensor.tv_area_motion_sensor_luminance
@@ -221,9 +228,9 @@ all_sensors:
   view: yes
   icon: mdi:robot
   entities:
+    - group.motion
     - group.doors
     - group.windows
-    - group.motion
 doors:
   name: Door sensors
   icon: mdi:robot
@@ -241,6 +248,7 @@ motion:
   name: Motion sensors
   icon: mdi:robot
   entities:
+    - binary_sensor.entrance_hallway_motion_sensor__sensor
     - binary_sensor.dressingroom_motion_sensor_sensor
     - binary_sensor.dining_room_motion_sensor_sensor
     - binary_sensor.tv_area_motion_sensor_sensor

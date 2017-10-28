@@ -1,15 +1,19 @@
 - id: '1'
   alias: 'message'
   trigger:
-    platform: zone
-    entity_id: device_tracker.tmc_phone
-    zone: zone.tor_magnus_work
-    event: enter
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+     action: 'blah'
   action:
-    service: notify.mail
-    data:
-      title: 'Tor Magnus at work'
-      message: 'Tor Magnus is now arriving at work.'
+    - service: notify.html5_tor_magnus_phone
+      data:
+        message: 'Someone at door'
+        data:
+          actions:
+            - action: 'open_door'
+              title: 'Open door'
+
 
 - id: '14'
   alias: 'Starting Home Assistant'
@@ -75,3 +79,15 @@
       entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobe_switch
+
+- id: '58'
+  alias: HTML5 push notification action button clicked
+  trigger:
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+     action: open_door
+  action:
+    - service: notify.html5_tor_magnus_phone
+      data:
+        message: 'Door opened'
