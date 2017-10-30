@@ -9,6 +9,8 @@
     - platform: numeric_state
       entity_id: sensor.dining_room_motion_sensor_luminance
       below: 200
+      for:
+        seconds: 120
     - platform: state
       entity_id: input_select.sleep_state_ingrid
       to: 'Awake'
@@ -50,7 +52,9 @@
       to: 'Away'
     - platform: numeric_state
       entity_id: sensor.dining_room_motion_sensor_luminance
-      above: 200
+      above: 250
+      for:
+        seconds: 120
     - platform: state
       entity_id: input_select.sleep_state_ingrid
       to: 'Sleeping'

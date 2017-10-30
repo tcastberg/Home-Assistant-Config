@@ -13,7 +13,7 @@
       entity_id: sensor.kitchen_table_motion_sensor_luminance
       below: 200
       for:
-        seconds: 60
+        seconds: 120
   condition:
     condition: and
     conditions:
@@ -69,6 +69,11 @@
     - platform: state
       entity_id: binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
+    - platform: numeric_state
+      entity_id: sensor.kitchen_table_motion_sensor_luminance
+      above: 250
+      for:
+        seconds: 120
   condition:
     condition: and
     conditions:

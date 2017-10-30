@@ -3,13 +3,14 @@
   trigger:
     - platform: state
       entity_id: input_select.time_of_day
-      to: 'Morning'
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
     - platform: numeric_state
       entity_id: sensor.dining_room_motion_sensor_luminance
       below: 200
+      for:
+        seconds: 120
   condition:
     condition: and
     conditions:
@@ -45,7 +46,9 @@
       to: 'Away'
     - platform: numeric_state
       entity_id: sensor.dining_room_motion_sensor_luminance
-      above: 200
+      above: 250
+      for:
+        seconds: 120
   action:
     - service: light.turn_off
       entity_id: light.downstairs_hallway_pendant_level

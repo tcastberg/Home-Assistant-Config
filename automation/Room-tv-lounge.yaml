@@ -10,7 +10,7 @@
       entity_id: sensor.tv_area_motion_sensor_luminance
       below: 200
       for:
-        seconds: 60
+        seconds: 120
     - platform: state
       entity_id: media_player.tv_room
       from: 'playing'
@@ -120,9 +120,9 @@
       to: 'Away'
     - platform: numeric_state
       entity_id: sensor.tv_area_motion_sensor_luminance
-      above: 200
+      above: 250
       for:
-        seconds: 60
+        seconds: 120
   action:
     - service: light.turn_off
       entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level

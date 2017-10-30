@@ -10,7 +10,7 @@
       entity_id: sensor.dining_room_motion_sensor_luminance
       below: 200
       for:
-        seconds: 60
+        seconds: 120
   condition:
     condition: and
     conditions:
@@ -49,9 +49,9 @@
       to: 'Away'
     - platform: numeric_state
       entity_id: sensor.dining_room_motion_sensor_luminance
-      above: 200
+      above: 250
       for:
-        seconds: 60
+        seconds: 120
   action:
     - service: switch.turn_off
       entity_id: switch.dining_room_standing_lamp_switch, switch.corner_standing_lamp_switch, switch.cabinet_lights_switch, switch.serving_table_lamp_switch, switch.office_standing_lamp_switch, switch.side_table_light_switch
