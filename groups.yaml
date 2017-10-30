@@ -253,7 +253,6 @@ doors:
   name: Door sensors
   icon: mdi:robot
   entities:
-    - binary_sensor.front_door
     - binary_sensor.balcony_door_sensor_2
     - binary_sensor.bedroom_garden_door_sensor
     - binary_sensor.backhall_garden_door_sensor
