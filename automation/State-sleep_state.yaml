@@ -60,16 +60,3 @@
       data:
         entity_id: input_select.sleep_state_house
         option: 'Awake'
-    - service: shell_command.set_awake_tor
-    - service: shell_command.set_awake_lande
-
-- id: '17'
-  alias: 'House Sleeping'
-  trigger:
-  - platform: state
-    entity_id: input_select.sleep_state_house
-    to: 'Sleeping'
-  action:
-    - service: shell_command.set_sleep_tor
-    - service: shell_command.set_sleep_lande
-

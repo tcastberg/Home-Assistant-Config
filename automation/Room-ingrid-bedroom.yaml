@@ -1,0 +1,94 @@
+- id: '62'
+  alias: 'Ingrids bedroom on'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: numeric_state
+      entity_id: sensor.dining_room_motion_sensor_luminance
+      below: 200
+    - platform: state
+      entity_id: input_select.sleep_state_ingrid
+      to: 'Awake'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: numeric_state
+        entity_id: sensor.dining_room_motion_sensor_luminance
+        below: 200
+      - condition: state
+        entity_id: input_select.sleep_state_ingrid
+        state: 'Awake'
+      - condition: template
+        value_template: "{{not is_state('input_select.time_of_day','Night')}}"
+  action:
+    - service: light.turn_on
+      entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
+      data_template:
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            75
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            100
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            35
+          {%- endif %}
+
+- id: '63'    
+  alias: 'Ingrids bedroom off'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: numeric_state
+      entity_id: sensor.dining_room_motion_sensor_luminance
+      above: 200
+    - platform: state
+      entity_id: input_select.sleep_state_ingrid
+      to: 'Sleeping'
+  action:
+    - service: light.turn_off
+      entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
+
+- id: '64'
+  alias: 'Ingrid sleeping'
+  trigger:
+    platform: event
+    event_type: zwave.scene_activated
+    event_data:
+      entity_id: zwave.ingrid_bedroom_ceiling_light
+      scene_id: 11
+  condition:
+    condition: time
+    after: '19:00:00'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.sleep_state_ingrid
+        option: 'Sleeping'
+
+- id: '65'
+  alias: 'Ingrid awake'
+  trigger:
+    platform: event
+    event_type: zwave.scene_activated
+    event_data:
+      entity_id: zwave.ingrid_bedroom_ceiling_light
+      scene_id: 10
+  condition:
+    condition: time
+    before: '19:00:00'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.sleep_state_ingrid
+        option: 'Awake'
+

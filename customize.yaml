@@ -1,5 +1,6 @@
 sensor.bedroom_humidity:
   icon: mdi:water-percent
+
 sensor.family_bathroom_multisensor_relative_humidity:
   icon: mdi:water-percent
   friendly_name: "Family bathroom humidity"
@@ -11,6 +12,7 @@ sensor.family_bathroom_multisensor_ultraviolet:
   friendly_name: "Family bathroom ultraviolet"
 sensor.family_bathroom_multisensor_temperature:
   friendly_name: "Family bathroom temperature"
+
 sensor.laundry_multisensor_relative_humidity:
   icon: mdi:water-percent
   friendly_name: "Laundry humidity"
@@ -22,6 +24,7 @@ sensor.laundry_multisensor_ultraviolet:
   friendly_name: "Laundry ultraviolet"
 sensor.laundry_multisensor_temperature:
   friendly_name: "Laundry temperature"
+
 sensor.master_bathroom_multisensor_relative_humidity:
   icon: mdi:water-percent
   friendly_name: "Master bathroom humidity"
@@ -33,6 +36,7 @@ sensor.master_bathroom_multisensor_ultraviolet:
   friendly_name: "Master bathroom ultraviolet"
 sensor.master_bathroom_multisensor_temperature:
   friendly_name: "Master bathroom temperature"
+
 sensor.hallway_humidity:
   icon: mdi:water-percent
 sensor.kitchen_hallway_humidity:
@@ -55,65 +59,98 @@ sensor.battery_tor_magnus:
   icon: mdi:battery-70
 sensor.average_temperature:
   icon: mdi:thermometer
+
 sensor.balcony_door_temperature:
   friendly_name: "Balcony door temperature"
+
 sensor.dressingroom_motion_sensor_temperature:
   friendly_name: "Dressing room temperature"
 sensor.dressingroom_motion_sensor_luminance:
   icon: mdi:brightness-5
   friendly_name: "Dressing room luminance"
+
 sensor.dining_room_motion_sensor_temperature:
   friendly_name: "Dining room temperature"
 sensor.dining_room_motion_sensor_luminance:
   icon: mdi:brightness-5
   friendly_name: "Dining room luminance"
+
 sensor.bedroom_tv_backlight_power:
   friendly_name: "Master bedroom TV backlight"
+
 sensor.family_bathroom_dimmer_power:
   friendly_name: "Family bathroom ceiling light"
+
 sensor.master_bathroom_dimmer_power:
   friendly_name: "Master bathroom ceiling light"
+
 sensor.laundry_dimmer_power:
   friendly_name: "Laundry ceiling light"
+
 sensor.house_ventilation_dimmer_power:
   friendly_name: "House ventilation"
 
 binary_sensor.front_door:
   device_class: opening
   friendly_name: "VS Hallway front door"
+
 binary_sensor.verandadr_mastersoverom:
   device_class: opening
   friendly_name: "VS Bedroom garden door"
+
 binary_sensor.backhall_garden_door_sensor:
   device_class: opening
   friendly_name: "Hallway garden door"
+
 binary_sensor.dressingroom_motion_sensor_sensor:
   device_class: motion
   friendly_name: "Dressing room motion"
+
 binary_sensor.tv_area_motion_sensor_sensor:
   device_class: motion
   friendly_name: "TV lounge motion"
+
 sensor.tv_area_motion_sensor_luminance:
   icon: mdi:brightness-5
   friendly_name: "TV lounge luminance"
+
 binary_sensor.family_bathroom_multisensor_sensor:
   device_class: motion
   friendly_name: "Family bathroom motion"
+
 binary_sensor.master_bathroom_multisensor_sensor:
   device_class: motion
   friendly_name: "Master bathroom motion"
+
 binary_sensor.laundry_multisensor_sensor:
   device_class: motion
   friendly_name: "Laundry motion"
+
 binary_sensor.dining_room_motion_sensor_sensor:
   device_class: motion
   friendly_name: "Dining room motion"
+
 binary_sensor.entrance_hallway_motion_sensor__sensor:
   device_class: motion
   friendly_name: "Entrance hallway motion"
 sensor.entrance_hallway_motion_sensor__luminance:
   icon: mdi:brightness-5
   friendly_name: "Entrance hallway luminance"
+
+binary_sensor.kitchen_table_motion_sensor_sensor:
+  device_class: motion
+  friendly_name: "Kitchen_table motion"
+sensor.kitchen_table_motion_sensor_luminance:
+  icon: mdi:brightness-5
+  friendly_name: "Kitchen table luminance"
+
+binary_sensor.kitchen_island_motion_sensor_sensor:
+  device_class: motion
+  friendly_name: "Kitchen island motion"
+sensor.kitchen_island_motion_sensor_luminance:
+  icon: mdi:brightness-5
+  friendly_name: "Kitchen island luminance"
+
 binary_sensor.bedroom_garden_door_sensor:
   device_class: opening
   friendly_name: "Bedroom garden door"

@@ -1,0 +1,94 @@
+- id: '66'    
+  alias: 'Kitchen on'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
+      to: 'off'
+    - platform: numeric_state
+      entity_id: sensor.kitchen_table_motion_sensor_luminance
+      below: 200
+      for:
+        seconds: 60
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.dining_room_motion_sensor_sensor
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.kitchen_table_motion_sensor_sensor
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.kitchen_island_motion_sensor_sensor
+        state: 'off'
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: numeric_state
+        entity_id: sensor.dining_room_motion_sensor_luminance
+        below: 200
+  action:
+    - service: light.turn_on
+      entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level, light.kitchen_hallway_ceiling_lights_level
+      data:
+        brightness_pct: 5
+
+- id: '67'
+  alias: 'Kitchen movement'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
+      to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level, light.kitchen_hallway_ceiling_lights_level
+      data_template:
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            79
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            99
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            60
+          {%- endif %}
+
+- id: '68'    
+  alias: 'Kitchen off'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: state
+      entity_id: binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.dining_room_motion_sensor_sensor
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.kitchen_table_motion_sensor_sensor
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.kitchen_island_motion_sensor_sensor
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.home_state
+            state: 'Night'
+          - condition: state
+            entity_id: input_select.home_state
+            state: 'Away'
+  action:
+    - service: light.turn_off
+      entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level, light.kitchen_hallway_ceiling_lights_level

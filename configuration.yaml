@@ -93,6 +93,7 @@ logger:
     homeassistant.components.switch: info
     homeassistant.components.switch.flux: warning
     homeassistant.components.light: info 
+    homeassistant.components.zwave: info 
 
 # View all events in a logbook
 #logbook:
@@ -179,12 +180,6 @@ notify:
 
 shell_command:
   snapshot: !secret shell_command_snapshot
-  set_sleep_tor: !secret fibaro_set_sleep_tor
-  set_awake_tor: !secret fibaro_set_awake_tor
-  set_sleep_lande: !secret fibaro_set_sleep_lande
-  set_awake_lande: !secret fibaro_set_awake_lande
-  set_sleep_house: !secret fibaro_set_sleep_house
-  set_awake_house: !secret fibaro_set_awake_house
 
 switch:
   platform: flux

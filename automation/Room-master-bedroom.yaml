@@ -22,6 +22,8 @@
       entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
+    - service: light.turn_on
+      entity_id: light.changing_room_ceiling_light_level
 
 - id: '41'    
   alias: 'Master bedroom day'
@@ -45,6 +47,8 @@
       entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
+    - service: light.turn_on
+      entity_id: light.changing_room_ceiling_light_level
 
 - id: '42'    
   alias: 'Master bedroom evening'
@@ -70,6 +74,8 @@
       entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
+    - service: light.turn_on
+      entity_id: light.changing_room_ceiling_light_level
 
 - id: '43'    
   alias: 'Master bedroom off'
@@ -89,4 +95,6 @@
       entity_id: switch.dressing_table_light_switch
     - service: switch.turn_off
       entity_id: switch.dressing_room_wardrobes_switch
+    - service: light.turn_off
+      entity_id: light.changing_room_ceiling_light_level
 
