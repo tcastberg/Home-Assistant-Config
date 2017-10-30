@@ -109,7 +109,7 @@ alarm_control_panel:
     armed_home:
       pending_time: 0
     triggered:
-      pending_time: 20
+      pending_time: 30
     trigger_time: 4 
 
 

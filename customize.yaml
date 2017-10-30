@@ -67,7 +67,7 @@ sensor.kitchen_table_motion_sensor_temperature:
   friendly_name: "Kitchen table temperature"
 binary_sensor.kitchen_table_motion_sensor_sensor:
   device_class: motion
-  friendly_name: "Kitchen_table motion"
+  friendly_name: "Kitchen table motion"
 
 # Fibaro motion sensor
 sensor.kitchen_island_motion_sensor_luminance:

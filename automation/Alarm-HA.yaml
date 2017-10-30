@@ -47,12 +47,12 @@
       entity_id: binary_sensor.backhall_garden_door_sensor, binary_sensor.balcony_door_sensor_2, binary_sensor.bedroom_garden_door_sensor, binary_sensor.kitchen_window_3_sensor
       to: 'on'
     - platform: state
-      entity_id: binary_sensor.dressingroom_motion_sensor_sensor, binary_sensor.family_bathroom_multisensor_sensor, binary_sensor.laundry_multisensor_sensor, binary_sensor.master_bathroom_multisensor_sensor
+      entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor, binary_sensor.laundry_multisensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor, binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.tv_area_motion_sensor_sensor, binary_sensor.family_bathroom_multisensor_sensor, binary_sensor.master_bathroom_multisensor_sensor, binary_sensor.dressingroom_motion_sensor_sensor
       to: 'on'
   condition:
     - condition: state
       entity_id: alarm_control_panel.home_alarm
-      state: armed_away
+      state: 'armed_away'
   action:
     service: alarm_control_panel.alarm_trigger
     entity_id: alarm_control_panel.home_alarm
@@ -66,7 +66,7 @@
   condition:
     - condition: state
       entity_id: alarm_control_panel.home_alarm
-      state: armed_home
+      state: 'armed_home'
   action:
     service: alarm_control_panel.alarm_trigger
     entity_id: alarm_control_panel.home_alarm

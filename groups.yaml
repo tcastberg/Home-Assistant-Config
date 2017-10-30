@@ -205,22 +205,20 @@ temperature:
     - sensor.dressingroom_motion_sensor_temperature
     - sensor.master_bedroom_temperature
     - sensor.1w_bedroom_temperature
-    - sensor.1w_training_room_temperature
+    - sensor.training_room_temperature
     - sensor.1w_storage_room_temperature
 humidity:
   name: Humidity
   entities:
     - sensor.average_humidity
     - sensor.divergence_humidity
-    - sensor.1w_hallway_humidity
     - sensor.laundry_multisensor_relative_humidity
     - sensor.kitchen_hallway_humidity
     - sensor.tv_hallway_humidity
     - sensor.family_bathroom_multisensor_relative_humidity
     - sensor.master_bathroom_multisensor_relative_humidity
     - sensor.master_bedroom_humidity
-    - sensor.1w_bedroom_humidity
-    - sensor.1w_training_room_humidity
+    - sensor.training_room_humidity
 luminance:
   name: Luminance
   entities:
@@ -236,8 +234,6 @@ luminance:
 pressure:
   name: Pressure
   entities:
-    - sensor.1w_hallway_pressure
-    - sensor.1w_bedroom_pressure
     - sensor.1w_storage_room_pressure
 
 
