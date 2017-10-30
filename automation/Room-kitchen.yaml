@@ -3,9 +3,13 @@
   trigger:
     - platform: state
       entity_id: input_select.time_of_day
+      for:
+        seconds: 3
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
+      for:
+        seconds: 3
     - platform: state
       entity_id: binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
@@ -63,9 +67,13 @@
     - platform: state
       entity_id: input_select.time_of_day
       to: 'Night'
+      for:
+        seconds: 3
     - platform: state
       entity_id: input_select.home_state
       to: 'Away'
+      for:
+        seconds: 3
     - platform: state
       entity_id: binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'

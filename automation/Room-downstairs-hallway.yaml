@@ -3,9 +3,13 @@
   trigger:
     - platform: state
       entity_id: input_select.time_of_day
+      for:
+        seconds: 7
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
+      for:
+        seconds: 7
     - platform: numeric_state
       entity_id: sensor.dining_room_motion_sensor_luminance
       below: 200
@@ -41,9 +45,13 @@
     - platform: state
       entity_id: input_select.time_of_day
       to: 'Night'
+      for:
+        seconds: 7
     - platform: state
       entity_id: input_select.home_state
       to: 'Away'
+      for:
+        seconds: 7
     - platform: numeric_state
       entity_id: sensor.dining_room_motion_sensor_luminance
       above: 250
