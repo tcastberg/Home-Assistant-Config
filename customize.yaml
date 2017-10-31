@@ -50,12 +50,12 @@ binary_sensor.master_bathroom_multisensor_sensor:
   friendly_name: "Master bathroom motion"
 
 # Fibaro motion sensor
-sensor.entrance_hallway_motion_sensor__luminance:
+sensor.entrance_hallway_motion_sensor_luminance:
   icon: mdi:brightness-5
   friendly_name: "Entrance hallway luminance"
-sensor.entrance_hallway_motion_sensor__temperature:
+sensor.entrance_hallway_motion_sensor_temperature:
   friendly_name: "Entrance hallway temperature"
-binary_sensor.entrance_hallway_motion_sensor__sensor:
+binary_sensor.entrance_hallway_motion_sensor_sensor:
   device_class: motion
   friendly_name: "Entrance hallway motion"
 
@@ -73,7 +73,7 @@ binary_sensor.kitchen_table_motion_sensor_sensor:
 sensor.kitchen_island_motion_sensor_luminance:
   icon: mdi:brightness-5
   friendly_name: "Kitchen island luminance"
-binary_sensor.kitchen_island_motion_sensor_temperature:
+sensor.kitchen_island_motion_sensor_temperature:
   friendly_name: "Kitchen island temperature"
 binary_sensor.kitchen_island_motion_sensor_sensor:
   device_class: motion

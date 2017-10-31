@@ -189,7 +189,7 @@ temperature:
   name: Temperature
   entities:
     - sensor.average_temperature
-    - sensor.entrance_hallway_motion_sensor__temperature
+    - sensor.entrance_hallway_motion_sensor_temperature
     - sensor.laundry_multisensor_temperature
     - sensor.kitchen_table_motion_sensor_temperature
     - sensor.kitchen_island_motion_sensor_temperature
@@ -222,7 +222,7 @@ humidity:
 luminance:
   name: Luminance
   entities:
-    - sensor.entrance_hallway_motion_sensor__luminance
+    - sensor.entrance_hallway_motion_sensor_luminance
     - sensor.laundry_multisensor_luminance
     - sensor.kitchen_table_motion_sensor_luminance
     - sensor.kitchen_island_motion_sensor_luminance
@@ -261,7 +261,7 @@ motion:
   name: Motion sensors
   icon: mdi:robot
   entities:
-    - binary_sensor.entrance_hallway_motion_sensor__sensor
+    - binary_sensor.entrance_hallway_motion_sensor_sensor
     - binary_sensor.laundry_multisensor_sensor
     - binary_sensor.kitchen_table_motion_sensor_sensor
     - binary_sensor.kitchen_island_motion_sensor_sensor

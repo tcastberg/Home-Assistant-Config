@@ -47,8 +47,6 @@
       entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
-    - service: light.turn_on
-      entity_id: light.changing_room_ceiling_light_level
 
 - id: '42'    
   alias: 'Master bedroom evening'
@@ -74,8 +72,6 @@
       entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
-    - service: light.turn_on
-      entity_id: light.changing_room_ceiling_light_level
 
 - id: '43'    
   alias: 'Master bedroom off'
@@ -97,4 +93,90 @@
       entity_id: switch.dressing_room_wardrobes_switch
     - service: light.turn_off
       entity_id: light.changing_room_ceiling_light_level
+
+- id: '69'    
+  alias: 'Dressing room ceiling light on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dressingroom_motion_sensor_sensor
+      to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.changing_room_ceiling_light_level
+
+- id: '70'    
+  alias: 'Dressing room ceiling light off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dressingroom_motion_sensor_sensor
+      to: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.changing_room_ceiling_light_level
+
+- id: '35'
+  alias: 'Wakeup alarm 1'
+  trigger:
+    platform: time
+    at: '06:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'on'
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: light.turn_on
+      entity_id: light.bedside_lamp_dimmer_level
+      data:
+        brightness: 255
+        transition: 900
+
+- id: '12'
+  alias: 'Wakeup alarm 2'
+  trigger:
+    platform: time
+    at: '06:15:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'on'
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: light.turn_on
+      entity_id: light.bedroom_tv_backlight_level
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.changing_room
+        volume_level: 0.35
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.changing_room
+        source: 'BBC World Service News'
+    - service: switch.turn_on
+      entity_id: switch.dressing_table_light_switch
+    - service: switch.turn_on
+      entity_id: switch.dressing_room_wardrobe_switch
+
+- id: '64'
+  alias: 'Button 1 pressed once'
+  trigger:
+    platform: event
+    event_type: zwave.scene_activated
+    event_data:
+      entity_id: zwave.button_1
+      scene_id: 1
+      scene_data: 7680
+  action:
+    - service: notify.html5_tor_magnus_phone
+      data:
+        title: 'Button pressed once'
+        message: 'Button pressed once'
 

@@ -39,7 +39,10 @@
     - platform: sun
       event: sunset
     - platform: time
-      at: '20:00:00'
+      at: '20:00:01'
+  condition:
+    condition: time
+    after: '20:00:00'
   action:
     - service: input_select.select_option
       data:

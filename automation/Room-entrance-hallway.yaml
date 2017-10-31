@@ -7,7 +7,7 @@
       entity_id: input_select.home_state
       to: 'Home'
     - platform: state
-      entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
       to: 'off'
   condition:
     condition: and
@@ -18,7 +18,7 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
-        entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+        entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
         state: 'off'
   action:
     - service: light.turn_on
@@ -30,7 +30,7 @@
   alias: 'Entrance hallway movement'
   trigger:
     - platform: state
-      entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
       to: 'on'
   action:
     - service: light.turn_on
@@ -55,13 +55,13 @@
       entity_id: input_select.home_state
       to: 'Away'
     - platform: state
-      entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
       to: 'off'
   condition:
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.entrance_hallway_motion_sensor__sensor
+        entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
         state: 'off'
       - condition: or
         conditions:

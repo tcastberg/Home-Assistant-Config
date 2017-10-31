@@ -14,6 +14,17 @@
             - action: 'open_door'
               title: 'Open door'
 
+- id: '58'
+  alias: 'HTML5 push notification action button clicked'
+  trigger:
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+     action: open_door
+  action:
+    - service: notify.html5_tor_magnus_phone
+      data:
+        message: 'Door opened'
 
 - id: '14'
   alias: 'Starting Home Assistant'
@@ -27,67 +38,3 @@
   action:
     - service: switch.turn_on
       entity_id: switch.fluxed_tv_backlight
-
-- id: '35'
-  alias: 'Wakeup alarm 1'
-  trigger:
-    platform: time
-    at: '06:00:00'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: 'on'
-      - condition: state
-        entity_id: input_select.home_state
-        state: 'Home'
-  action:
-    - service: light.turn_on
-      entity_id: light.bedside_lamp_dimmer_level
-      data:
-        brightness: 255
-        transition: 900
-
-
-- id: '12'
-  alias: 'Wakeup alarm 2'
-  trigger:
-    platform: time
-    at: '06:15:00'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: 'on'
-      - condition: state
-        entity_id: input_select.home_state
-        state: 'Home'
-  action:
-    - service: light.turn_on
-      entity_id: light.bedroom_tv_backlight_level
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.changing_room
-        volume_level: 0.35
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.changing_room
-        source: 'BBC World Service News'
-    - service: switch.turn_on
-      entity_id: switch.dressing_table_light_switch
-    - service: switch.turn_on
-      entity_id: switch.dressing_room_wardrobe_switch
-
-- id: '58'
-  alias: HTML5 push notification action button clicked
-  trigger:
-    platform: event
-    event_type: html5_notification.clicked
-    event_data:
-     action: open_door
-  action:
-    - service: notify.html5_tor_magnus_phone
-      data:
-        message: 'Door opened'

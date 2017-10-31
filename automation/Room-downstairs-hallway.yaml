@@ -32,7 +32,7 @@
           {%- elif is_state('input_select.time_of_day', 'Day') %}
             100
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
-            35
+            55
           {%- else %}
             5
           {%- endif %}

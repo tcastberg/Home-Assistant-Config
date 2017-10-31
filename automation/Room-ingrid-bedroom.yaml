@@ -38,7 +38,7 @@
           {%- elif is_state('input_select.time_of_day', 'Day') %}
             100
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
-            35
+            65
           {%- endif %}
 
 - id: '63'    
@@ -62,6 +62,30 @@
     - service: light.turn_off
       entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
 
+- id: '71'
+  alias: 'Wakeup alarm Ingrid'
+  trigger:
+    platform: time
+    at: '06:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'on'
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_select.sleep_state_ingrid
+        state: 'Sleeping'
+  action:
+    - service: light.turn_on
+      entity_id: light.ingrid_bedroom_ceiling_light_level
+      data:
+        brightness: 255
+        transition: 900
+ 
 - id: '64'
   alias: 'Ingrid sleeping'
   trigger:
