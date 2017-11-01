@@ -1,5 +1,5 @@
 - id: '20'
-  alias: 'Home Alarm armed'
+  alias: 'Home Alarm armed away'
   trigger:
     platform: state
     entity_id: alarm_control_panel.home_alarm
@@ -8,7 +8,7 @@
     condition: template
     value_template: "{{not is_state('input_select.home_state','Away')}}"
   action:
-    - service: notify.html5
+    - service: notify.html5_tor_magnus_phone
       data:
         title: 'Home Alarm armed'
         message: 'Home Alarm armed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
@@ -29,7 +29,7 @@
     condition: template
     value_template: "{{not is_state('input_select.home_state','Home')}}"
   action:
-    - service: notify.html5
+    - service: notify.html5_tor_magnus_phone
       data:
         title: 'Home Alarm disarmed'
         message: 'Home Alarm disarmed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
@@ -78,7 +78,7 @@
     entity_id: alarm_control_panel.home_alarm
     to: 'triggered'
   action:
-    - service: notify.html5
+    - service: notify.html5_tor_magnus_phone
       data:
         title: 'Home Alarm Triggered'
         message: 'Home Alarm Triggered {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
@@ -95,7 +95,7 @@
         filename: /tmp/snapshot.jpg
     - delay:
         seconds: 1
-    - service: notify.html5
+    - service: notify.html5_tor_magnus_phone
       data:
         title: 'Door opened'
         message: 'The front door was opened'
