@@ -26,15 +26,15 @@
       data:
         message: 'Door opened'
 
-- id: '14'
-  alias: 'Starting Home Assistant'
-  trigger:
-    platform: homeassistant
-    event: start
-  condition:
-    condition: state
-    entity_id: input_select.home_state
-    state: 'Home'
-  action:
-    - service: switch.turn_on
-      entity_id: switch.fluxed_tv_backlight
+#- id: '14'
+#  alias: 'Starting Home Assistant'
+#  trigger:
+#    platform: homeassistant
+#    event: start
+#  condition:
+#    condition: state
+#    entity_id: input_select.home_state
+#    state: 'Home'
+#  action:
+#    - service: switch.turn_on
+#      entity_id: switch.fluxed_tv_backlight

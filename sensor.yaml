@@ -16,8 +16,8 @@
   names:
     '12.385D67000000': 1W Storage room
     '12.9D5967000000': 1W Broken
-    '26.984585000000': 1W Hallway
-    '26.A78785000000': 1W Bedroom
+    '26.984585000000': 1W Storage room 2
+    '26.A78785000000': 1W Training room
   mount_dir: /onewire
 
 - platform: fitbit

@@ -93,7 +93,7 @@ logger:
     homeassistant.components.switch: info
     homeassistant.components.switch.flux: warning
     homeassistant.components.light: info 
-    homeassistant.components.zwave: info 
+    homeassistant.components.zwave: info
 
 # View all events in a logbook
 #logbook:
