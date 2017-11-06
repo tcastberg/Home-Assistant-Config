@@ -1,5 +1,5 @@
 - platform: yr
-  name: Weather
+  name: Weather +2H
   forecast: 2
   monitored_conditions:
     - temperature

@@ -9,19 +9,15 @@ status:
   name: Status
   entities:
     - camera.hallway_camera
-    - alarm_control_panel.holmsens_vei_alarm
     - alarm_control_panel.home_alarm
-    - input_select.home_state
+    - lock.front_door_lock_locked
     - input_select.sleep_state_house
     - input_select.time_of_day
-    - lock.front_door_lock_locked
 weather:
   name: Weather
   entities:
-    - sun.sun
     - sensor.sunrise
     - sensor.sunset
-    - sensor.weather_symbol
     - sensor.weather_temperature
     - sensor.weather_precipitation
     - sensor.weather_wind_speed
@@ -193,19 +189,13 @@ temperature:
     - sensor.laundry_multisensor_temperature
     - sensor.kitchen_table_motion_sensor_temperature
     - sensor.kitchen_island_motion_sensor_temperature
-    - sensor.kitchen_temperature
-    - sensor.kitchen_hallway_temperature
     - sensor.dining_room_motion_sensor_temperature
     - sensor.balcony_door_temperature
     - sensor.tv_area_motion_sensor_temperature
-    - sensor.tv_hallway_temperature
-    - sensor.stairs_temperature
     - sensor.family_bathroom_multisensor_temperature
     - sensor.master_bathroom_multisensor_temperature
     - sensor.dressingroom_motion_sensor_temperature
-    - sensor.master_bedroom_temperature
     - sensor.1w_training_room_temperature
-    - sensor.training_room_temperature
     - sensor.1w_storage_room_temperature
 humidity:
   name: Humidity
