@@ -11,6 +11,9 @@
     - platform: state
       entity_id: binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
+    - platform: state
+      entity_id: input_select.sleep_state_house
+      to: 'Awake'
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
       below: 200
@@ -31,6 +34,9 @@
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
+      - condition: state
+        entity_id: input_select.sleep_state_house
+        state: 'Awake'
       - condition: numeric_state
         entity_id: sensor.dining_room_motion_sensor_luminance
         below: 200
@@ -95,8 +101,8 @@
       - condition: or
         conditions:
           - condition: state
-            entity_id: input_select.home_state
-            state: 'Night'
+            entity_id: input_select.sleep_state_house
+            state: 'Sleeping'
           - condition: state
             entity_id: input_select.home_state
             state: 'Away'

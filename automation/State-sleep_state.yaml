@@ -42,9 +42,6 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: 'off'
-      - condition: state
         entity_id: input_select.home_state
         state: 'Home'
   action:

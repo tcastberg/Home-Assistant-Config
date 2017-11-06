@@ -27,6 +27,19 @@
       event: sunrise
     - platform: time
       at: '09:00:00'   
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.sleep_state_home
+        state: 'Awake'
+      - condition: or
+        conditions:
+          - condition: time
+            after: '08:59:59'
+          - condition: sun
+            after: sunrise
+            after_offset: "-1:00:00"
   action:
     - service: input_select.select_option
       data:
@@ -63,4 +76,4 @@
     - service: input_select.select_option
       data:
         entity_id: input_select.time_of_day
-        option: Night
+        option: 'Night'

@@ -13,6 +13,9 @@
       below: 200
       for:
         seconds: 120
+    - platform: state
+      entity_id: input_select.sleep_state_house
+      to: 'Awake'
   condition:
     condition: and
     conditions:
@@ -22,6 +25,9 @@
       - condition: numeric_state
         entity_id: sensor.dining_room_motion_sensor_luminance
         below: 200
+      - condition: state
+        entity_id: input_select.sleep_state_house
+        state: 'Awake'
   action:
     - service: light.turn_on
       entity_id: light.downstairs_hallway_pendant_level
