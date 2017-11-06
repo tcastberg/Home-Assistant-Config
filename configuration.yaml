@@ -120,6 +120,12 @@ media_player:
 verisure:
   username: !secret verisure_username
   password: !secret verisure_password
+  smartplugs: 0
+  locks: 0
+  thermometers: 0
+  mouse: 0
+  door_window: 0
+
 
 # Text to speech
 tts:
