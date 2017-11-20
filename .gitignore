@@ -1,7 +1,9 @@
 *
-!*.yaml
 !automation
 !scenes
+!images
+!*.png
+!*.yaml
 !.gitignore
 !README.md
 secrets.yaml
