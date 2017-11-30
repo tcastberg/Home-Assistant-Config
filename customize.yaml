@@ -58,6 +58,16 @@ binary_sensor.entrance_hallway_motion_sensor_sensor:
   friendly_name: "Entrance hallway motion"
 
 # Fibaro motion sensor
+sensor.hallway_toilet_motion_sensor_luminance:
+  icon: mdi:brightness-5
+  friendly_name: "Hallway toilet luminance"
+sensor.hallway_toilet_motion_sensor_temperature:
+  friendly_name: "Hallway toilet temperature"
+binary_sensor.hallway_toilet_motion_sensor_sensor:
+  device_class: motion
+  friendly_name: "Hallway toilet motion"
+
+# Fibaro motion sensor
 sensor.kitchen_table_motion_sensor_luminance:
   icon: mdi:brightness-5
   friendly_name: "Kitchen table luminance"
