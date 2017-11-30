@@ -18,6 +18,9 @@
         brightness: 150
     - service: light.turn_on
       entity_id: light.bedroom_tv_backlight_level
+      data:
+        brightness: 255
+        rgb_color: [211,221,247]
     - service: switch.turn_on
       entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
@@ -68,6 +71,9 @@
         brightness: 150
     - service: light.turn_on
       entity_id: light.bedroom_tv_backlight_level
+      data:
+        brightness: 255
+        rgb_color: [255,165,0]
     - service: switch.turn_on
       entity_id: switch.dressing_table_light_switch
     - service: switch.turn_on
@@ -115,19 +121,24 @@
       entity_id: light.changing_room_ceiling_light_level
 
 - id: '35'
-  alias: 'Wakeup alarm 1'
+  alias: 'Wakeup alarm tmc'
   trigger:
-    platform: time
-    at: '06:00:00'
+    platform: template
+    value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_tor.attributes.hour | int, states.input_datetime.alarm_time_tor.attributes.minute | int)}}'
   condition:
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: 'on'
-      - condition: state
         entity_id: input_select.home_state
         state: 'Home'
+      - condition: state
+        entity_id: input_select.sleep_state_tor
+        state: 'Sleeping'
+      - condition: template
+        value_template: '{{(is_state("input_boolean.alarm_workday_tor", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_tor","off")}}'
+      - condition: state
+        entity_id: binary_sensor.alarm_override_tor
+        state: 'off'
   action:
     - service: light.turn_on
       entity_id: light.bedside_lamp_dimmer_level
@@ -245,7 +256,7 @@
     event_data:
       entity_id: zwave.button_1
       scene_id: 1
-      scene_data: 3
+      scene_data: 6
   action:
     - service: notify.html5_tor_magnus_phone
       data:

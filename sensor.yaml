@@ -7,6 +7,11 @@
     - precipitation
     - windSpeed
 
+- platform: time_date
+  display_options:
+    - 'time'
+    - 'date'
+
 - platform: plex
   host: plex.continually-evolving.net
   username: !secret plex_username
@@ -73,7 +78,7 @@
         {% if states.sensor %}
           {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","°C")|map(attribute='state')|map('float')|sum %}
           {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","°C")|list|count %}
-        {% set totalaverage = totalvalue / totalcount %}
+          {% set totalaverage = totalvalue / totalcount %}
           {{totalaverage|round(1)}}
         {% else %}
           20

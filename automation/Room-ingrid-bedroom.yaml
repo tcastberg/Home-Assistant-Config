@@ -65,14 +65,16 @@
 - id: '71'
   alias: 'Wakeup alarm Ingrid'
   trigger:
-    platform: time
-    at: '06:00:00'
+    platform: template
+    value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_ingrid.attributes.hour | int, states.input_datetime.alarm_time_ingrid.attributes.minute | int)}}'
   condition:
     condition: and
     conditions:
+      - condition: template
+        value_template: '{{(is_state("input_boolean.alarm_workday_ingrid", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_ingrid","off")}}'
       - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: 'on'
+        entity_id: binary_sensor.alarm_override_ingrid
+        state: 'off'
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'

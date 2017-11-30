@@ -9,6 +9,7 @@ status:
   name: Status
   entities:
     - camera.hallway_camera
+    - camera.test_camera
     - alarm_control_panel.home_alarm
     - lock.front_door_lock_locked
     - input_select.sleep_state_house
@@ -23,6 +24,72 @@ weather:
     - sensor.weather_wind_speed
 
 
+people:
+  name: The Castbergs
+  view: yes
+  icon: mdi:account-multiple
+  entities:
+    - group.tormagnus
+    - group.lande
+    - group.ingridsofia
+tormagnus:
+  name: Tor Magnus
+  icon: mdi:account
+  control: hidden
+  entities:
+    - input_datetime.alarm_time_tor
+    - input_boolean.alarm_override_tor
+    - input_boolean.alarm_workday_tor
+    - input_select.sleep_state_tor
+    - device_tracker.tmc_phone
+    - sensor.battery_tor_magnus
+    - device_tracker.phone__tmc
+    - sensor.steps
+    - sensor.weight
+    - sensor.resting_heart_rate
+    - sensor.sleep_minutes_asleep
+lande:
+  name: Lande
+  icon: mdi:account
+  control: hidden
+  entities:
+    - input_datetime.alarm_time_lande
+    - input_boolean.alarm_override_lande
+    - input_boolean.alarm_workday_lande
+    - input_select.sleep_state_lande
+    - device_tracker.phone__lande_2
+ingridsofia:
+  name: Ingrid Sofia
+  icon: mdi:account
+  control: hidden
+  entities:
+    - input_datetime.alarm_time_ingrid
+    - input_boolean.alarm_override_ingrid
+    - input_boolean.alarm_workday_ingrid
+    - input_select.sleep_state_ingrid
+    - device_tracker.ipad__ingrid
+
+
+entertainment:
+  name: Entertainment
+  view: yes
+  icon: mdi:television-classic
+  entities:
+    - group.video
+    - group.audio
+video:
+  name: Video
+  entities:
+    - sensor.plex
+    - media_player.kitchen
+    - media_player.tv_room
+    - media_player.master_bedroom
+audio:
+  name: Audio
+  entities:
+    - media_player.changing_room
+
+
 lights:
   name: Lights
   view: yes
@@ -30,6 +97,7 @@ lights:
   entities:
     - group.front_yard
     - group.entrance_hallway
+    - group.entrance_toilet
     - group.laundry
     - group.kitchen
     - group.dining_room
@@ -50,6 +118,10 @@ entrance_hallway:
   name: Entrance Hallway
   entities:
     - light.entrance_hallway_ceiling_lights_level
+entrance_toilet:
+  name: Entrance Toilet
+  entities:
+    - light.hallway_toilet_ceiling_dimmer_level
 laundry:
   name: Laundry
   entities:
@@ -113,63 +185,23 @@ back_yard:
   name: Back Yard
   entities:
     - switch.terrace_outside_light_switch
+    - switch.garden_lights_switch
 utility:
   name: Utility
   entities:
     - light.house_ventilation_dimmer_level
 
-people:
-  name: The Castbergs
-  view: yes
-  icon: mdi:account-multiple
-  entities:
-    - group.tormagnus
-    - group.lande
-    - group.ingridsofia
-tormagnus:
-  name: Tor Magnus
-  icon: mdi:account
-  entities:
-    - input_select.sleep_state_tor
-    - device_tracker.tmc_phone
-    - sensor.battery_tor_magnus
-    - device_tracker.phone__tmc
-    - sensor.steps
-    - sensor.weight
-    - sensor.resting_heart_rate
-    - sensor.sleep_minutes_asleep
-lande:
-  name: Lande
-  icon: mdi:account
-  entities:
-    - input_select.sleep_state_lande
-    - device_tracker.phone__lande_2
-ingridsofia:
-  name: Ingrid Sofia
-  icon: mdi:account
-  entities:
-    - input_select.sleep_state_ingrid
-    - device_tracker.ipad__ingrid
 
-
-entertainment:
-  name: Entertainment
+cameras:
+  name: Cameras
   view: yes
-  icon: mdi:television-classic
+  icon: mdi:camera
   entities:
-    - group.video
-    - group.audio
-video:
-  name: Video
-  entities:
-    - sensor.plex
-    - media_player.kitchen
-    - media_player.tv_room
-    - media_player.master_bedroom
-audio:
-  name: Audio
-  entities:
-    - media_player.changing_room
+    - camera.hallway_camera
+    - camera.test_camera
+    - camera.parking_camera
+    - camera.entrance_camera
+    - camera.garden_camera
 
 
 climate:
@@ -186,6 +218,7 @@ temperature:
   entities:
     - sensor.average_temperature
     - sensor.entrance_hallway_motion_sensor_temperature
+    - sensor.hallway_toilet_motion_sensor_temperature
     - sensor.laundry_multisensor_temperature
     - sensor.kitchen_table_motion_sensor_temperature
     - sensor.kitchen_island_motion_sensor_temperature
@@ -213,6 +246,7 @@ luminance:
   name: Luminance
   entities:
     - sensor.entrance_hallway_motion_sensor_luminance
+    - sensor.hallway_toilet_motion_sensor_luminance
     - sensor.laundry_multisensor_luminance
     - sensor.kitchen_table_motion_sensor_luminance
     - sensor.kitchen_island_motion_sensor_luminance
@@ -252,6 +286,7 @@ motion:
   icon: mdi:robot
   entities:
     - binary_sensor.entrance_hallway_motion_sensor_sensor
+    - binary_sensor.hallway_toilet_motion_sensor_sensor
     - binary_sensor.laundry_multisensor_sensor
     - binary_sensor.kitchen_table_motion_sensor_sensor
     - binary_sensor.kitchen_island_motion_sensor_sensor
@@ -276,6 +311,7 @@ power:
     - sensor.bedroom_tv_backlight_power
     - sensor.family_bathroom_dimmer_power
     - sensor.master_bathroom_dimmer_power
+    - sensor.hallway_toilet_ceiling_dimmer_power
     - sensor.laundry_dimmer_power
     - sensor.house_ventilation_dimmer_power
     - sensor.balcony_outside_light_power
@@ -302,6 +338,7 @@ energy:
     - sensor.bedroom_tv_backlight_energy
     - sensor.family_bathroom_dimmer_energy
     - sensor.master_bathroom_dimmer_energy
+    - sensor.hallway_toilet_ceiling_dimmer_energy
     - sensor.laundry_dimmer_energy
     - sensor.house_ventilation_dimmer_energy
     - sensor.balcony_outside_light_energy

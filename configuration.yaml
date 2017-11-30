@@ -17,19 +17,19 @@ homeassistant:
 # introduction:
 
 frontend:
+  javascript_version: latest
 
 config:
 
 map:
 
 recorder:
-  purge_interval: 1
-  purge_keep_days: 2
+  db_url: mysql://hassuser:YjU0NTU3Y2ExNjg1NDI4MDA0NGI4NTBi@plex.continually-evolving.net/hass_db
 
 
 http:
   api_password: !secret http_api_password
-  base_url: !secret http_base_url
+  #base_url: !secret http_base_url
 
 zwave:
   usb_path: /dev/ttyACM0
@@ -82,6 +82,18 @@ camera:
   - platform: generic
     name: Hallway Camera
     still_image_url: !secret camera_still_image_url
+  - platform: ffmpeg
+    name: Test camera
+    input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=7&stream=0.sdp?real_stream--rtp-caching=100
+  - platform: ffmpeg
+    name: Parking camera
+    input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=1&stream=0.sdp?real_stream--rtp-caching=100
+  - platform: ffmpeg
+    name: Entrance camera
+    input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=2&stream=0.sdp?real_stream--rtp-caching=100
+  - platform: ffmpeg
+    name: Garden camera
+    input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=3&stream=0.sdp?real_stream--rtp-caching=100
 
 # Enables support for tracking state changes over time
 history:
@@ -171,6 +183,42 @@ input_select:
       - Home
       - Away
 
+input_boolean:
+  alarm_override_tor:
+    name: Alarm Disabled
+    icon: mdi:cancel
+  alarm_workday_tor:
+    name: Workdays Only
+    icon: mdi:calendar-check
+
+  alarm_override_lande:
+    name: Alarm Disabled
+    icon: mdi:cancel
+  alarm_workday_lande:
+    name: Workdays Only
+    icon: mdi:calendar-check
+
+  alarm_override_ingrid:
+    name: Alarm Disabled
+    icon: mdi:cancel
+  alarm_workday_ingrid:
+    name: Workdays Only
+    icon: mdi:calendar-check
+
+input_datetime:
+  alarm_time_tor:
+    name: Alarm Time
+    has_date: false
+    has_time: true
+  alarm_time_lande:
+    name: Alarm Time
+    has_date: false
+    has_time: true
+  alarm_time_ingrid:
+    name: Alarm Time
+    has_date: false
+    has_time: true
+
 notify:
   - name: mail
     platform: smtp
@@ -186,17 +234,6 @@ notify:
 
 shell_command:
   snapshot: !secret shell_command_snapshot
-
-switch:
-  platform: flux
-  lights:
-    - light.bedroom_tv_backlight_level
-  name: Fluxed TV Backlight
-  start_time: '06:00'
-  start_colortemp: 7000
-  sunset_colortemp: 3000
-  stop_colortemp: 1500
-  mode: rgb
 
 binary_sensor: !include binary-sensor.yaml
 sensor: !include sensor.yaml
