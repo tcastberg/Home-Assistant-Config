@@ -6,6 +6,10 @@
     from: "off"
     to: "on"
   action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.changing_room
+        volume_level: 0.55
     - service: script.turn_on
       entity_id: script.say_sonos
       data:
@@ -21,12 +25,24 @@
     from: "on"
     to: "off"
   action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.changing_room
+        volume_level: 0.55
     - service: script.turn_on
       entity_id: script.say_sonos
       data:
         variables:
           where: 'changing_room'
           what: 'I believe the washing machine has finished'
+    - service: notify.html5_tor_magnus_phone
+      data:
+        title: 'Washing machine'
+        message: 'Washing machine has finished'
+    - service: notify.html5_lande_phone
+      data:
+        title: 'Washing machine'
+        message: 'Washing machine has finished'
 
 - id: '38'
   alias: 'Dryer started'
@@ -36,6 +52,10 @@
     from: "off"
     to: "on"
   action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.changing_room
+        volume_level: 0.55
     - service: script.turn_on
       entity_id: script.say_sonos
       data:
@@ -51,10 +71,22 @@
     from: "on"
     to: "off"
   action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.changing_room
+        volume_level: 0.55
     - service: script.turn_on
       entity_id: script.say_sonos
       data:
         variables:
           where: 'changing_room'
           what: 'I believe the dryer has finished'
+    - service: notify.html5_tor_magnus_phone
+      data:
+        title: 'Dryer'
+        message: 'Dryer has finished'
+    - service: notify.html5_lande_phone
+      data:
+        title: 'Dryer'
+        message: 'Dryer has finished'
 
