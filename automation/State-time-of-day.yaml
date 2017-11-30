@@ -14,6 +14,9 @@
         before: sunrise
       - condition: time
         before: '09:00:00'
+      - condition: state
+        entity_id: input_select.time_of_day
+        state: 'Night'
   action:
     - service: input_select.select_option
       data:
@@ -28,18 +31,9 @@
     - platform: time
       at: '09:00:00'   
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_select.sleep_state_home
-        state: 'Awake'
-      - condition: or
-        conditions:
-          - condition: time
-            after: '08:59:59'
-          - condition: sun
-            after: sunrise
-            after_offset: "-1:00:00"
+    condition: state
+    entity_id: input_select.time_of_day
+    state: 'Morning'
   action:
     - service: input_select.select_option
       data:
@@ -49,13 +43,12 @@
 - id: '9'
   alias: 'Set Time of Day to Evening'
   trigger:
-    - platform: sun
-      event: sunset
     - platform: time
-      at: '20:00:01'
+      at: '20:00:00'
   condition:
-    condition: time
-    after: '20:00:00'
+    condition: state
+    entity_id: input_select.time_of_day
+    state: 'Day'
   action:
     - service: input_select.select_option
       data:
@@ -70,8 +63,8 @@
     to: 'Sleeping'
   condition:
     condition: state
-    entity_id: input_select.sleep_state_house
-    state: 'Sleeping'
+    entity_id: input_select.time_of_day
+    state: 'Evening'
   action:
     - service: input_select.select_option
       data:

@@ -1,5 +1,5 @@
 ###
-# Control Time of Day
+# Control Sleep States
 ###
 - id: '52'
   alias: 'Set house sleep state'
