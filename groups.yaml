@@ -8,8 +8,6 @@ default_view:
 status:
   name: Status
   entities:
-    - camera.hallway_camera
-    - camera.test_camera
     - alarm_control_panel.home_alarm
     - lock.front_door_lock_locked
     - input_select.sleep_state_house
@@ -19,9 +17,9 @@ weather:
   entities:
     - sensor.sunrise
     - sensor.sunset
-    - sensor.weather_temperature
-    - sensor.weather_precipitation
-    - sensor.weather_wind_speed
+    - sensor.weather_2h_temperature
+    - sensor.weather_2h_precipitation
+    - sensor.weather_2h_wind_speed
 
 
 people:
