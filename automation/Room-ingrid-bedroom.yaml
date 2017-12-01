@@ -65,22 +65,24 @@
 - id: '71'
   alias: 'Wakeup alarm Ingrid'
   trigger:
-    platform: template
-    value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_ingrid.attributes.hour | int, states.input_datetime.alarm_time_ingrid.attributes.minute | int)}}'
+    platform: state
+    entity_id: sensor.time
   condition:
     condition: and
     conditions:
-      - condition: template
-        value_template: '{{(is_state("input_boolean.alarm_workday_ingrid", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_ingrid","off")}}'
-      - condition: state
-        entity_id: binary_sensor.alarm_override_ingrid
-        state: 'off'
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
         entity_id: input_select.sleep_state_ingrid
         state: 'Sleeping'
+      - condition: template
+        value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_ingrid.attributes.hour | int, states.input_datetime.alarm_time_ingrid.attributes.minute | int)}}'
+      - condition: template
+        value_template: '{{(is_state("input_boolean.alarm_workday_ingrid", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_ingrid","off")}}'
+      - condition: state
+        entity_id: input_boolean.alarm_override_ingrid
+        state: 'off'
   action:
     - service: light.turn_on
       entity_id: light.ingrid_bedroom_ceiling_light_level
@@ -114,8 +116,12 @@
       entity_id: zwave.ingrid_bedroom_ceiling_light
       scene_id: 10
   condition:
-    condition: time
-    before: '19:00:00'
+    condition: and
+    conditions:
+      - condition: time
+        after: '05:00:00'
+      - condition: time
+        before: '19:00:00'
   action:
     - service: input_select.select_option
       data:

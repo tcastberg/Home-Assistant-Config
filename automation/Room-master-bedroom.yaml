@@ -123,8 +123,8 @@
 - id: '35'
   alias: 'Wakeup alarm tmc'
   trigger:
-    platform: template
-    value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_tor.attributes.hour | int, states.input_datetime.alarm_time_tor.attributes.minute | int)}}'
+    platform: state
+    entity_id: sensor.time
   condition:
     condition: and
     conditions:
@@ -135,9 +135,11 @@
         entity_id: input_select.sleep_state_tor
         state: 'Sleeping'
       - condition: template
+        value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_tor.attributes.hour | int, states.input_datetime.alarm_time_tor.attributes.minute | int)}}'
+      - condition: template
         value_template: '{{(is_state("input_boolean.alarm_workday_tor", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_tor","off")}}'
       - condition: state
-        entity_id: binary_sensor.alarm_override_tor
+        entity_id: input_boolean.alarm_override_tor
         state: 'off'
   action:
     - service: light.turn_on
