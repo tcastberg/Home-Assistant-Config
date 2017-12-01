@@ -1,0 +1,44 @@
+- id: '27'
+  alias: 'Ventilation low'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.divergence_humidity
+    above: 2
+    below: 6
+  condition:
+    condition: template
+    value_template: "{{not is_state_attr('light.house_ventilation_dimmer_level', 'brightness', 126)}}"
+  action:
+    - service: light.turn_on
+      entity_id: light.house_ventilation_dimmer_level
+      data:
+        brightness_pct: 50
+
+- id: '32'
+  alias: 'Ventilation high'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.divergence_humidity
+    above: 6
+  condition:
+    condition: template
+    value_template: "{{not is_state_attr('light.house_ventilation_dimmer_level', 'brightness', 255)}}"
+  action:
+    - service: light.turn_on
+      entity_id: light.house_ventilation_dimmer_level
+      data:
+        brightness_pct: 100
+
+- id: '33'
+  alias: 'Ventilation off'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.divergence_humidity
+    below: 2
+  condition:
+    condition: state
+    entity_id: light.house_ventilation_dimmer_level
+    state: 'on'
+  action:
+    - service: light.turn_off
+      entity_id: light.house_ventilation_dimmer_level
