@@ -18,6 +18,9 @@
       data:
         entity_id: input_select.home_state
         option: 'Away'
+    - service: switch.turn_on
+      data:
+        entity_id: switch.foscam_motion
 
 - id: '20'
   alias: 'Home Alarm armed home'
@@ -53,6 +56,9 @@
       data:
         entity_id: input_select.home_state
         option: 'Home'
+    - service: switch.turn_off
+      data:
+        entity_id: switch.foscam_motion
 
 - id: '3'
   alias: 'Trigger alarm while armed away'

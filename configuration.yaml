@@ -219,6 +219,16 @@ input_datetime:
     has_date: false
     has_time: true
 
+switch:
+ platform: command_line
+ switches:
+   #Switch for Foscam Motion Detection
+   foscam_motion:
+     command_on: !secret foscam_command_on
+     command_off: !secret foscam_command_off
+     command_state: !secret foscam_command_state
+     value_template: '{{ value == "1" }}'
+
 notify:
   - name: mail
     platform: smtp
