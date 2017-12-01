@@ -102,7 +102,7 @@ logger:
   default: warning
   logs:
     homeassistant.components.automation: info
-    homeassistant.components.switch: info
+    homeassistant.components.switch: warning
     homeassistant.components.switch.flux: warning
     homeassistant.components.light: info 
     homeassistant.components.zwave: info
