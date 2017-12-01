@@ -5,6 +5,8 @@ default_view:
   entities:
     - group.status
     - group.weather
+    - camera.hallway_camera
+    - camera.test_camera
 status:
   name: Status
   entities:
@@ -41,7 +43,6 @@ tormagnus:
     - input_select.sleep_state_tor
     - device_tracker.tmc_phone
     - sensor.battery_tor_magnus
-    - device_tracker.phone__tmc
     - sensor.steps
     - sensor.weight
     - sensor.resting_heart_rate

@@ -195,3 +195,11 @@ sensor.weather_precipitation:
   icon: mdi:weather-pouring
 sensor.weather_wind_speed:
   icon: mdi:weather-windy-variant
+
+device_tracker.tmc_phone:
+  friendly_name: "Location"
+device_tracker.phone__lande_2:
+  friendly_name: "Location"
+device_tracker.ipad__ingrid:
+  friendly_name: "Location"
+
