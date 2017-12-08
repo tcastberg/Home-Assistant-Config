@@ -102,29 +102,3 @@
       data:
         title: 'Home Alarm Triggered'
         message: 'Home Alarm Triggered {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
-
-- id: '2'
-  alias: 'Picture on open front door'
-  trigger:
-    platform: state
-    entity_id: lock.front_door_lock_locked
-    to: unlocked
-  action:
-    - service: shell_command.snapshot
-      data:
-        filename: /tmp/snapshot.jpg
-    - delay:
-        seconds: 1
-    - service: notify.html5_tor_magnus_phone
-      data:
-        title: 'Door opened'
-        message: 'The front door was opened'
-        data:
-          tag: 'notification-door-opened'
-    - service: notify.mail
-      data:
-        title: 'Door opened'
-        message: 'The front door was opened'
-        data:
-          images:
-            - /tmp/snapshot.jpg

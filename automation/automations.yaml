@@ -26,6 +26,32 @@
       data:
         message: 'Door opened'
 
+
+- id: '2'
+  alias: 'Picture on open front door'
+  trigger:
+    platform: state
+    entity_id: lock.front_door_lock_locked
+    to: unlocked
+  action:
+    - service: shell_command.snapshot
+      data:
+        filename: snapshot.jpg
+    - delay:
+        seconds: 1
+    - service: notify.html5_tor_magnus_phone
+      data_template:
+        title: 'Door opened'
+        message: 'The front door was opened'
+        data:
+          image: 'https://hass.continually-evolving.net:8124/local/snapshot.jpg?a={{range(0,99999)|random}}-{{range(0,99999)|random}}'
+    - service: notify.mail
+      data:
+        title: 'Door opened'
+        message: 'The front door was opened'
+        data:
+          images:
+            - /config/www/snapshot.jpg
 #- id: '14'
 #  alias: 'Starting Home Assistant'
 #  trigger:
