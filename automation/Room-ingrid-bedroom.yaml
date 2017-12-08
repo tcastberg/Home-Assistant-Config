@@ -12,8 +12,8 @@
       for:
         seconds: 120
     - platform: state
-      entity_id: input_select.sleep_state_ingrid
-      to: 'Awake'
+      entity_id: input_boolean.sleep_state_ingrid
+      to: 'off'
   condition:
     condition: and
     conditions:
@@ -24,8 +24,8 @@
         entity_id: sensor.dining_room_motion_sensor_luminance
         below: 200
       - condition: state
-        entity_id: input_select.sleep_state_ingrid
-        state: 'Awake'
+        entity_id: input_boolean.sleep_state_ingrid
+        state: 'off'
       - condition: template
         value_template: "{{not is_state('input_select.time_of_day','Night')}}"
   action:
@@ -56,8 +56,8 @@
       for:
         seconds: 120
     - platform: state
-      entity_id: input_select.sleep_state_ingrid
-      to: 'Sleeping'
+      entity_id: input_boolean.sleep_state_ingrid
+      to: 'on'
   action:
     - service: light.turn_off
       entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
@@ -74,8 +74,8 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
-        entity_id: input_select.sleep_state_ingrid
-        state: 'Sleeping'
+        entity_id: input_boolean.sleep_state_ingrid
+        state: 'on'
       - condition: template
         value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_ingrid.attributes.hour | int, states.input_datetime.alarm_time_ingrid.attributes.minute | int)}}'
       - condition: template
@@ -102,10 +102,9 @@
     condition: time
     after: '19:00:00'
   action:
-    - service: input_select.select_option
+    - service: input_select.turn_on
       data:
-        entity_id: input_select.sleep_state_ingrid
-        option: 'Sleeping'
+        entity_id: input_boolean.sleep_state_ingrid
 
 - id: '65'
   alias: 'Ingrid awake'
@@ -123,8 +122,7 @@
       - condition: time
         before: '19:00:00'
   action:
-    - service: input_select.select_option
+    - service: input_select.turn_off
       data:
-        entity_id: input_select.sleep_state_ingrid
-        option: 'Awake'
+        entity_id: input_boolean.sleep_state_ingrid
 

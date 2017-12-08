@@ -5,17 +5,15 @@
     platform: state
     to: 'below_horizon'
   - platform: state
-    entity_id: input_select.sleep_state_house
-    to: 'Awake'
+    entity_id: input_select.time_of_day
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: sun.sun
         state: 'below_horizon'
-      - condition: state
-        entity_id: input_select.sleep_state_house
-        state: 'Awake'
+      - condition: template
+        value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
   action:
     - service: switch.turn_on
       entity_id: switch.entrance_outside_light_switch
@@ -31,8 +29,8 @@
     platform: state
     to: 'above_horizon'
   - platform: state
-    entity_id: input_select.sleep_state_house
-    to: 'Sleeping'
+    entity_id: input_select.time_of_day
+    from: 'Night'
   action:
     - service: switch.turn_off
       entity_id: switch.terrace_outside_light_switch

@@ -106,6 +106,9 @@
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'on'
+  condition:
+    condition: template
+    value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
   action:
     - service: light.turn_on
       entity_id: light.changing_room_ceiling_light_level
@@ -116,9 +119,40 @@
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'off'
+  condition:
+    condition: template
+    value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
   action:
     - service: light.turn_off
       entity_id: light.changing_room_ceiling_light_level
+
+- id: '80'    
+  alias: 'Dressing room ceiling light on night'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dressingroom_motion_sensor_sensor
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.time_of_day
+    state: 'Night'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.dressing_room_wardrobes_switch
+
+- id: '81'    
+  alias: 'Dressing room ceiling light off night'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dressingroom_motion_sensor_sensor
+      to: 'off'
+  condition:
+    condition: state
+    entity_id: input_select.time_of_day
+    state: 'Night'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '35'
   alias: 'Wakeup alarm tmc'
@@ -132,8 +166,8 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
-        entity_id: input_select.sleep_state_tor
-        state: 'Sleeping'
+        entity_id: input_boolean.sleep_state_tor
+        state: 'on'
       - condition: template
         value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_tor.attributes.hour | int, states.input_datetime.alarm_time_tor.attributes.minute | int)}}'
       - condition: template
@@ -211,10 +245,9 @@
         message: 'Tor and Lande have been put to sleep'
         data:
           tag: 'this-is-a-test'
-    - service: input_select.select_option
+    - service: input_boolean.turn_on
       data:
-        entity_id: input_select.sleep_state_lande, input_select.sleep_state_tor
-        option: 'Sleeping'
+        entity_id: input_boolean.sleep_state_lande, input_boolean.sleep_state_tor
 
 - id: '74'
   alias: 'Button 1 pressed 3 times'

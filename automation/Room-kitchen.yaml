@@ -12,8 +12,7 @@
       entity_id: binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
     - platform: state
-      entity_id: input_select.sleep_state_house
-      to: 'Awake'
+      entity_id: input_select.time_of_day
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
       below: 200
@@ -34,9 +33,8 @@
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
-      - condition: state
-        entity_id: input_select.sleep_state_house
-        state: 'Awake'
+      - condition: template
+        value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
       - condition: numeric_state
         entity_id: sensor.dining_room_motion_sensor_luminance
         below: 200
@@ -101,8 +99,8 @@
       - condition: or
         conditions:
           - condition: state
-            entity_id: input_select.sleep_state_house
-            state: 'Sleeping'
+            entity_id: input_select.time_of_day
+            state: 'Night'
           - condition: state
             entity_id: input_select.home_state
             state: 'Away'

@@ -5,14 +5,11 @@ default_view:
   entities:
     - group.status
     - group.weather
-    - camera.hallway_camera
-    - camera.test_camera
 status:
   name: Status
   entities:
     - alarm_control_panel.home_alarm
     - lock.front_door_lock_locked
-    - input_select.sleep_state_house
     - input_select.time_of_day
 weather:
   name: Weather
@@ -32,6 +29,7 @@ people:
     - group.tormagnus
     - group.lande
     - group.ingridsofia
+    - group.guests
 tormagnus:
   name: Tor Magnus
   icon: mdi:account
@@ -40,7 +38,7 @@ tormagnus:
     - input_datetime.alarm_time_tor
     - input_boolean.alarm_override_tor
     - input_boolean.alarm_workday_tor
-    - input_select.sleep_state_tor
+    - input_boolean.sleep_state_tor
     - device_tracker.tmc_phone
     - sensor.battery_tor_magnus
     - sensor.steps
@@ -55,7 +53,7 @@ lande:
     - input_datetime.alarm_time_lande
     - input_boolean.alarm_override_lande
     - input_boolean.alarm_workday_lande
-    - input_select.sleep_state_lande
+    - input_boolean.sleep_state_lande
     - device_tracker.phone__lande_2
 ingridsofia:
   name: Ingrid Sofia
@@ -65,9 +63,15 @@ ingridsofia:
     - input_datetime.alarm_time_ingrid
     - input_boolean.alarm_override_ingrid
     - input_boolean.alarm_workday_ingrid
-    - input_select.sleep_state_ingrid
+    - input_boolean.sleep_state_ingrid
     - device_tracker.ipad__ingrid
-
+guests:
+  name: Guests
+  icon: mdi:account-multiple
+  control: hidden
+  entities:
+    - input_boolean.guests_present
+    - input_boolean.sleep_state_guests
 
 entertainment:
   name: Entertainment

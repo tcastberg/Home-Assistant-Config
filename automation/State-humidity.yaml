@@ -3,8 +3,8 @@
   trigger:
   - platform: numeric_state
     entity_id: sensor.divergence_humidity
-    above: 2
-    below: 6
+    above: 4
+    below: 7
   condition:
     condition: template
     value_template: "{{not is_state_attr('light.house_ventilation_dimmer_level', 'brightness', 126)}}"
@@ -19,7 +19,7 @@
   trigger:
   - platform: numeric_state
     entity_id: sensor.divergence_humidity
-    above: 6
+    above: 8
   condition:
     condition: template
     value_template: "{{not is_state_attr('light.house_ventilation_dimmer_level', 'brightness', 255)}}"
@@ -34,7 +34,7 @@
   trigger:
   - platform: numeric_state
     entity_id: sensor.divergence_humidity
-    below: 2
+    below: 3
   condition:
     condition: state
     entity_id: light.house_ventilation_dimmer_level

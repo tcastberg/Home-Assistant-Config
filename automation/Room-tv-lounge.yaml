@@ -4,9 +4,6 @@
     - platform: state
       entity_id: input_select.time_of_day
     - platform: state
-      entity_id: input_select.sleep_state_house
-      to: 'Awake'
-    - platform: state
       entity_id: input_select.home_state
       to: 'Home'
       for:
@@ -45,9 +42,8 @@
         below: 200
       - condition: template
         value_template: "{{not is_state('media_player.tv_room','playing')}}"
-      - condition: state
-        entity_id: input_select.sleep_state_house
-        state: 'Awake'
+      - condition: template
+        value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
   action:
     - service: light.turn_on
       entity_id: light.tv_area_level, light.sofa_area_level
@@ -142,3 +138,21 @@
   action:
     - service: light.turn_off
       entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level
+
+
+- id: '79'
+  alias: 'Guest sleeping'
+  trigger:
+    platform: event
+    event_type: zwave.scene_activated
+    event_data:
+      entity_id: zwave.hallway_area
+      scene_id: 11
+  condition:
+    condition: time
+    after: '19:00:00'
+  action:
+    - service: input_boolean.toggle
+      data:
+        entity_id: input_boolean.sleep_state_guests
+

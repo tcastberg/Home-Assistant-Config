@@ -79,9 +79,9 @@ zone:
     icon: mdi:worker
 
 camera:
-  - platform: generic
+  - platform: ffmpeg
     name: Hallway Camera
-    still_image_url: !secret camera_still_image_url
+    input: -rtsp_transport tcp -i rtsp://admin:nor74uk71@192.168.0.195:554/videoMain
   - platform: ffmpeg
     name: Test camera
     input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=7&stream=0.sdp?real_stream--rtp-caching=100
@@ -94,6 +94,9 @@ camera:
   - platform: ffmpeg
     name: Garden camera
     input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=3&stream=0.sdp?real_stream--rtp-caching=100
+#  - platform: generic
+#    name: Hallway Camera
+#    still_image_url: !secret camera_still_image_url
 
 # Enables support for tracking state changes over time
 history:
@@ -152,30 +155,6 @@ input_select:
       - Morning
       - Day
       - Evening
-  sleep_state_house:
-    name: Sleep State
-    icon: mdi:sleep
-    options:
-      - Awake
-      - Sleeping
-  sleep_state_ingrid:
-    name: Sleep State
-    icon: mdi:sleep
-    options:
-      - Awake
-      - Sleeping
-  sleep_state_lande:
-    name: Sleep State
-    icon: mdi:sleep
-    options:
-      - Awake
-      - Sleeping
-  sleep_state_tor:
-    name: Sleep State
-    icon: mdi:sleep
-    options:
-      - Awake
-      - Sleeping
   home_state:
     name: Home State
     icon: mdi:home-circle
@@ -184,6 +163,9 @@ input_select:
       - Away
 
 input_boolean:
+  sleep_state_tor:
+    name: Sleeping
+    icon: mdi:sleep
   alarm_override_tor:
     name: Alarm Disabled
     icon: mdi:cancel
@@ -191,6 +173,9 @@ input_boolean:
     name: Workdays Only
     icon: mdi:calendar-check
 
+  sleep_state_lande:
+    name: Sleeping
+    icon: mdi:sleep
   alarm_override_lande:
     name: Alarm Disabled
     icon: mdi:cancel
@@ -198,12 +183,22 @@ input_boolean:
     name: Workdays Only
     icon: mdi:calendar-check
 
+  sleep_state_ingrid:
+    name: Sleeping
+    icon: mdi:sleep
   alarm_override_ingrid:
     name: Alarm Disabled
     icon: mdi:cancel
   alarm_workday_ingrid:
     name: Workdays Only
     icon: mdi:calendar-check
+
+  sleep_state_guests:
+    name: Sleeping
+    icon: mdi:sleep
+  guests_present:
+    name: Hospitality
+    icon: mdi:account-multiple-plus
 
 input_datetime:
   alarm_time_tor:

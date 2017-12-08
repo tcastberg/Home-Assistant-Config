@@ -5,8 +5,8 @@
   alias: 'Set Time of Day to Morning'
   trigger:
     platform: state
-    entity_id: input_select.sleep_state_house
-    to: 'Awake'
+    entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande, input_boolean.sleep_state_ingrid, input_boolean.sleep_state_guests
+    to: 'off'
   condition:
     condition: and
     conditions:
@@ -22,6 +22,10 @@
       data:
         entity_id: input_select.time_of_day
         option: Morning
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.home_alarm
+      data:
+        code: !secret alarm_control_panel_code
 
 - id: '8'
   alias: 'Set Time of Day to Day'
@@ -59,14 +63,31 @@
   alias: 'Set Time of Day to Night'
   trigger:
     platform: state
-    entity_id: input_select.sleep_state_house
-    to: 'Sleeping'
+    entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande, input_boolean.sleep_state_ingrid, input_boolean.sleep_state_guests
+    to: 'on'
   condition:
-    condition: state
-    entity_id: input_select.time_of_day
-    state: 'Evening'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.time_of_day
+        state: 'Evening'
+      - condition: state
+        entity_id: input_boolean.sleep_state_tor
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_lande
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_ingrid
+        state: 'on'
+      - condition: template
+        value_template: '{{(is_state("input_boolean.guests_present", "on") and is_state("input_boolean.sleep_state_guests", "on")) or is_state("input_boolean.guests_present","off")}}'
   action:
     - service: input_select.select_option
       data:
         entity_id: input_select.time_of_day
         option: 'Night'
+    - service: alarm_control_panel.alarm_arm_home
+      entity_id: alarm_control_panel.home_alarm
+      data:
+        code: !secret alarm_control_panel_code
