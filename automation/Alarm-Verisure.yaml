@@ -63,10 +63,11 @@
         code: !secret alarm_control_panel_code
 
 - id: '22'
-  alias: 'Home disarmed to Verisure disarmed'
+  alias: 'Home disarmed from armed_away to Verisure disarmed'
   trigger:
     platform: state
     entity_id: alarm_control_panel.home_alarm
+    from: 'armed_away'
     to: 'disarmed'
   condition:
     condition: and
@@ -76,6 +77,24 @@
       - condition: numeric_state
         entity_id: sensor.verisure_status_plug_power
         above: 0.3
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.holmsens_vei_alarm
+      data:
+        code: !secret verisure_code
+
+- id: '11'
+  alias: 'Home disarmed from armed_home to Verisure disarmed'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.home_alarm
+    from: 'armed_home'
+    to: 'disarmed'
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','disarmed')}}"
   action:
     - service: alarm_control_panel.alarm_disarm
       entity_id: alarm_control_panel.holmsens_vei_alarm
