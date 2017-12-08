@@ -44,7 +44,7 @@
         title: 'Door opened'
         message: 'The front door was opened'
         data:
-          image: 'https://hass.continually-evolving.net:8124/local/snapshot.jpg?a={{range(0,99999)|random}}-{{range(0,99999)|random}}'
+          image: !secret doorway_snapshot
     - service: notify.mail
       data:
         title: 'Door opened'

@@ -24,7 +24,7 @@ config:
 map:
 
 recorder:
-  db_url: mysql://hassuser:YjU0NTU3Y2ExNjg1NDI4MDA0NGI4NTBi@plex.continually-evolving.net/hass_db
+  db_url: !secret mysql_connection
 
 
 http:
