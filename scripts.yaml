@@ -43,6 +43,7 @@ say_sonos:
     - delay: '00:00:02'
 
     - wait_template: "{{ not is_state('media_player.'~where, 'playing') }}"
+      timeout: '00:00:05'
       
     - delay: '00:00:01'
 
