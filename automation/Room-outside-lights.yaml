@@ -30,7 +30,7 @@
     to: 'above_horizon'
   - platform: state
     entity_id: input_select.time_of_day
-    from: 'Night'
+    to: 'Night'
   action:
     - service: switch.turn_off
       entity_id: switch.terrace_outside_light_switch

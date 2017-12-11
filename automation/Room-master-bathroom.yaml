@@ -10,13 +10,13 @@
       data_template:
         brightness: >
           {%- if is_state('input_select.time_of_day', 'Morning') %}
-            175
+            200
           {%- elif is_state('input_select.time_of_day', 'Day') %}
             255
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
-            200
+            150
           {%- else %}
-            125
+            30
           {%- endif %}
 
 - id: '29'    

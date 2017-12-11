@@ -62,3 +62,20 @@
   action:
     - service: light.turn_off
       entity_id: light.downstairs_hallway_pendant_level
+
+- id: '79'
+  alias: 'Guests sleeping'
+  trigger:
+    platform: event
+    event_type: zwave.scene_activated
+    event_data:
+      entity_id: zwave.downstairs_hallway_pendant
+      scene_id: 15
+  condition:
+    condition: time
+    after: '19:00:00'
+  action:
+    - service: input_boolean.toggle
+      data:
+        entity_id: input_boolean.sleep_state_guests
+
