@@ -34,6 +34,7 @@ http:
 zwave:
   usb_path: /dev/ttyACM0
   network_key: !secret zwave_network_key
+  autoheal: false
 
 mqtt:
   broker: !secret mqtt_broker
@@ -81,7 +82,7 @@ zone:
 camera:
   - platform: ffmpeg
     name: Hallway Camera
-    input: -rtsp_transport tcp -i rtsp://admin:nor74uk71@192.168.0.195:554/videoMain
+    input: !secret foscam_url 
   - platform: ffmpeg
     name: Test camera
     input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=7&stream=0.sdp?real_stream--rtp-caching=100
@@ -109,9 +110,11 @@ logger:
     homeassistant.components.switch.flux: warning
     homeassistant.components.light: info 
     homeassistant.components.zwave: info
+    homeassistant.components.lock.zwave: debug
+    homeassistant.components.lock: debug
 
 # View all events in a logbook
-#logbook:
+logbook:
 
 # Track the sun
 sun:
@@ -199,6 +202,9 @@ input_boolean:
   guests_present:
     name: Hospitality
     icon: mdi:account-multiple-plus
+  vacation_mode:
+    name: Vacation
+    icon: mdi:beach
 
 input_datetime:
   alarm_time_tor:

@@ -6,7 +6,7 @@
     event_data:
      action: 'blah'
   action:
-    - service: notify.html5_tor_magnus_phone
+    - service: notify.html5_tor_magnus_pixel
       data:
         message: 'Someone at door'
         data:
@@ -22,7 +22,7 @@
     event_data:
      action: open_door
   action:
-    - service: notify.html5_tor_magnus_phone
+    - service: notify.html5_tor_magnus_pixel
       data:
         message: 'Door opened'
 
@@ -39,10 +39,10 @@
         filename: snapshot.jpg
     - delay:
         seconds: 1
-    - service: notify.html5_tor_magnus_phone
+    - service: notify.html5_tor_magnus_pixel
       data_template:
         title: 'Door opened'
-        message: 'The front door was opened'
+        message: 'The front door was opened {{states("sensor.front_door_lock_alarm_level")}} {{states("sensor.front_door_lock_access_control")}} {{states("sensor.front_door_lock_alarm_type")}} {{states.lock.front_door_lock_locked.attributes.notification}}'
         data:
           image: !secret doorway_snapshot
     - service: notify.mail

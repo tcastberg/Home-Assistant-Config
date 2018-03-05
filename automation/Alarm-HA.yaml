@@ -8,7 +8,7 @@
     condition: template
     value_template: "{{not is_state('input_select.home_state','Away')}}"
   action:
-    - service: notify.html5_tor_magnus_phone
+    - service: notify.html5_tor_magnus_pixel
       data:
         title: 'Home Alarm armed'
         message: 'Home Alarm armed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
@@ -29,7 +29,7 @@
     entity_id: alarm_control_panel.home_alarm
     to: 'armed_home'
   action:
-    - service: notify.html5_tor_magnus_phone
+    - service: notify.html5_tor_magnus_pixel
       data:
         title: 'Home Alarm armed home'
         message: 'Home Alarm armed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
@@ -46,7 +46,7 @@
     condition: template
     value_template: "{{not is_state('input_select.home_state','Home')}}"
   action:
-    - service: notify.html5_tor_magnus_phone
+    - service: notify.html5_tor_magnus_pixel
       data:
         title: 'Home Alarm disarmed'
         message: 'Home Alarm disarmed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
@@ -67,7 +67,7 @@
       entity_id: binary_sensor.backhall_garden_door_sensor, binary_sensor.balcony_door_sensor_2, binary_sensor.bedroom_garden_door_sensor, binary_sensor.kitchen_window_3_sensor
       to: 'on'
     - platform: state
-      entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor, binary_sensor.laundry_multisensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor, binary_sensor.dining_room_motion_sensor_sensor, binary_sensor.tv_area_motion_sensor_sensor, binary_sensor.family_bathroom_multisensor_sensor, binary_sensor.master_bathroom_multisensor_sensor, binary_sensor.dressingroom_motion_sensor_sensor
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor, binary_sensor.laundry_multisensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor, binary_sensor.dining_room_motion_sensor_sensor_2, binary_sensor.tv_area_motion_sensor_sensor, binary_sensor.family_bathroom_multisensor_sensor, binary_sensor.master_bathroom_multisensor_sensor, binary_sensor.dressingroom_motion_sensor_sensor
       to: 'on'
   condition:
     - condition: state
@@ -98,7 +98,7 @@
     entity_id: alarm_control_panel.home_alarm
     to: 'triggered'
   action:
-    - service: notify.html5_tor_magnus_phone
+    - service: notify.html5_tor_magnus_pixel
       data:
         title: 'Home Alarm Triggered'
         message: 'Home Alarm Triggered {{now().strftime("%Y-%m-%d %H:%M:%S")}}'

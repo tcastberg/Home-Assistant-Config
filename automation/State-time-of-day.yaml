@@ -4,9 +4,11 @@
 - id: '7'
   alias: 'Set Time of Day to Morning'
   trigger:
-    platform: state
-    entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande, input_boolean.sleep_state_ingrid, input_boolean.sleep_state_guests
-    to: 'off'
+    - platform: state
+      entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande, input_boolean.sleep_state_ingrid, input_boolean.sleep_state_guests
+      to: 'off'
+    - platform: time
+      at: '08:45:00'   
   condition:
     condition: state
     entity_id: input_select.time_of_day

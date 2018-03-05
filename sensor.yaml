@@ -12,17 +12,12 @@
     - 'time'
     - 'date'
 
-- platform: plex
-  host: plex.continually-evolving.net
-  username: !secret plex_username
-  password: !secret plex_password
-
 - platform: onewire
   names:
-    '12.385D67000000': 1W Storage room
-    '12.9D5967000000': 1W Broken
-    '26.984585000000': 1W Storage room 2
-    '26.A78785000000': 1W Training room
+    '12.385D67000000': Storage room 1W
+    '12.9D5967000000': Broken 1W
+    '26.984585000000': Storage room 1W
+    '26.A78785000000': Training room 1W
   mount_dir: /onewire
 
 - platform: fitbit

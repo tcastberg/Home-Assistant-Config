@@ -10,6 +10,7 @@ status:
   entities:
     - alarm_control_panel.home_alarm
     - lock.front_door_lock_locked
+    - input_boolean.vacation_mode
     - input_select.time_of_day
 weather:
   name: Weather
@@ -83,7 +84,6 @@ entertainment:
 video:
   name: Video
   entities:
-    - sensor.plex
     - media_player.kitchen
     - media_player.tv_room
     - media_player.master_bedroom
@@ -144,7 +144,6 @@ dining_room:
     - switch.corner_standing_lamp_switch
     - switch.cabinet_lights_switch
     - switch.serving_table_lamp_switch
-    - switch.office_standing_lamp_switch
     - switch.side_table_light_switch
     - light.dining_room_rail_1_level
     - light.dining_room_rail_2_level
@@ -225,7 +224,7 @@ temperature:
     - sensor.laundry_multisensor_temperature
     - sensor.kitchen_table_motion_sensor_temperature
     - sensor.kitchen_island_motion_sensor_temperature
-    - sensor.dining_room_motion_sensor_temperature
+    - sensor.dining_room_motion_sensor_temperature_2
     - sensor.balcony_door_temperature
     - sensor.tv_area_motion_sensor_temperature
     - sensor.family_bathroom_multisensor_temperature
@@ -253,7 +252,7 @@ luminance:
     - sensor.laundry_multisensor_luminance
     - sensor.kitchen_table_motion_sensor_luminance
     - sensor.kitchen_island_motion_sensor_luminance
-    - sensor.dining_room_motion_sensor_luminance
+    - sensor.dining_room_motion_sensor_luminance_2
     - sensor.tv_area_motion_sensor_luminance
     - sensor.family_bathroom_multisensor_luminance
     - sensor.master_bathroom_multisensor_luminance
@@ -293,7 +292,7 @@ motion:
     - binary_sensor.laundry_multisensor_sensor
     - binary_sensor.kitchen_table_motion_sensor_sensor
     - binary_sensor.kitchen_island_motion_sensor_sensor
-    - binary_sensor.dining_room_motion_sensor_sensor
+    - binary_sensor.dining_room_motion_sensor_sensor_2
     - binary_sensor.tv_area_motion_sensor_sensor
     - binary_sensor.family_bathroom_multisensor_sensor
     - binary_sensor.master_bathroom_multisensor_sensor
@@ -311,6 +310,7 @@ power:
   name: Current power usage
   icon: mdi:flash
   entities:
+    - sensor.doorbell_power
     - sensor.bedroom_tv_backlight_power
     - sensor.family_bathroom_dimmer_power
     - sensor.master_bathroom_dimmer_power
@@ -322,7 +322,6 @@ power:
     - sensor.corner_standing_lamp_power
     - sensor.cabinet_lights_power
     - sensor.serving_table_lamp_power
-    - sensor.office_standing_lamp_power
     - sensor.dining_room_rail_1_power
     - sensor.dining_room_rail_2_power
     - sensor.dining_room_rail_3_power
@@ -338,6 +337,7 @@ energy:
   name: Total power usage
   icon: mdi:flash
   entities:
+    - sensor.doorbell_energy
     - sensor.bedroom_tv_backlight_energy
     - sensor.family_bathroom_dimmer_energy
     - sensor.master_bathroom_dimmer_energy
@@ -349,7 +349,6 @@ energy:
     - sensor.corner_standing_lamp_energy
     - sensor.cabinet_lights_energy
     - sensor.serving_table_lamp_energy
-    - sensor.office_standing_lamp_energy
     - sensor.dining_room_rail_1_energy
     - sensor.dining_room_rail_2_energy
     - sensor.dining_room_rail_3_energy

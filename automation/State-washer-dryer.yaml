@@ -35,7 +35,7 @@
         variables:
           where: 'changing_room'
           what: 'I believe the washing machine has finished'
-    - service: notify.html5_tor_magnus_phone
+    - service: notify.html5_tor_magnus_pixel
       data:
         title: 'Washing machine'
         message: 'Washing machine has finished'
@@ -81,7 +81,7 @@
         variables:
           where: 'changing_room'
           what: 'I believe the dryer has finished'
-    - service: notify.html5_tor_magnus_phone
+    - service: notify.html5_tor_magnus_pixel
       data:
         title: 'Dryer'
         message: 'Dryer has finished'

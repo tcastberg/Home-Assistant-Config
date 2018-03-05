@@ -4,7 +4,7 @@
 - id: '15'
   alias: 'Wake up house'
   trigger:
-  - entity_id: binary_sensor.dressingroom_motion_sensor_sensor, binary_sensor.dining_room_motion_sensor_sensor
+  - entity_id: binary_sensor.dressingroom_motion_sensor_sensor, binary_sensor.dining_room_motion_sensor_sensor_2
     platform: state
     to: 'on'
   - platform: time
