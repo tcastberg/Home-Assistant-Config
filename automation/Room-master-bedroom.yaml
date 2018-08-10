@@ -14,6 +14,9 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
+        entity_id: input_select.time_of_day
+        state: 'Morning'
+      - condition: state
         entity_id: input_boolean.sleep_state_tor
         state: 'off'
       - condition: state
@@ -52,6 +55,9 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
+        entity_id: input_select.time_of_day
+        state: 'Day'
+      - condition: state
         entity_id: input_boolean.sleep_state_tor
         state: 'off'
       - condition: state
@@ -82,6 +88,9 @@
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
+      - condition: state
+        entity_id: input_select.time_of_day
+        state: 'Evening'
       - condition: state
         entity_id: input_boolean.sleep_state_tor
         state: 'off'

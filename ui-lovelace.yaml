@@ -1,0 +1,457 @@
+title: HAL 9000
+
+views:
+  - title: State
+    theme: dark-mode
+    id: state
+    icon: mdi:home-assistant
+    cards:
+      - type: entities
+        entities:
+          - alarm_control_panel.home_alarm
+          - lock.front_door_lock_locked
+          - input_boolean.door_autolock
+          - input_boolean.vacation_mode
+          - input_select.time_of_day
+          - entity: sensor.average_temperature
+            name: Average house Temperature
+          - entity: sensor.average_humidity
+            name: Average house humidity
+          - entity: light.house_ventilation_dimmer_level
+            name: House ventilation
+
+      - type: map
+        entities:
+          - device_tracker.google_maps_117621586906275495071
+          - device_tracker.google_maps_106703534047375134126
+
+      - type: entity-filter
+        entities:
+          - entity: device_tracker.google_maps_117621586906275495071
+            name: Tor Magnus
+          - entity: device_tracker.google_maps_106703534047375134126
+            name: Lande
+          - entity: device_tracker.ipad__ingrid
+            name: Ingrid
+          - entity: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
+            name: Marvin
+        state_filter:
+          - 'home'
+        card:
+          type: glance
+          title: People that are home
+          show_state: false
+
+      - type: entity-filter
+        entities:
+          - binary_sensor.entrance_hallway_motion_sensor_sensor
+          - binary_sensor.hallway_toilet_motion_sensor_sensor
+          - binary_sensor.laundry_multisensor_sensor
+          - binary_sensor.kitchen_table_motion_sensor_sensor
+          - binary_sensor.kitchen_island_motion_sensor_sensor
+          - binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor
+          - binary_sensor.tv_area_motion_sensor_sensor
+          - binary_sensor.family_bathroom_multisensor_sensor
+          - binary_sensor.master_bathroom_multisensor_sensor
+          - binary_sensor.dressingroom_motion_sensor_sensor
+          - binary_sensor.kitchen_window_3_sensor
+          - binary_sensor.balcony_door_sensor_2
+          - binary_sensor.bedroom_garden_door_sensor
+          - binary_sensor.backhall_garden_door_sensor
+        state_filter:
+          - 'detected'
+          - 'on'
+        card: 
+          type: glance
+          title: Triggered sensors
+          show_state: false
+
+      - type: picture-elements
+        image: /local/tesla.png
+        elements:
+          - type: state-icon
+            tap_action: toggle
+            entity: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+            style:
+              top: 90%
+              left: 95%
+          - type: state-label
+            entity: sensor.tesla_model_x_5yjxcce22jf095567_battery_sensor
+            style:
+              top: 90%
+              left: 90%
+          - type: state-label
+            entity: sensor.tesla_model_x_5yjxcce22jf095567_range_sensor
+            style:
+              top: 82%
+              left: 92%
+              suffix: km
+          - type: state-icon
+            entity: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
+            style:
+              top: 51%
+              left: 76%
+          - type: state-label
+            entity: sensor.tesla_model_x_5yjxcce22jf095567_temperature_sensor_inside
+            style:
+              top: 50%
+              left: 50%
+              color: white
+          - type: state-label
+            entity: sensor.tesla_model_x_5yjxcce22jf095567_temperature_sensor_outside
+            style:
+              top: 20%
+              left: 50%
+          - type: state-icon
+            entity: climate.tesla_model_x_5yjxcce22jf095567_hvac_climate_system
+            style:
+              top: 10%
+              left: 50%
+          - type: state-icon
+            tap_action: toggle
+            entity:  lock.tesla_model_x_5yjxcce22jf095567_door_lock
+            style:
+              top: 90%
+              left: 5%
+
+  - title: People
+    id: people
+    icon: mdi:account-multiple
+    cards:
+      - type: entities
+        title: Tor Magnus
+        show_header_toggle: false
+        entities:
+          - input_datetime.alarm_time_tor
+          - input_boolean.alarm_override_tor
+          - input_boolean.alarm_workday_tor
+          - input_boolean.sleep_state_tor
+          - entity: device_tracker.google_maps_117621586906275495071
+            name: Location
+          - sensor.steps
+          - sensor.weight
+          - sensor.resting_heart_rate
+          - sensor.sleep_minutes_asleep
+      - type: entities
+        title: Lande
+        show_header_toggle: false
+        entities:
+          - input_datetime.alarm_time_lande
+          - input_boolean.alarm_override_lande
+          - input_boolean.alarm_workday_lande
+          - input_boolean.sleep_state_lande
+          - entity: device_tracker.google_maps_106703534047375134126
+            name: Location
+      - type: entities
+        title: Ingrid Sofia
+        show_header_toggle: false
+        entities:
+          - input_datetime.alarm_time_ingrid
+          - input_boolean.alarm_override_ingrid
+          - input_boolean.alarm_workday_ingrid
+          - input_boolean.sleep_state_ingrid
+          - device_tracker.ipad__ingrid
+
+  - title: Lights
+    id: lights
+    icon: mdi:lightbulb
+    cards:
+      - type: glance
+        title: Outside
+        entities:
+          - entity: switch.entrance_outside_light_switch
+            name: Porch
+            tap_action: toggle
+          - entity: switch.balcony_outside_light_switch
+            name: Balcony
+            tap_action: toggle
+          - entity: switch.terrace_outside_light_switch
+            name: Terrace
+            tap_action: toggle
+          - entity: switch.garden_lights_switch
+            name: Garden
+            tap_action: toggle
+
+      - type: glance
+        title: Entrance Hallway
+        entities:
+          - entity: light.entrance_hallway_ceiling_lights_level
+            name: Ceiling
+          - entity: sensor.entrance_hallway_motion_sensor_temperature
+            name: Temperature
+          - entity: sensor.entrance_hallway_motion_sensor_luminance
+            name: Luminance
+
+      - type: glance
+        title: Entrance Toilet
+        entities:
+          - entity: light.hallway_toilet_ceiling_dimmer_level
+            name: Ceiling
+          - entity: sensor.hallway_toilet_motion_sensor_temperature
+            name: Temperature
+          - entity: sensor.hallway_toilet_motion_sensor_luminance
+            name: Luminance
+    
+      - type: glance
+        title: Laundy
+        entities:
+          - entity: light.laundry_dimmer_level
+            name: Ceiling
+          - entity: binary_sensor.washing_machine_activity
+            name: Washer
+          - entity: binary_sensor.dryer_activity
+            name: Dryer
+          - entity: sensor.laundry_multisensor_temperature
+            name: Temperature
+          - entity: sensor.laundry_multisensor_relative_humidity
+            name: Humidity
+          - entity: sensor.laundry_multisensor_luminance
+            name: Luminance
+            
+      - type: glance
+        title: Kitchen
+        entities:
+          - entity: light.kitchen_bench_ceiling_lights_level
+            name: Bench
+          - entity: light.kitchen_table_ceiling_lamp_level
+            name: Table
+          - entity: light.kitchen_hallway_ceiling_lights_level
+            name: Hallway
+          - entity: sensor.kitchen_table_motion_sensor_temperature
+            name: Table
+          - entity: sensor.kitchen_table_motion_sensor_luminance
+            name: Table
+          - entity: sensor.kitchen_island_motion_sensor_temperature
+            name: Bench
+          - entity: sensor.kitchen_island_motion_sensor_luminance
+            name: Bench
+          - entity: sensor.kitchen_hallway_humidity
+            name: Humidity
+            
+      - type: glance
+        title: Dining Room
+        entities:
+          - entity: switch.dining_room_standing_lamp_switch
+            name: Nook
+            tap_action: toggle
+          - entity: switch.corner_standing_lamp_switch
+            name: Sofa
+            tap_action: toggle
+          - entity: switch.cabinet_lights_switch
+            name: Cabinet
+            tap_action: toggle
+          - entity: switch.serving_table_lamp_switch
+            name: Table
+            tap_action: toggle
+          - entity: switch.side_table_light_switch
+            name: Bookshelf
+            tap_action: toggle
+          - entity: light.dining_room_rail_1_level
+            name: Office
+          - entity: light.dining_room_rail_2_level
+            name: Dining
+          #- entity: light.dining_room_rail_3_level
+          - entity: sensor.fibaro_system_fgms001zw5_motion_sensor_temperature
+            name: Temperature
+          - entity: sensor.fibaro_system_fgms001zw5_motion_sensor_luminance
+            name: Luminance
+          - entity: sensor.balcony_door_temperature
+
+      - type: glance
+        title: TV Lounge
+        entities:
+          - entity: light.tv_area_level
+            name: TV
+          - entity: light.sofa_area_level
+            name: Sofa
+          - entity: light.hallway_area_level
+            name: Hallway
+          - entity: sensor.tv_area_motion_sensor_temperature
+            name: Temperature
+          - entity: sensor.tv_area_motion_sensor_luminance
+            name: Luminance
+          - entity: sensor.tv_hallway_humidity
+            name: Humidity
+
+      - type: glance
+        title: Family Bathroom
+        entities:
+          - entity: light.family_bathroom_dimmer_level
+            name: Ceiling
+          - entity: sensor.family_bathroom_multisensor_temperature
+            name: Temperature
+          - entity: sensor.family_bathroom_multisensor_relative_humidity
+            name: Humidity
+
+      - type: glance
+        title: Changing Room
+        entities:
+          - entity: switch.dressing_room_wardrobes_switch
+            name: Wardrobes
+            tap_action: toggle
+          - entity: light.changing_room_ceiling_light_level
+            name: Ceiling
+          - entity: sensor.dressingroom_motion_sensor_temperature
+            name: Temperature
+          - entity: sensor.dressingroom_motion_sensor_luminance
+            name: Luminance
+
+      - type: glance
+        title: Master Bathroom
+        entities:
+          - entity: light.master_bathroom_dimmer_level
+            name: Ceiling
+          - entity: sensor.master_bathroom_multisensor_temperature
+            name: Temperature
+          - entity: sensor.master_bathroom_multisensor_relative_humidity
+            name: Humidity
+
+      - type: glance
+        title:  Master Bedroom
+        entities:
+          - entity: light.bedroom_tv_backlight_level
+            name: TV
+          - entity: light.bedside_lamp_dimmer_level
+            name: Nightstand
+          - entity: switch.dressing_table_light_switch
+            name: Dresser
+            tap_action: toggle
+          - entity: sensor.master_bedroom_humidity
+            name: Humidity
+
+      - type: glance
+        title: Ingrid Bedroom
+        entities:
+          - entity: light.ingrid_bedroom_ceiling_light_level
+            name: Ceiling
+          - entity: light.ingrid_bedroom_bed_light_level
+            name: Bed
+
+      - type: glance
+        title: Downstairs hallway
+        entities:
+          - entity: light.downstairs_hallway_pendant_level
+            name: Ceiling
+
+#      - type: glance
+#        title: Guest Bedroom
+#        entities:
+
+#      - type: glance
+#        title: Storage Room
+#        entities:
+
+      - type: glance
+        title: Training Room
+        entities:
+          - entity: sensor.training_room_humidity
+            name: Humidity
+
+#      - type: glance
+#        title: Work Room
+#        entities:
+
+  - title: Cameras
+    id: cameras
+    icon: mdi:camera
+    cards:
+      - type: picture-glance
+        title: Front entrance
+        camera_image: camera.entrance_camera
+        entities: 
+          - switch.entrance_outside_light_switch
+      - type: picture-glance
+        title: Front hallway
+        camera_image: camera.hallway_camera
+        entities:
+          - light.entrance_hallway_ceiling_lights_level
+      - type: picture-glance
+        title: Parking area
+        camera_image: camera.parking_camera
+        entities: 
+          - switch.entrance_outside_light_switch
+      - type: picture-glance
+        title: Back garden
+        camera_image: camera.garden_camera
+        entities: 
+          - switch.terrace_outside_light_switch
+
+
+  - title: Power
+    id: power
+    icon: mdi:flash
+    cards:
+      - type: entities
+        title: Currently used
+        entities:
+          - sensor.balcony_outside_light_power
+          - sensor.bedroom_tv_backlight_power
+          - sensor.cabinet_lights_power
+          - sensor.changing_room_ceiling_light_power
+          - sensor.corner_standing_lamp_power
+          - sensor.dining_room_rail_1_power
+          - sensor.dining_room_rail_2_power
+          - sensor.dining_room_rail_3_power
+          - sensor.dining_room_standing_lamp_power
+          - sensor.downstairs_hallway_pendant_power
+          - sensor.dressing_room_wardrobes_power
+          - sensor.dressing_table_light_power
+          - sensor.dryer_power
+          - sensor.entrance_hallway_ceiling_lights_power
+          - sensor.entrance_outside_light_power
+          - sensor.family_bathroom_dimmer_power
+          - sensor.garden_lights_power
+          - sensor.hallway_area_power
+          - sensor.hallway_toilet_ceiling_dimmer_power
+          - sensor.house_ventilation_dimmer_power
+          - sensor.ingrid_bedroom_bed_light_power
+          - sensor.ingrid_bedroom_ceiling_light_power
+          - sensor.kitchen_bench_ceiling_lights_power
+          - sensor.kitchen_hallway_ceiling_lights_power
+          - sensor.kitchen_table_ceiling_lamp_power
+          - sensor.laundry_dimmer_power
+          - sensor.master_bathroom_dimmer_power
+          - sensor.serving_table_lamp_power
+          - sensor.side_table_light_power
+          - sensor.sofa_area_power
+          - sensor.terrace_outside_light_power
+          - sensor.tv_area_power
+          - sensor.washing_machine_power
+          
+      - type: entities
+        title: Total consumption
+        entities:
+          - sensor.balcony_outside_light_energy
+          - sensor.bedroom_tv_backlight_energy
+          - sensor.cabinet_lights_energy
+          - sensor.changing_room_ceiling_light_energy
+          - sensor.corner_standing_lamp_energy
+          - sensor.dining_room_rail_1_energy
+          - sensor.dining_room_rail_2_energy
+          - sensor.dining_room_rail_3_energy
+          - sensor.dining_room_standing_lamp_energy
+          - sensor.downstairs_hallway_pendant_energy
+          - sensor.dressing_room_wardrobes_energy
+          - sensor.dressing_table_light_unknown
+          - sensor.dryer_energy
+          - sensor.entrance_hallway_ceiling_lights_energy
+          - sensor.entrance_outside_light_energy
+          - sensor.family_bathroom_dimmer_energy
+          - sensor.garden_lights_energy
+          - sensor.hallway_area_energy
+          - sensor.hallway_toilet_ceiling_dimmer_energy
+          - sensor.house_ventilation_dimmer_unknown
+          - sensor.ingrid_bedroom_bed_light_energy
+          - sensor.ingrid_bedroom_ceiling_light_energy
+          - sensor.kitchen_bench_ceiling_lights_energy
+          - sensor.kitchen_hallway_ceiling_lights_energy
+          - sensor.kitchen_table_ceiling_lamp_energy
+          - sensor.laundry_dimmer_energy
+          - sensor.master_bathroom_dimmer_energy
+          - sensor.serving_table_lamp_energy
+          - sensor.side_table_light_energy
+          - sensor.sofa_area_energy
+          - sensor.terrace_outside_light_energy
+          - sensor.tv_area_energy
+          - sensor.washing_machine_energy
+      

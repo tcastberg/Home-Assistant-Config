@@ -12,12 +12,18 @@ homeassistant:
   time_zone: Europe/Oslo
   # Customization file
   customize: !include customize.yaml
+  auth_providers:
+   - type: homeassistant
+   - type: legacy_api_password
+
+auth:
 
 # Show links to resources in log and frontend
 # introduction:
 
 frontend:
   javascript_version: latest
+  themes: !include_dir_merge_named themes/
 
 config:
 
@@ -25,7 +31,6 @@ map:
 
 recorder:
   db_url: !secret mysql_connection
-
 
 http:
   api_password: !secret http_api_password
@@ -36,23 +41,18 @@ zwave:
   network_key: !secret zwave_network_key
   autoheal: false
 
-mqtt:
-  broker: !secret mqtt_broker
-  port: 18883
-  certificate: /config/owntracks.crt
-
 prometheus:
-  exclude:
-    entities:
-      - device_tracker.tmc_phone
 
 device_tracker:
-  - platform: owntracks
   - platform: unifi
     host: !secret unifi_host
     verify_ssl: False
     username: !secret unifi_username
     password: !secret unifi_password
+
+  - platform: google_maps
+    username: !secret google_maps_username
+    password: !secret google_maps_password
 
 # Discover some devices automatically
 #discovery:
@@ -78,6 +78,11 @@ zone:
     longitude: !secret lande_work_longitude
     radius: 70
     icon: mdi:worker
+  - name: Cabin
+    latitude: !secret cabin_latitude
+    longitude: !secret cabin_longitude
+    radius: 100
+    icon: mdi:image-filter-hdr
 
 camera:
   - platform: ffmpeg
@@ -107,11 +112,9 @@ logger:
   logs:
     homeassistant.components.automation: info
     homeassistant.components.switch: warning
-    homeassistant.components.switch.flux: warning
     homeassistant.components.light: info 
     homeassistant.components.zwave: info
-    homeassistant.components.lock.zwave: debug
-    homeassistant.components.lock: debug
+    homeassistant.components.lock: info
 
 # View all events in a logbook
 logbook:
@@ -130,10 +133,23 @@ alarm_control_panel:
       pending_time: 30
     trigger_time: 4 
 
+cast:
+  media_player:
+  - host: 192.168.0.201
+  - host: 192.168.0.202
+  - host: 192.168.0.203
+  - host: 192.168.0.204
 
-media_player:
-  - platform: sonos
-  - platform: cast
+sonos:
+  media_player:
+    hosts:
+      - 192.168.0.211
+      - 192.168.0.212
+
+tesla:
+  username: !secret tesla_username
+  password: !secret tesla_password
+  scan_interval: 600
 
 verisure:
   username: !secret verisure_username
@@ -205,6 +221,9 @@ input_boolean:
   vacation_mode:
     name: Vacation
     icon: mdi:beach
+  door_autolock:
+    name: Auto lock
+    icon: mdi:lock-reset
 
 input_datetime:
   alarm_time_tor:
@@ -245,6 +264,95 @@ notify:
 
 shell_command:
   snapshot: !secret shell_command_snapshot
+
+
+google_assistant:
+  project_id: api-project-511361644410
+  client_id: !secret google_assistant_client_id
+  access_token: !secret google_assistant_access_token
+  agent_user_id: !secret google_assistant_agent_user_id
+  api_key: !secret google_assistant_api_key
+  expose_by_default: false
+  entity_config:
+    input_boolean.sleep_state_tor:
+      name: tor magnus sleeping
+      expose: true
+      aliases:
+      room: Master bedroom
+    input_boolean.sleep_state_lande:
+      name: lande sleeping
+      expose: true
+      aliases:
+      room: Master bedroom
+    input_boolean.sleep_state_ingrid:
+      name: ingrid sleeping
+      expose: true
+      aliases:
+      room: Ingrid bedroom
+    light.bedside_lamp_dimmer_level:
+      name: bedside lamp
+      expose: true
+      room: Master Bedroom
+    light.bedroom_tv_backlight_level:
+      name: tv backlight
+      expose: true
+      room: Master Bedroom
+    switch.dressing_table_light_switch:
+      name: dressing table lamp
+      expose: true
+      room: Master Bedroom
+    light.kitchen_bench_ceiling_lights_level:
+      name: kitchen bench light
+      expose: true
+      room: Kitchen
+    light.kitchen_table_ceiling_lamp_level:
+      name: kitchen table light
+      expose: true
+      room: Kitchen
+    light.kitchen_hallway_ceiling_lights_level:
+      name: kitchen hallway light
+      expose: true
+      room: Kitchen
+    switch.dining_room_standing_lamp_switch:
+      name: reading light
+      expose: true
+      room: Dining room
+    switch.corner_standing_lamp_switch:
+      name: corner light
+      expose: true
+      room: Dining room
+    switch.cabinet_lights_switch:
+      name: cabinet light
+      expose: true
+      room: Dining room
+    switch.serving_table_lamp_switch:
+      name: serving table light
+      expose: true
+      room: Dining room
+    switch.side_table_light_switch:
+      name: bookshelf light
+      expose: true
+      room: Dining room
+    light.dining_room_rail_1_level:
+      name: ceiling light
+      expose: true
+      room: Dining room
+    light.dining_room_rail_2_level:
+      name: office light
+      expose: true
+      room: Dining room
+    light.tv_area_level:
+      name: tv ceiling light
+      expose: true
+      room: TV Room
+    light.sofa_area_level:
+      name: sofa ceiling light
+      expose: true
+      room: TV Room
+    light.hallway_area_level:
+      name: hallway ceiling light
+      expose: true
+      room: TV Room
 
 binary_sensor: !include binary-sensor.yaml
 sensor: !include sensor.yaml

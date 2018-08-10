@@ -1,19 +1,26 @@
-#light_flash:
-#  alias: Light flash
-#  sequence:
-#    - service: homeassistant.turn_on
-#      data:
-#        entity_id: group.all_lights
-#    - delay:
-#        seconds: 2
-#    - service: homeassistant.turn_off
-#      data:
-#        entity_id: group.all_lights
-#    - delay:
-#        seconds: 2
-#    - service: script.turn_on
-#      data:
-#        entity_id: script.light_flash
+#
+# Kitchen
+#
+kitchen_on:
+  sequence:
+    - service: light.turn_on
+      entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level, light.kitchen_hallway_ceiling_lights_level
+      data_template:
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Morning') %}
+            79
+          {%- elif is_state('input_select.time_of_day', 'Day') %}
+            99
+          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+            60
+          {%- endif %}
+
+
+
+
+#
+# Sonos
+#
 
 sonos_tts_test:
   sequence:

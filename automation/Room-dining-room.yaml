@@ -9,8 +9,8 @@
       for:
         seconds: 20
     - platform: numeric_state
-      entity_id: sensor.dining_room_motion_sensor_luminance_2
-      below: 200
+      entity_id: sensor.fibaro_system_fgms001zw5_motion_sensor_luminance
+      below: 250
       for:
         seconds: 120
   condition:
@@ -21,6 +21,9 @@
         state: 'Home'
       - condition: template
         value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
+      - condition: numeric_state
+        entity_id: sensor.fibaro_system_fgms001zw5_motion_sensor_luminance
+        below: 300
   action:
     - service: switch.turn_on
       entity_id: switch.dining_room_standing_lamp_switch, switch.corner_standing_lamp_switch, switch.cabinet_lights_switch, switch.serving_table_lamp_switch, switch.side_table_light_switch
@@ -53,8 +56,8 @@
       for:
         seconds: 20
     - platform: numeric_state
-      entity_id: sensor.dining_room_motion_sensor_luminance_2
-      above: 250
+      entity_id: sensor.fibaro_system_fgms001zw5_motion_sensor_luminance
+      above: 300
       for:
         seconds: 120
   action:

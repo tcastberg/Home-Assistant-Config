@@ -1,4 +1,5 @@
 *
+!themes
 !automation
 !scenes
 !images
@@ -8,4 +9,4 @@
 !README.md
 secrets.yaml
 known_devices.yaml
-
+entity_registry.yaml

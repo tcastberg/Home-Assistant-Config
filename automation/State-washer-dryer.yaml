@@ -8,13 +8,13 @@
   action:
     - service: media_player.volume_set
       data:
-        entity_id: media_player.changing_room
+        entity_id: media_player.dining_room
         volume_level: 0.55
     - service: script.turn_on
       entity_id: script.say_sonos
       data:
         variables:
-          where: 'changing_room'
+          where: 'dining_room'
           what: 'I believe the washing machine has started'
 
 - id: '37'
@@ -27,19 +27,15 @@
   action:
     - service: media_player.volume_set
       data:
-        entity_id: media_player.changing_room
+        entity_id: media_player.dining_room
         volume_level: 0.55
     - service: script.turn_on
       entity_id: script.say_sonos
       data:
         variables:
-          where: 'changing_room'
+          where: 'dining_room'
           what: 'I believe the washing machine has finished'
-    - service: notify.html5_tor_magnus_pixel
-      data:
-        title: 'Washing machine'
-        message: 'Washing machine has finished'
-    - service: notify.html5_lande_phone
+    - service: notify.html5
       data:
         title: 'Washing machine'
         message: 'Washing machine has finished'
@@ -54,13 +50,13 @@
   action:
     - service: media_player.volume_set
       data:
-        entity_id: media_player.changing_room
+        entity_id: media_player.dining_room
         volume_level: 0.55
     - service: script.turn_on
       entity_id: script.say_sonos
       data:
         variables:
-          where: 'changing_room'
+          where: 'dining_room'
           what: 'I believe the dryer has started'
 
 - id: '39'
@@ -73,19 +69,15 @@
   action:
     - service: media_player.volume_set
       data:
-        entity_id: media_player.changing_room
+        entity_id: media_player.dining_room
         volume_level: 0.55
     - service: script.turn_on
       entity_id: script.say_sonos
       data:
         variables:
-          where: 'changing_room'
+          where: 'dining_room'
           what: 'I believe the dryer has finished'
-    - service: notify.html5_tor_magnus_pixel
-      data:
-        title: 'Dryer'
-        message: 'Dryer has finished'
-    - service: notify.html5_lande_phone
+    - service: notify.html5
       data:
         title: 'Dryer'
         message: 'Dryer has finished'

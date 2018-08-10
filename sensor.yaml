@@ -12,27 +12,14 @@
     - 'time'
     - 'date'
 
-- platform: onewire
-  names:
-    '12.385D67000000': Storage room 1W
-    '12.9D5967000000': Broken 1W
-    '26.984585000000': Storage room 1W
-    '26.A78785000000': Training room 1W
-  mount_dir: /onewire
-
 - platform: fitbit
   clock_format: 24H
+  unit_system: metric
   monitored_resources:
     - "activities/steps"
     - "activities/heart"
     - "body/weight"
     - "sleep/minutesAsleep"
-
-- platform: mqtt
-  state_topic: "owntracks/tmc/phone"
-  name: "Battery Tor Magnus"
-  unit_of_measurement: "charge"
-  value_template: '{{ value_json.batt }}'
 
 - platform: template
   sensors:

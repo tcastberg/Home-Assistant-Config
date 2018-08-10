@@ -7,8 +7,8 @@
       entity_id: input_select.home_state
       to: 'Home'
     - platform: numeric_state
-      entity_id: sensor.dining_room_motion_sensor_luminance_2
-      below: 200
+      entity_id: sensor.fibaro_system_fgms001zw5_motion_sensor_luminance
+      below: 250
       for:
         seconds: 120
     - platform: state
@@ -28,6 +28,9 @@
         state: 'off'
       - condition: template
         value_template: "{{not is_state('input_select.time_of_day','Night')}}"
+      - condition: numeric_state
+        entity_id: sensor.fibaro_system_fgms001zw5_motion_sensor_luminance
+        below: 300
   action:
     - service: light.turn_on
       entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
@@ -38,7 +41,7 @@
           {%- elif is_state('input_select.time_of_day', 'Day') %}
             100
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
-            20
+            35
           {%- endif %}
 
 - id: '63'    
@@ -51,8 +54,8 @@
       entity_id: input_select.home_state
       to: 'Away'
     - platform: numeric_state
-      entity_id: sensor.dining_room_motion_sensor_luminance_2
-      above: 250
+      entity_id: sensor.fibaro_system_fgms001zw5_motion_sensor_luminance
+      above: 300
       for:
         seconds: 120
     - platform: state

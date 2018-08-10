@@ -67,22 +67,28 @@
       - condition: state
         entity_id: input_select.time_of_day
         state: 'Evening'
-      - condition: state
-        entity_id: input_boolean.sleep_state_tor
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.sleep_state_lande
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.sleep_state_ingrid
-        state: 'on'
-      - condition: template
-        value_template: '{{(is_state("input_boolean.guests_present", "on") and is_state("input_boolean.sleep_state_guests", "on")) or is_state("input_boolean.guests_present","off")}}'
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: '{{ not is_state("input_select.home_state", "Home") }}'
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: input_boolean.sleep_state_tor
+                state: 'on'
+              - condition: state
+                entity_id: input_boolean.sleep_state_lande
+                state: 'on'
+              - condition: state
+                entity_id: input_boolean.sleep_state_ingrid
+                state: 'on'
+              - condition: template
+                value_template: '{{(is_state("input_boolean.guests_present", "on") and is_state("input_boolean.sleep_state_guests", "on")) or is_state("input_boolean.guests_present","off")}}'
   action:
     - service: input_select.select_option
       data:
         entity_id: input_select.time_of_day
-        option: 'Night'
+        option: Night
     - service: alarm_control_panel.alarm_arm_home
       entity_id: alarm_control_panel.home_alarm
       data:

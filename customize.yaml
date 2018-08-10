@@ -117,6 +117,12 @@ binary_sensor.dressingroom_motion_sensor_sensor:
   device_class: motion
   friendly_name: "Dressing room motion"
 
+binary_sensor.fibaro_system_fgms001zw5_motion_sensor_luminanc:
+  icon: mdi:brightness-5
+binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor:
+  device_class: motion
+  friendly_name: "Dining room stairs motion"
+
 # 1-wire sensors
 sensor.hallway_humidity:
   icon: mdi:water-percent
@@ -196,10 +202,38 @@ sensor.weather_precipitation:
 sensor.weather_wind_speed:
   icon: mdi:weather-windy-variant
 
-device_tracker.tmc_phone:
+device_tracker.tormagnus_pixel2:
   friendly_name: "Location"
-device_tracker.phone__lande_2:
+device_tracker.phone__lande:
   friendly_name: "Location"
 device_tracker.ipad__ingrid:
   friendly_name: "Location"
 
+device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker:
+  icon: mdi:car-estate
+
+switch.entrance_outside_light_switch:
+  icon: mdi:lightbulb
+switch.balcony_outside_light_switch:
+  icon: mdi:lightbulb
+switch.terrace_outside_light_switch:
+  icon: mdi:lightbulb
+switch.garden_lights_switch:
+  icon: mdi:lightbulb
+switch.dining_room_standing_lamp_switch:
+  icon: mdi:lightbulb
+switch.corner_standing_lamp_switch:
+  icon: mdi:lightbulb
+switch.cabinet_lights_switch:
+  icon: mdi:lightbulb
+switch.serving_table_lamp_switch:
+  icon: mdi:lightbulb
+switch.side_table_light_switch:
+  icon: mdi:lightbulb
+switch.dressing_room_wardrobes_switch:
+  icon: mdi:lightbulb
+switch.dressing_table_light_switch:
+  icon: mdi:lightbulb
+
+light.house_ventilation_dimmer_level:
+  icon: mdi:fan

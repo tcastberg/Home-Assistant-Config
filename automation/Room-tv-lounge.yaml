@@ -15,19 +15,11 @@
         seconds: 120
     - platform: state
       entity_id: media_player.tv_room
-      from: 'playing'
       to: 'idle'
       for:
         seconds: 5
     - platform: state
       entity_id: media_player.tv_room
-      from: 'playing'
-      to: 'off'
-      for:
-        seconds: 5
-    - platform: state
-      entity_id: media_player.tv_room
-      from: 'paused'
       to: 'off'
       for:
         seconds: 5
@@ -75,7 +67,6 @@
       entity_id: input_select.time_of_day
     - platform: state
       entity_id: media_player.tv_room
-      from: 'idle'
       to: 'playing'
       for:
         seconds: 5

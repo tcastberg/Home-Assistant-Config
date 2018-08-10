@@ -4,7 +4,7 @@
 - id: '15'
   alias: 'Wake up house'
   trigger:
-  - entity_id: binary_sensor.dressingroom_motion_sensor_sensor, binary_sensor.dining_room_motion_sensor_sensor_2
+  - entity_id: binary_sensor.dressingroom_motion_sensor_sensor, binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor
     platform: state
     to: 'on'
   - platform: time
@@ -12,18 +12,9 @@
   condition:
     condition: and
     conditions:
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: 'off'
       - condition: time
         after: '05:30:00'
         before: '20:00:00'
-      - condition: state
-        entity_id: input_select.home_state
-        state: 'Home'
-      - condition: state
-        entity_id: input_select.time_of_day
-        state: 'Night'
   action:
     - service: input_boolean.turn_off
       data:

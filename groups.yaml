@@ -5,11 +5,14 @@ default_view:
   entities:
     - group.status
     - group.weather
+    - group.tesla
 status:
   name: Status
+  control: hidden
   entities:
     - alarm_control_panel.home_alarm
     - lock.front_door_lock_locked
+    - input_boolean.door_autolock
     - input_boolean.vacation_mode
     - input_select.time_of_day
 weather:
@@ -20,6 +23,21 @@ weather:
     - sensor.weather_2h_temperature
     - sensor.weather_2h_precipitation
     - sensor.weather_2h_wind_speed
+tesla:
+  name: Tesla
+  entities:
+    - device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
+    - sensor.tesla_model_x_5yjxcce22jf095567_mileage_sensor
+    - sensor.tesla_model_x_5yjxcce22jf095567_range_sensor
+    - sensor.tesla_model_x_5yjxcce22jf095567_temperature_sensor_outside
+    - sensor.tesla_model_x_5yjxcce22jf095567_temperature_sensor_inside
+    - climate.tesla_model_x_5yjxcce22jf095567_hvac_climate_system
+    - lock.tesla_model_x_5yjxcce22jf095567_door_lock
+    - binary_sensor.tesla_model_x_5yjxcce22jf095567_parking_brake_sensor
+    - binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
+    - sensor.tesla_model_x_5yjxcce22jf095567_battery_sensor
+    - switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    - switch.tesla_model_x_5yjxcce22jf095567_maxrange_switch
 
 
 people:
@@ -40,7 +58,7 @@ tormagnus:
     - input_boolean.alarm_override_tor
     - input_boolean.alarm_workday_tor
     - input_boolean.sleep_state_tor
-    - device_tracker.tmc_phone
+    - device_tracker.tormagnus_pixel2
     - sensor.battery_tor_magnus
     - sensor.steps
     - sensor.weight
@@ -55,7 +73,7 @@ lande:
     - input_boolean.alarm_override_lande
     - input_boolean.alarm_workday_lande
     - input_boolean.sleep_state_lande
-    - device_tracker.phone__lande_2
+    - device_tracker.phone__lande
 ingridsofia:
   name: Ingrid Sofia
   icon: mdi:account
@@ -87,10 +105,12 @@ video:
     - media_player.kitchen
     - media_player.tv_room
     - media_player.master_bedroom
+    - media_player.training_room_tv
 audio:
   name: Audio
   entities:
     - media_player.changing_room
+    - media_player.dining_room
 
 
 lights:
@@ -115,30 +135,36 @@ lights:
     - group.utility
 front_yard:
   name: Front Yard
+  control: hidden
   entities:
     - switch.entrance_outside_light_switch
 entrance_hallway:
   name: Entrance Hallway
+  control: hidden
   entities:
     - light.entrance_hallway_ceiling_lights_level
 entrance_toilet:
   name: Entrance Toilet
+  control: hidden
   entities:
     - light.hallway_toilet_ceiling_dimmer_level
 laundry:
   name: Laundry
+  control: hidden
   entities:
     - light.laundry_dimmer_level
     - binary_sensor.washing_machine_activity
     - binary_sensor.dryer_activity
 kitchen:
   name: Kitchen
+  control: hidden
   entities:
     - light.kitchen_bench_ceiling_lights_level
     - light.kitchen_table_ceiling_lamp_level
     - light.kitchen_hallway_ceiling_lights_level
 dining_room:
   name: Dining room
+  control: hidden
   entities:
     - switch.dining_room_standing_lamp_switch
     - switch.corner_standing_lamp_switch
@@ -150,24 +176,29 @@ dining_room:
     - light.dining_room_rail_3_level
 balcony:
   name: Balcony
+  control: hidden
   entities:
     - switch.balcony_outside_light_switch
 tvlounge:
   name: TV lounge
+  control: hidden
   entities:
     - light.tv_area_level
     - light.sofa_area_level
     - light.hallway_area_level
 familybath:
   name: Family bathroom
+  control: hidden
   entities:
     - light.family_bathroom_dimmer_level
 masterbath:
   name: Master bathroom
+  control: hidden
   entities:
     - light.master_bathroom_dimmer_level
 masterbed:
   name: Master bedroom
+  control: hidden
   entities:
     - light.bedroom_tv_backlight_level
     - light.bedside_lamp_dimmer_level
@@ -176,20 +207,24 @@ masterbed:
     - light.changing_room_ceiling_light_level
 ingrid_bedroom:
   name: Ingrids bedroom
+  control: hidden
   entities:
     - light.ingrid_bedroom_ceiling_light_level
     - light.ingrid_bedroom_bed_light_level
 downstairs_hallway:
   name: Downstairs hallway
+  control: hidden
   entities:
     - light.downstairs_hallway_pendant_level
 back_yard:
   name: Back Yard
+  control: hidden
   entities:
     - switch.terrace_outside_light_switch
     - switch.garden_lights_switch
 utility:
   name: Utility
+  control: hidden
   entities:
     - light.house_ventilation_dimmer_level
 
@@ -200,7 +235,6 @@ cameras:
   icon: mdi:camera
   entities:
     - camera.hallway_camera
-    - camera.test_camera
     - camera.parking_camera
     - camera.entrance_camera
     - camera.garden_camera
@@ -214,7 +248,6 @@ climate:
     - group.humidity
     - group.temperature
     - group.luminance
-    - group.pressure
 temperature:
   name: Temperature
   entities:
@@ -224,14 +257,12 @@ temperature:
     - sensor.laundry_multisensor_temperature
     - sensor.kitchen_table_motion_sensor_temperature
     - sensor.kitchen_island_motion_sensor_temperature
-    - sensor.dining_room_motion_sensor_temperature_2
+    - sensor.fibaro_system_fgms001zw5_motion_sensor_temperature
     - sensor.balcony_door_temperature
     - sensor.tv_area_motion_sensor_temperature
     - sensor.family_bathroom_multisensor_temperature
     - sensor.master_bathroom_multisensor_temperature
     - sensor.dressingroom_motion_sensor_temperature
-    - sensor.1w_training_room_temperature
-    - sensor.1w_storage_room_temperature
 humidity:
   name: Humidity
   entities:
@@ -252,15 +283,11 @@ luminance:
     - sensor.laundry_multisensor_luminance
     - sensor.kitchen_table_motion_sensor_luminance
     - sensor.kitchen_island_motion_sensor_luminance
-    - sensor.dining_room_motion_sensor_luminance_2
+    - sensor.fibaro_system_fgms001zw5_motion_sensor_luminance
     - sensor.tv_area_motion_sensor_luminance
     - sensor.family_bathroom_multisensor_luminance
     - sensor.master_bathroom_multisensor_luminance
     - sensor.dressingroom_motion_sensor_luminance
-pressure:
-  name: Pressure
-  entities:
-    - sensor.1w_storage_room_pressure
 
 
 all_sensors:
@@ -292,12 +319,11 @@ motion:
     - binary_sensor.laundry_multisensor_sensor
     - binary_sensor.kitchen_table_motion_sensor_sensor
     - binary_sensor.kitchen_island_motion_sensor_sensor
-    - binary_sensor.dining_room_motion_sensor_sensor_2
+    - binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor
     - binary_sensor.tv_area_motion_sensor_sensor
     - binary_sensor.family_bathroom_multisensor_sensor
     - binary_sensor.master_bathroom_multisensor_sensor
     - binary_sensor.dressingroom_motion_sensor_sensor
-
 
 power_usage:
   name: Power
@@ -310,53 +336,73 @@ power:
   name: Current power usage
   icon: mdi:flash
   entities:
-    - sensor.doorbell_power
-    - sensor.bedroom_tv_backlight_power
-    - sensor.family_bathroom_dimmer_power
-    - sensor.master_bathroom_dimmer_power
-    - sensor.hallway_toilet_ceiling_dimmer_power
-    - sensor.laundry_dimmer_power
-    - sensor.house_ventilation_dimmer_power
     - sensor.balcony_outside_light_power
-    - sensor.dining_room_standing_lamp_power
-    - sensor.corner_standing_lamp_power
+    - sensor.bedroom_tv_backlight_power
     - sensor.cabinet_lights_power
-    - sensor.serving_table_lamp_power
+    - sensor.changing_room_ceiling_light_power
+    - sensor.corner_standing_lamp_power
     - sensor.dining_room_rail_1_power
     - sensor.dining_room_rail_2_power
     - sensor.dining_room_rail_3_power
-    - sensor.tv_area_power
-    - sensor.sofa_area_power
-    - sensor.hallway_area_power
-    - sensor.terrace_outside_light_power
-    - sensor.entrance_outside_light_power
-    - sensor.washing_machine_power
-    - sensor.dryer_power
+    - sensor.dining_room_standing_lamp_power
     - sensor.downstairs_hallway_pendant_power
+    - sensor.dressing_room_wardrobes_power
+    - sensor.dressing_table_light_power
+    - sensor.dryer_power
+    - sensor.entrance_hallway_ceiling_lights_power
+    - sensor.entrance_outside_light_power
+    - sensor.family_bathroom_dimmer_power
+    - sensor.garden_lights_power
+    - sensor.hallway_area_power
+    - sensor.hallway_toilet_ceiling_dimmer_power
+    - sensor.house_ventilation_dimmer_power
+    - sensor.ingrid_bedroom_bed_light_power
+    - sensor.ingrid_bedroom_ceiling_light_power
+    - sensor.kitchen_bench_ceiling_lights_power
+    - sensor.kitchen_hallway_ceiling_lights_power
+    - sensor.kitchen_table_ceiling_lamp_power
+    - sensor.laundry_dimmer_power
+    - sensor.master_bathroom_dimmer_power
+    - sensor.serving_table_lamp_power
+    - sensor.side_table_light_power
+    - sensor.sofa_area_power
+    - sensor.terrace_outside_light_power
+    - sensor.tv_area_power
+    - sensor.washing_machine_power
 energy:
   name: Total power usage
   icon: mdi:flash
   entities:
-    - sensor.doorbell_energy
-    - sensor.bedroom_tv_backlight_energy
-    - sensor.family_bathroom_dimmer_energy
-    - sensor.master_bathroom_dimmer_energy
-    - sensor.hallway_toilet_ceiling_dimmer_energy
-    - sensor.laundry_dimmer_energy
-    - sensor.house_ventilation_dimmer_energy
     - sensor.balcony_outside_light_energy
-    - sensor.dining_room_standing_lamp_energy
-    - sensor.corner_standing_lamp_energy
+    - sensor.bedroom_tv_backlight_energy
     - sensor.cabinet_lights_energy
-    - sensor.serving_table_lamp_energy
+    - sensor.changing_room_ceiling_light_energy
+    - sensor.corner_standing_lamp_energy
     - sensor.dining_room_rail_1_energy
     - sensor.dining_room_rail_2_energy
     - sensor.dining_room_rail_3_energy
-    - sensor.tv_area_energy
-    - sensor.sofa_area_energy
-    - sensor.hallway_area_energy
-    - sensor.terrace_outside_light_energy
-    - sensor.entrance_outside_light_energy
-    - sensor.washing_machine_energy
-    - sensor.dryer_energy
+    - sensor.dining_room_standing_lamp_energy
     - sensor.downstairs_hallway_pendant_energy
+    - sensor.dressing_room_wardrobes_energy
+    - sensor.dressing_table_light_unknown
+    - sensor.dryer_energy
+    - sensor.entrance_hallway_ceiling_lights_energy
+    - sensor.entrance_outside_light_energy
+    - sensor.family_bathroom_dimmer_energy
+    - sensor.garden_lights_energy
+    - sensor.hallway_area_energy
+    - sensor.hallway_toilet_ceiling_dimmer_energy
+    - sensor.house_ventilation_dimmer_unknown
+    - sensor.ingrid_bedroom_bed_light_energy
+    - sensor.ingrid_bedroom_ceiling_light_energy
+    - sensor.kitchen_bench_ceiling_lights_energy
+    - sensor.kitchen_hallway_ceiling_lights_energy
+    - sensor.kitchen_table_ceiling_lamp_energy
+    - sensor.laundry_dimmer_energy
+    - sensor.master_bathroom_dimmer_energy
+    - sensor.serving_table_lamp_energy
+    - sensor.side_table_light_energy
+    - sensor.sofa_area_energy
+    - sensor.terrace_outside_light_energy
+    - sensor.tv_area_energy
+    - sensor.washing_machine_energy
