@@ -84,6 +84,19 @@ zone:
     radius: 100
     icon: mdi:image-filter-hdr
 
+proximity:
+  tmc_home:
+    zone: home
+    devices:
+      - device_tracker.google_maps_117621586906275495071
+    tolerance: 100
+    unit_of_measurement: m
+  lande_home:
+    devices:
+      - device_tracker.google_maps_106703534047375134126
+    tolerance: 100
+    unit_of_measurement: m
+
 camera:
   - platform: ffmpeg
     name: Hallway Camera

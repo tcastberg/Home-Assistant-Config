@@ -124,3 +124,44 @@
       entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level
 
 
+- id: '91'    
+  alias: 'TV on'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Morning'
+      for:
+        seconds: 10
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+      for:
+        seconds: 10
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: template
+        value_template: "{{not is_state('input_select.time_of_day', 'Night')}}" 
+  action:
+    - service: switch.turn_on
+      entity_id: switch.tv_room_tv_switch
+
+- id: '92'    
+  alias: 'TV off'
+  trigger:
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
+      for:
+        seconds: 10
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 10
+  action:
+    - service: switch.turn_off
+      entity_id: switch.tv_room_tv_switch

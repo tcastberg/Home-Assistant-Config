@@ -168,9 +168,6 @@ views:
           - entity: switch.terrace_outside_light_switch
             name: Terrace
             tap_action: toggle
-          - entity: switch.garden_lights_switch
-            name: Garden
-            tap_action: toggle
 
       - type: glance
         title: Entrance Hallway
@@ -266,6 +263,10 @@ views:
             name: Sofa
           - entity: light.hallway_area_level
             name: Hallway
+          - entity: switch.tv_room_tv_switch
+            name: TV
+            tap_action: toggle
+            icon: mdi:television
           - entity: sensor.tv_area_motion_sensor_temperature
             name: Temperature
           - entity: sensor.tv_area_motion_sensor_luminance
@@ -400,7 +401,7 @@ views:
           - sensor.entrance_hallway_ceiling_lights_power
           - sensor.entrance_outside_light_power
           - sensor.family_bathroom_dimmer_power
-          - sensor.garden_lights_power
+          - sensor.tv_room_tv_power
           - sensor.hallway_area_power
           - sensor.hallway_toilet_ceiling_dimmer_power
           - sensor.house_ventilation_dimmer_power
@@ -437,7 +438,7 @@ views:
           - sensor.entrance_hallway_ceiling_lights_energy
           - sensor.entrance_outside_light_energy
           - sensor.family_bathroom_dimmer_energy
-          - sensor.garden_lights_energy
+          - sensor.tv_room_tv_energy
           - sensor.hallway_area_energy
           - sensor.hallway_toilet_ceiling_dimmer_energy
           - sensor.house_ventilation_dimmer_unknown

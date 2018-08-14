@@ -186,6 +186,7 @@ tvlounge:
     - light.tv_area_level
     - light.sofa_area_level
     - light.hallway_area_level
+    - switch.tv_room_tv_switch
 familybath:
   name: Family bathroom
   control: hidden
@@ -221,7 +222,6 @@ back_yard:
   control: hidden
   entities:
     - switch.terrace_outside_light_switch
-    - switch.garden_lights_switch
 utility:
   name: Utility
   control: hidden
@@ -352,7 +352,7 @@ power:
     - sensor.entrance_hallway_ceiling_lights_power
     - sensor.entrance_outside_light_power
     - sensor.family_bathroom_dimmer_power
-    - sensor.garden_lights_power
+    - sensor.tv_room_tv_power
     - sensor.hallway_area_power
     - sensor.hallway_toilet_ceiling_dimmer_power
     - sensor.house_ventilation_dimmer_power
@@ -389,7 +389,7 @@ energy:
     - sensor.entrance_hallway_ceiling_lights_energy
     - sensor.entrance_outside_light_energy
     - sensor.family_bathroom_dimmer_energy
-    - sensor.garden_lights_energy
+    - sensor.tv_room_tv_energy
     - sensor.hallway_area_energy
     - sensor.hallway_toilet_ceiling_dimmer_energy
     - sensor.house_ventilation_dimmer_unknown

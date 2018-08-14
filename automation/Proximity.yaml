@@ -1,0 +1,47 @@
+- id: '89'
+  alias: 'Turn on light when Tor Magnus approaches home'
+  trigger:
+    - platform: numeric_state
+      entity_id: proximity.tmc_home
+      below: 1500
+      above: 100
+  condition:
+    - condition: template
+      value_template: '{{ states.proximity.tmc_home.attributes.dir_of_travel == "towards" }}'
+  action:
+    - service: automation.trigger
+      entity_id: automation.entrance_hallway_on
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'Tor Magnus is almost home.'
+    - service: notify.html5_tor_magnus_pixel
+      data:
+        title: 'Arrival'
+        message: 'Tor Magnus is almost home'
+
+- id: '90'
+  alias: 'Turn on light when Lande approaches home'
+  trigger:
+    - platform: numeric_state
+      entity_id: proximity.lande_home
+      below: 1500
+      above: 100
+  condition:
+    - condition: template
+      value_template: '{{ states.proximity.lande_home.attributes.dir_of_travel == "towards" }}'
+  action:
+    - service: automation.trigger
+      entity_id: automation.entrance_hallway_on
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'Lande is almost home.'
+    - service: notify.html5_tor_magnus_pixel
+      data:
+        title: 'Arrival'
+        message: 'Lande is almost home'
