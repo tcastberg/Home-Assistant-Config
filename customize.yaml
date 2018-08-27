@@ -88,14 +88,14 @@ binary_sensor.kitchen_island_motion_sensor_sensor:
   friendly_name: "Kitchen island motion"
 
 # Fibaro motion sensor
-sensor.dining_room_motion_sensor_luminance_2:
+sensor.dining_room_stairs_motion_sensor_luminance:
   icon: mdi:brightness-5
-  friendly_name: "Dining room luminance"
-sensor.dining_room_motion_sensor_temperature_2:
-  friendly_name: "Dining room temperature"
-binary_sensor.dining_room_motion_sensor_sensor_2:
+  friendly_name: "Dining room stairs luminance"
+sensor.dining_room_stairs_motion_sensor_temperature:
+  friendly_name: "Dining room stairs temperature"
+binary_sensor.dining_room_stairs_motion_sensor_sensor:
   device_class: motion
-  friendly_name: "Dining room motion"
+  friendly_name: "Dining room stairs motion"
 
 # Fibaro motion sensor
 sensor.tv_area_motion_sensor_luminance:
@@ -117,11 +117,16 @@ binary_sensor.dressingroom_motion_sensor_sensor:
   device_class: motion
   friendly_name: "Dressing room motion"
 
-binary_sensor.fibaro_system_fgms001zw5_motion_sensor_luminanc:
+# Fibaro motion sensor
+sensor.training_room_motion_sensor_luminance:
   icon: mdi:brightness-5
-binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor:
+  friendly_name: "Training room luminance"
+sensor.training_room_motion_sensor_temperature:
+  friendly_name: "Training room temperature"
+binary_sensor.training_room_motion_sensor_sensor:
   device_class: motion
-  friendly_name: "Dining room stairs motion"
+  friendly_name: "Training room motion"
+
 
 # 1-wire sensors
 sensor.hallway_humidity:

@@ -1,3 +1,7 @@
+resources:
+  - url: /local/circle-sensor-card.js?v=0
+    type: module
+
 title: HAL 9000
 
 views:
@@ -6,6 +10,8 @@ views:
     id: state
     icon: mdi:home-assistant
     cards:
+      - type: weather-forecast
+        entity: weather.dark_sky
       - type: entities
         entities:
           - alarm_control_panel.home_alarm
@@ -49,7 +55,7 @@ views:
           - binary_sensor.laundry_multisensor_sensor
           - binary_sensor.kitchen_table_motion_sensor_sensor
           - binary_sensor.kitchen_island_motion_sensor_sensor
-          - binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor
+          - binary_sensor.dining_room_stairs_motion_sensor_sensor
           - binary_sensor.tv_area_motion_sensor_sensor
           - binary_sensor.family_bathroom_multisensor_sensor
           - binary_sensor.master_bathroom_multisensor_sensor
@@ -58,6 +64,7 @@ views:
           - binary_sensor.balcony_door_sensor_2
           - binary_sensor.bedroom_garden_door_sensor
           - binary_sensor.backhall_garden_door_sensor
+          - binary_sensor.training_room_motion_sensor_sensor
         state_filter:
           - 'detected'
           - 'on'
@@ -128,10 +135,230 @@ views:
           - input_boolean.sleep_state_tor
           - entity: device_tracker.google_maps_117621586906275495071
             name: Location
-          - sensor.steps
-          - sensor.weight
-          - sensor.resting_heart_rate
-          - sensor.sleep_minutes_asleep
+#     - type: picture-elements
+#       image: /local/lovelace/icons/fitbit.png
+#       elements:
+#       - type: custom:circle-sensor-card
+#         entity: sensor.weight_loss
+#         max: 65
+#         min: 0
+#         stroke_width: 15
+#         gradient: true
+#         fill: '#125054'
+#         name: loss
+#         units: ' '
+#         font_style:
+#           font-size: 1.1em
+#           font-color: white
+#           text-shadow: '2px 2px black'
+#         style:
+#           top: 5%
+#           left: 80%
+#           width: 4em
+#           height: 4em
+#           transform: none
+#       - type: custom:circle-sensor-card
+#         entity: sensor.fitbit_steps
+#         max: 10000
+#         min: 0
+#         stroke_width: 15
+#         gradient: true
+#         fill: '#125054'
+#         name: steps
+#         units: ' '
+#         font_style:
+#           font-size: 1.1em
+#           font-color: white
+#           text-shadow: '2px 2px black'
+#         color_stops:
+#           1: '#09C7E8'
+#           10000: '#0BDF0E'
+#         style:
+#           top: 70%
+#           left: 5%
+#           width: 4em
+#           height: 4em
+#           transform: none
+#       - type: custom:circle-sensor-card
+#         entity: sensor.floors
+#         max: 10
+#         min: 0
+#         stroke_width: 15
+#         gradient: true
+#         fill: '#125054'
+#         name: floors
+#         units: ' '
+#         font_style:
+#           font-size: 1.1em
+#           font-color: white
+#           text-shadow: '2px 2px black'
+#         color_stops:
+#           1: '#09C7E8'
+#           10: '#0BDF0E'
+#         style:
+#           top: 70%
+#           left: 24%
+#           width: 4em
+#           height: 4em
+#           transform: none
+#       - type: custom:circle-sensor-card
+#         entity: sensor.distance
+#         max: 10
+#         min: 0
+#         stroke_width: 15
+#         gradient: true
+#         fill: '#125054'
+#         name: miles
+#         units: ' '
+#         font_style:
+#           font-size: 1.1em
+#           font-color: white
+#           text-shadow: '2px 2px black'
+#         color_stops:
+#           1: '#09C7E8'
+#           10: '#0BDF0E'
+#         style:
+#           top: 70%
+#           left: 43%
+#           width: 4em
+#           height: 4em
+#           transform: none
+#       - type: custom:circle-sensor-card
+#         entity: sensor.fitbit_calories
+#         max: 3000
+#         min: 0
+#         stroke_width: 15
+#         gradient: true
+#         fill: '#125054'
+#         name: cals
+#         shadow: true
+#         units: ' '
+#         font_style:
+#           font-size: 1.1em
+#           font-color: white
+#           text-shadow: '2px 2px black'
+#         color_stops:
+#           1: '#09C7E8'
+#           3000: '#0BDF0E'
+#         style:
+#           top: 70%
+#           left: 62%
+#           width: 4em
+#           height: 4em
+#           transform: none
+#       - type: custom:circle-sensor-card
+#         entity: sensor.fitbit_minutes_active
+#         max: 30
+#         min: 0
+#         stroke_width: 15
+#         gradient: true
+#         fill: '#125054'
+#         name: active
+#         units: ' '
+#         font_style:
+#           font-size: 1.1em
+#           font-color: white
+#           text-shadow: '2px 2px black'
+#         color_stops:
+#           1: '#09C7E8'
+#           30: '#0BDF0E'
+#         style:
+#           top: 70%
+#           left: 80%
+#           width: 4em
+#           height: 4em
+#           transform: none
+#       - type: custom:hui-markdown-card
+#         content: >
+#           Tor Magnus
+#         style:
+#           top: 6%
+#           left: 1%
+#           font-size: 18px
+#           color: white
+#           text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+#           "--paper-card-background-color": none
+#           "--paper-material-elevation-1_-_box-shadow": none
+#           "--shadow-elevation-2dp_-_box-shadow": none
+#           transform: translate(0%,-50%)
+#       - type: state-icon
+#         entity: sensor.weight
+#         title: Weight
+#         style:
+#           left: 3%
+#           top: 7%
+#           "--iron-icon-fill-color": '#09C7E8'
+#           transform: none
+#       - type: state-label
+#         entity: sensor.weight
+#         title: Weight
+#         style:
+#           left: 12%
+#           top: 8%
+#           color: white
+#           transform: none
+#       - type: state-icon
+#         entity: sensor.bmi
+#         title: BMI
+#         style:
+#           left: 31%
+#           top: 7%
+#           "--iron-icon-fill-color": '#09C7E8'
+#           transform: none
+#       - type: state-label
+#         entity: sensor.bmi
+#         title: BMI
+#         style:
+#           left: 40%
+#           top: 8%
+#           color: white
+#           transform: none
+#       - type: state-icon
+#         entity: sensor.body_fat
+#         title: Body Fat
+#         style:
+#           left: 59%
+#           top: 7%
+#           "--iron-icon-fill-color": '#09C7E8'
+#           transform: none
+#       - type: state-label
+#         entity: sensor.body_fat
+#         title: Body Fat
+#         style:
+#           left: 67%
+#           top: 8%
+#           color: white
+#           transform: none
+#       - type: image
+#         entity: sensor.ionic_battery
+#         title: Ionic Battery
+#         image: /local/lovelace/icons/battery_full.png
+#         state_image:
+#           "High": /local/lovelace/icons/battery_high.png
+#           "Medium": /local/lovelace/icons/battery_medium.png
+#           "Low": /local/lovelace/icons/battery_low.png
+#         style:
+#           left: 12%
+#           top: 1%
+#           transform: none
+#           width: 24px
+#           height: 24px
+#       - type: state-icon
+#         entity: sensor.resting_heart_rate
+#         title: Resting HR
+#         style:
+#           left: 3%
+#           top: 21%
+#           "--iron-icon-fill-color": red
+#           transform: none
+#       - type: state-label
+#         entity: sensor.resting_heart_rate
+#         title: Resting HR
+#         style:
+#           left: 12%
+#           top: 22%
+#           color: white
+#           transform: none
       - type: entities
         title: Lande
         show_header_toggle: false
@@ -214,6 +441,8 @@ views:
             name: Table
           - entity: light.kitchen_hallway_ceiling_lights_level
             name: Hallway
+          - entity: input_boolean.dinner_time
+            name: Dinner time
           - entity: sensor.kitchen_table_motion_sensor_temperature
             name: Table
           - entity: sensor.kitchen_table_motion_sensor_luminance
@@ -248,9 +477,9 @@ views:
           - entity: light.dining_room_rail_2_level
             name: Dining
           #- entity: light.dining_room_rail_3_level
-          - entity: sensor.fibaro_system_fgms001zw5_motion_sensor_temperature
+          - entity: sensor.dining_room_stairs_motion_sensor_temperature
             name: Temperature
-          - entity: sensor.fibaro_system_fgms001zw5_motion_sensor_luminance
+          - entity: sensor.dining_room_stairs_motion_sensor_luminance
             name: Luminance
           - entity: sensor.balcony_door_temperature
 
@@ -347,6 +576,10 @@ views:
         entities:
           - entity: sensor.training_room_humidity
             name: Humidity
+          - entity: sensor.training_room_motion_sensor_temperature
+            name: Temperature
+          - entity: sensor.training_room_motion_sensor_luminance
+            name: Luminance
 
 #      - type: glance
 #        title: Work Room
@@ -358,7 +591,7 @@ views:
     cards:
       - type: picture-glance
         title: Front entrance
-        camera_image: camera.entrance_camera
+        camera_image: camera.front_door
         entities: 
           - switch.entrance_outside_light_switch
       - type: picture-glance
@@ -368,12 +601,22 @@ views:
           - light.entrance_hallway_ceiling_lights_level
       - type: picture-glance
         title: Parking area
-        camera_image: camera.parking_camera
+        camera_image: camera.car_parking
         entities: 
           - switch.entrance_outside_light_switch
       - type: picture-glance
+        title: Front garden
+        camera_image: camera.front_lawn
+        entities: 
+          - switch.terrace_outside_light_switch
+      - type: picture-glance
         title: Back garden
-        camera_image: camera.garden_camera
+        camera_image: camera.back_garden
+        entities: 
+          - switch.terrace_outside_light_switch
+      - type: picture-glance
+        title: Tool shed
+        camera_image: camera.tool_shed
         entities: 
           - switch.terrace_outside_light_switch
 

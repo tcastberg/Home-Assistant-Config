@@ -81,9 +81,9 @@
           {%- if is_state('input_select.time_of_day', 'Morning') %}
             30
           {%- elif is_state('input_select.time_of_day', 'Day') %}
-            40
+            35
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
-            20
+            15
           {%- elif is_state('input_select.time_of_day', 'Night') %}
             10
           {%- endif %}
@@ -94,11 +94,11 @@
           {%- if is_state('input_select.time_of_day', 'Morning') %}
             50
           {%- elif is_state('input_select.time_of_day', 'Day') %}
-            60
+            50
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
-            40
+            30
           {%- elif is_state('input_select.time_of_day', 'Night') %}
-            20
+            10
           {%- endif %}
 
 - id: '56'    

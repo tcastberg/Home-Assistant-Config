@@ -1,0 +1,3 @@
+sensor.entrance_hallway_ceiling_lights_luminance:
+  ignored: true
+  polling_intensity: 0

@@ -9,10 +9,13 @@
       for:
         seconds: 3
     - platform: state
-      entity_id: binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
+      entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
     - platform: state
       entity_id: input_select.time_of_day
+    - platform: state
+      entity_id: input_boolean.dinner_time
+      to: 'off'
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
       below: 200
@@ -22,7 +25,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor
+        entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor
         state: 'off'
       - condition: state
         entity_id: binary_sensor.kitchen_island_motion_sensor_sensor
@@ -30,6 +33,9 @@
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
+      - condition: state
+        entity_id: input_boolean.dinner_time
+        state: 'on'
       - condition: template
         value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
       - condition: numeric_state
@@ -50,12 +56,20 @@
   alias: 'Kitchen on'
   trigger:
     - platform: state
-      entity_id: binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
+      entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.dinner_time
       to: 'on'
   condition:
-      condition: numeric_state
-      entity_id: sensor.kitchen_table_motion_sensor_luminance
-      below: 250
+    condition: and
+    conditions:
+      - condition: numeric_state
+        entity_id: sensor.kitchen_table_motion_sensor_luminance
+        below: 250
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
   action:
     - service: script.turn_on
       entity_id: script.kitchen_on
@@ -74,7 +88,7 @@
       for:
         seconds: 3
     - platform: state
-      entity_id: binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
+      entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
@@ -85,7 +99,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.fibaro_system_fgms001zw5_motion_sensor_sensor
+        entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor
         state: 'off'
       - condition: state
         entity_id: binary_sensor.kitchen_table_motion_sensor_sensor
@@ -101,6 +115,9 @@
           - condition: state
             entity_id: input_select.home_state
             state: 'Away'
+          - condition: numeric_state
+            entity_id: sensor.kitchen_table_motion_sensor_luminance
+            above: 250
   action:
     - service: light.turn_off
       entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level, light.kitchen_hallway_ceiling_lights_level

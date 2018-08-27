@@ -43,6 +43,10 @@ zwave:
 
 prometheus:
 
+weather:
+  - platform: darksky
+    api_key: !secret darksky_apikey
+
 device_tracker:
   - platform: unifi
     host: !secret unifi_host
@@ -102,20 +106,20 @@ camera:
     name: Hallway Camera
     input: !secret foscam_url 
   - platform: ffmpeg
-    name: Test camera
-    input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=7&stream=0.sdp?real_stream--rtp-caching=100
+    name: Front door
+    input: !secret nvr_front_stairs
   - platform: ffmpeg
-    name: Parking camera
-    input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=1&stream=0.sdp?real_stream--rtp-caching=100
+    name: Front lawn
+    input: !secret nvr_front_south
   - platform: ffmpeg
-    name: Entrance camera
-    input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=2&stream=0.sdp?real_stream--rtp-caching=100
+    name: Car parking
+    input: !secret nvr_front_north
   - platform: ffmpeg
-    name: Garden camera
-    input: -rtsp_transport tcp -i rtsp://192.168.0.36:554/user=admin&password=&channel=3&stream=0.sdp?real_stream--rtp-caching=100
-#  - platform: generic
-#    name: Hallway Camera
-#    still_image_url: !secret camera_still_image_url
+    name: Tool shed
+    input: !secret nvr_rear_south
+  - platform: ffmpeg
+    name: Back garden
+    input: !secret nvr_rear_north
 
 # Enables support for tracking state changes over time
 history:
@@ -237,6 +241,9 @@ input_boolean:
   door_autolock:
     name: Auto lock
     icon: mdi:lock-reset
+  dinner_time:
+    name: Dinner time
+    icon: mdi:food-fork-drink
 
 input_datetime:
   alarm_time_tor:
@@ -290,17 +297,17 @@ google_assistant:
     input_boolean.sleep_state_tor:
       name: tor magnus sleeping
       expose: true
-      aliases:
       room: Master bedroom
     input_boolean.sleep_state_lande:
       name: lande sleeping
       expose: true
-      aliases:
       room: Master bedroom
+    input_boolean.dinner_time:
+      name: dinner time
+      expose: true
     input_boolean.sleep_state_ingrid:
       name: ingrid sleeping
       expose: true
-      aliases:
       room: Ingrid bedroom
     light.bedside_lamp_dimmer_level:
       name: bedside lamp

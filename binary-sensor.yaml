@@ -6,7 +6,7 @@
       device_class: opening
       friendly_name: "Balcony door"
       value_template: >
-        {{ states.sensor.fibaro_system_fgdw002_door_opening_sensor_2_access_control.state == '22' }}
+        {{ states.sensor.balcony_door_sensor_access_control.state == '22' }}
   
     washing_machine_activity:
       friendly_name: "Washing machine running state"
