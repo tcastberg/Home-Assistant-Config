@@ -1,0 +1,44 @@
+#- id: '1'
+#  alias: 'message'
+#  trigger:
+#    platform: event
+#    event_type: html5_notification.clicked
+#    event_data:
+#     action: 'blah'
+#  action:
+#    - service: notify.html5_tor_magnus_pixel
+#      data:
+#        message: 'Someone at door'
+#        data:
+#          actions:
+#            - action: 'open_door'
+#              title: 'Open door'
+#
+#- id: '58'
+#  alias: 'HTML5 push notification action button clicked'
+#  trigger:
+#    platform: event
+#    event_type: html5_notification.clicked
+#    event_data:
+#     action: open_door
+#  action:
+#    - service: notify.html5
+#      data:
+#        message: 'Door opened'
+#        data:
+#          tag: 'test-notification'
+
+
+
+#- id: '14'
+#  alias: 'Starting Home Assistant'
+#  trigger:
+#    platform: homeassistant
+#    event: start
+#  condition:
+#    condition: state
+#    entity_id: input_select.home_state
+#    state: 'Home'
+#  action:
+#    - service: switch.turn_on
+#      entity_id: switch.fluxed_tv_backlight

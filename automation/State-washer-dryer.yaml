@@ -15,7 +15,7 @@
       data:
         variables:
           where: 'dining_room'
-          what: 'I believe the washing machine has started'
+          what: 'The washing machine has started'
 
 - id: '37'
   alias: 'Washing machine stopped'
@@ -34,7 +34,7 @@
       data:
         variables:
           where: 'dining_room'
-          what: 'I believe the washing machine has finished'
+          what: 'The washing machine has finished'
     - service: notify.html5
       data:
         title: 'Washing machine'
@@ -57,7 +57,7 @@
       data:
         variables:
           where: 'dining_room'
-          what: 'I believe the dryer has started'
+          what: 'The dryer has started'
 
 - id: '39'
   alias: 'Dryer stopped'
@@ -76,7 +76,7 @@
       data:
         variables:
           where: 'dining_room'
-          what: 'I believe the dryer has finished'
+          what: 'The dryer has finished'
     - service: notify.html5
       data:
         title: 'Dryer'
