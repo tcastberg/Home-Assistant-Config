@@ -1,11 +1,12 @@
 - platform: yr
-  name: Weather +2H
-  forecast: 2
+  name: Weather 
   monitored_conditions:
     - temperature
     - symbol
     - precipitation
     - windSpeed
+    - humidity
+    - cloudiness
 
 - platform: time_date
   display_options:
@@ -46,7 +47,7 @@
             {% set average = states.sensor.average_humidity.state|float %}
             {% set family = states.sensor.family_bathroom_multisensor_relative_humidity.state|float - average %}
             {% set master = states.sensor.master_bathroom_multisensor_relative_humidity.state|float - average %}
-            {% set laundry = (states.sensor.laundry_multisensor_relative_humidity.state|float - average) - 4 %}
+            {% set laundry = (states.sensor.laundry_multisensor_relative_humidity.state|float - average) - 3 %}
             {{[family,master,laundry]|max|round(1)}}
           {% else %}
             0

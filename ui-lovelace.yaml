@@ -12,41 +12,22 @@ views:
     cards:
       - type: weather-forecast
         entity: weather.dark_sky
-      - type: entities
+      - type: glance
         entities:
-          - alarm_control_panel.home_alarm
-          - lock.front_door_lock_locked
-          - input_boolean.door_autolock
-          - input_boolean.vacation_mode
-          - input_select.time_of_day
+          - entity: alarm_control_panel.home_alarm
+            name: Alarm
+          - entity: lock.front_door_lock_locked
+            name: Front door
+          - entity: input_boolean.door_autolock
+            name: Autolock
+          - entity: input_boolean.vacation_mode
+          - entity: input_select.time_of_day
           - entity: sensor.average_temperature
-            name: Average house Temperature
+            name: Avg temperature
           - entity: sensor.average_humidity
-            name: Average house humidity
+            name: Avg humidity
           - entity: light.house_ventilation_dimmer_level
-            name: House ventilation
-
-      - type: map
-        entities:
-          - device_tracker.google_maps_117621586906275495071
-          - device_tracker.google_maps_106703534047375134126
-
-      - type: entity-filter
-        entities:
-          - entity: device_tracker.google_maps_117621586906275495071
-            name: Tor Magnus
-          - entity: device_tracker.google_maps_106703534047375134126
-            name: Lande
-          - entity: device_tracker.ipad__ingrid
-            name: Ingrid
-          - entity: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
-            name: Marvin
-        state_filter:
-          - 'home'
-        card:
-          type: glance
-          title: People that are home
-          show_state: false
+            name: Ventilation
 
       - type: entity-filter
         entities:
@@ -73,6 +54,29 @@ views:
           title: Triggered sensors
           show_state: false
 
+      - type: entity-filter
+        entities:
+          - entity: device_tracker.google_maps_117621586906275495071
+            name: Tor Magnus
+          - entity: device_tracker.google_maps_106703534047375134126
+            name: Lande
+          - entity: device_tracker.ipad__ingrid
+            name: Ingrid
+          - entity: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
+            name: Marvin
+        state_filter:
+          - 'home'
+        card:
+          type: glance
+          title: People that are home
+          show_state: false
+
+      - type: map
+        aspect_ratio: 60%
+        entities:
+          - device_tracker.google_maps_117621586906275495071
+          - device_tracker.google_maps_106703534047375134126
+
       - type: picture-elements
         image: /local/tesla.png
         elements:
@@ -90,14 +94,14 @@ views:
           - type: state-label
             entity: sensor.tesla_model_x_5yjxcce22jf095567_range_sensor
             style:
-              top: 82%
+              top: 10%
               left: 92%
               suffix: km
           - type: state-icon
             entity: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
             style:
               top: 51%
-              left: 76%
+              left: 85%
           - type: state-label
             entity: sensor.tesla_model_x_5yjxcce22jf095567_temperature_sensor_inside
             style:
@@ -107,13 +111,13 @@ views:
           - type: state-label
             entity: sensor.tesla_model_x_5yjxcce22jf095567_temperature_sensor_outside
             style:
-              top: 20%
+              top: 10%
               left: 50%
           - type: state-icon
             entity: climate.tesla_model_x_5yjxcce22jf095567_hvac_climate_system
             style:
               top: 10%
-              left: 50%
+              left: 5%
           - type: state-icon
             tap_action: toggle
             entity:  lock.tesla_model_x_5yjxcce22jf095567_door_lock
@@ -395,6 +399,16 @@ views:
           - entity: switch.terrace_outside_light_switch
             name: Terrace
             tap_action: toggle
+          - entity: sensor.weather_temperature
+            name: Temperature
+          - entity: sensor.weather_humidity
+            name: Humidity
+          - entity: sensor.weather_precipitation
+            name: Precipitation
+          - entity: sensor.weather_wind_speed
+            name: Wind speed
+          - entity: sensor.weather_cloudiness
+            name: Cloudiness
 
       - type: glance
         title: Entrance Hallway

@@ -43,12 +43,29 @@
         parameter: 1
         value: 'Disable Away, Auto Lock'
 
+
 - id: '87'
   alias: 'Disable autolock'
   trigger:
     platform: state
     entity_id: input_boolean.door_autolock
     to: 'off'
+  action:
+    - service: zwave.set_config_parameter
+      data:
+        node_id: 47
+        parameter: 1
+        value: 'Disable Away, Manual Lock'
+
+- id: '88'
+  alias: 'Set evening autolock'
+  trigger:
+    platform: time
+    at: '19:45:00'
+  action:
+    service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.door_autolock
 
 - id: '59'    
   alias: 'Entrance hallway on'

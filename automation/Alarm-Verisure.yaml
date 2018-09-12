@@ -35,8 +35,8 @@
     entity_id: alarm_control_panel.home_alarm
     to: 'armed_home'
   condition:
-    condition: template
-    value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','armed_home')}}"
+    - condition: template
+      value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','armed_home')}}"
   action:
     - service: alarm_control_panel.alarm_arm_home
       entity_id: alarm_control_panel.holmsens_vei_alarm
@@ -91,10 +91,8 @@
     from: 'armed_home'
     to: 'disarmed'
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','disarmed')}}"
+    condition: template
+    value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','disarmed')}}"
   action:
     - service: alarm_control_panel.alarm_disarm
       entity_id: alarm_control_panel.holmsens_vei_alarm
