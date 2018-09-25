@@ -1,11 +1,11 @@
 - id: '30'    
   alias: 'Outside lights on'
   trigger:
-  - entity_id: sun.sun
-    platform: state
-    to: 'below_horizon'
-  - platform: state
-    entity_id: input_select.time_of_day
+    - entity_id: sun.sun
+      platform: state
+      to: 'below_horizon'
+    - platform: state
+      entity_id: input_select.time_of_day
   condition:
     condition: and
     conditions:
@@ -25,12 +25,12 @@
 - id: '31'    
   alias: 'Outside lights off'
   trigger:
-  - entity_id: sun.sun
-    platform: state
-    to: 'above_horizon'
-  - platform: state
-    entity_id: input_select.time_of_day
-    to: 'Night'
+    - entity_id: sun.sun
+      platform: state
+      to: 'above_horizon'
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
   action:
     - service: switch.turn_off
       entity_id: switch.terrace_outside_light_switch
@@ -38,3 +38,19 @@
       entity_id: switch.balcony_outside_light_switch
     - service: switch.turn_off
       entity_id: switch.entrance_outside_light_switch
+
+- id: '93'    
+  alias: 'Outside lights off'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.sleep_state_ingrid
+      to: 'on'
+    - entity_id: sun.sun
+      platform: state
+      to: 'above_horizon'
+    - platform: state
+      entity_id: input_select.time_of_day
+      to: 'Night'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.terrace_outside_light_switch

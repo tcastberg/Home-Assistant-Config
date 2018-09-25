@@ -92,7 +92,7 @@
       to: 'off'
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
-      above: 250
+      above: 300
       for:
         seconds: 120
   condition:
@@ -119,5 +119,8 @@
             entity_id: sensor.kitchen_table_motion_sensor_luminance
             above: 250
   action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.dinner_time
     - service: light.turn_off
       entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level, light.kitchen_hallway_ceiling_lights_level

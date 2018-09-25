@@ -16,11 +16,16 @@ views:
         entities:
           - entity: alarm_control_panel.home_alarm
             name: Alarm
+          - entity: input_select.home_state
+            name: Home State
           - entity: lock.front_door_lock_locked
             name: Front door
+            tap_action: toggle
           - entity: input_boolean.door_autolock
             name: Autolock
+            tap_action: toggle
           - entity: input_boolean.vacation_mode
+            tap_action: toggle
           - entity: input_select.time_of_day
           - entity: sensor.average_temperature
             name: Avg temperature
@@ -76,6 +81,7 @@ views:
         entities:
           - device_tracker.google_maps_117621586906275495071
           - device_tracker.google_maps_106703534047375134126
+          - device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
 
       - type: picture-elements
         image: /local/tesla.png
@@ -425,6 +431,7 @@ views:
         entities:
           - entity: light.hallway_toilet_ceiling_dimmer_level
             name: Ceiling
+            tap_action: toggle
           - entity: sensor.hallway_toilet_motion_sensor_temperature
             name: Temperature
           - entity: sensor.hallway_toilet_motion_sensor_luminance
@@ -435,6 +442,7 @@ views:
         entities:
           - entity: light.laundry_dimmer_level
             name: Ceiling
+            tap_action: toggle
           - entity: binary_sensor.washing_machine_activity
             name: Washer
           - entity: binary_sensor.dryer_activity
@@ -522,6 +530,7 @@ views:
         entities:
           - entity: light.family_bathroom_dimmer_level
             name: Ceiling
+            tap_action: toggle
           - entity: sensor.family_bathroom_multisensor_temperature
             name: Temperature
           - entity: sensor.family_bathroom_multisensor_relative_humidity
@@ -535,6 +544,7 @@ views:
             tap_action: toggle
           - entity: light.changing_room_ceiling_light_level
             name: Ceiling
+            tap_action: toggle
           - entity: sensor.dressingroom_motion_sensor_temperature
             name: Temperature
           - entity: sensor.dressingroom_motion_sensor_luminance
@@ -555,8 +565,10 @@ views:
         entities:
           - entity: light.bedroom_tv_backlight_level
             name: TV
+            tap_action: toggle
           - entity: light.bedside_lamp_dimmer_level
             name: Nightstand
+            tap_action: toggle
           - entity: switch.dressing_table_light_switch
             name: Dresser
             tap_action: toggle
@@ -568,14 +580,17 @@ views:
         entities:
           - entity: light.ingrid_bedroom_ceiling_light_level
             name: Ceiling
+            tap_action: toggle
           - entity: light.ingrid_bedroom_bed_light_level
             name: Bed
+            tap_action: toggle
 
       - type: glance
         title: Downstairs hallway
         entities:
           - entity: light.downstairs_hallway_pendant_level
             name: Ceiling
+            tap_action: toggle
 
 #      - type: glance
 #        title: Guest Bedroom
@@ -603,6 +618,11 @@ views:
     id: cameras
     icon: mdi:camera
     cards:
+      - type: picture-glance
+        title: Side lawn
+        camera_image: camera.side_lawn
+        entities: 
+          - switch.entrance_outside_light_switch
       - type: picture-glance
         title: Front entrance
         camera_image: camera.front_door

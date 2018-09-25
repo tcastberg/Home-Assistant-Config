@@ -112,6 +112,8 @@
             99
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
             50
+          {%- elif is_state('input_select.time_of_day', 'Night') %}
+            40
           {%- endif %}
 
 - id: '61'    

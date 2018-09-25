@@ -3,7 +3,7 @@
   trigger:
   - platform: numeric_state
     entity_id: sensor.divergence_humidity
-    above: 6
+    above: 5
     below: 9
   condition:
     condition: template

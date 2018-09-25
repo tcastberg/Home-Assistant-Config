@@ -106,11 +106,14 @@ camera:
     name: Hallway Camera
     input: !secret foscam_url 
   - platform: ffmpeg
+    name: Side lawn
+    input: !secret nvr_front_south
+  - platform: ffmpeg
     name: Front door
     input: !secret nvr_front_stairs
   - platform: ffmpeg
     name: Front lawn
-    input: !secret nvr_front_south
+    input: !secret nvr_front_east
   - platform: ffmpeg
     name: Car parking
     input: !secret nvr_front_north
@@ -244,6 +247,7 @@ input_boolean:
   dinner_time:
     name: Dinner time
     icon: mdi:food-fork-drink
+    initial: off
 
 input_datetime:
   alarm_time_tor:
@@ -281,6 +285,10 @@ notify:
     platform: html5
     gcm_api_key: !secret gcm_sender_key
     gcm_sender_id: !secret gcm_sender_id
+  - name: hangouts
+    platform: hangouts
+    default_conversations:
+      - id: "UgyQRp0_hCwqYHGaPO54AaABAagBo4W8AQ"
 
 shell_command:
   snapshot: !secret shell_command_snapshot

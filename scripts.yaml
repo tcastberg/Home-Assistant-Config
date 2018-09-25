@@ -13,6 +13,8 @@ kitchen_on:
             99
           {%- elif is_state('input_select.time_of_day', 'Evening') %}
             60
+          {%- elif is_state('input_select.time_of_day', 'Night') %}
+            20
           {%- endif %}
 
 
