@@ -3,7 +3,7 @@
   trigger:
     - platform: state
       entity_id: input_select.time_of_day
-      to: 'Day'
+      to: 'Morning'
   condition:
     condition: state
     entity_id: input_select.home_state

@@ -3,6 +3,7 @@
 !automation
 !scenes
 !images
+!python_scripts
 !*.png
 !*.yaml
 !.gitignore

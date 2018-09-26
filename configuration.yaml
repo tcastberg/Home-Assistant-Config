@@ -21,6 +21,8 @@ auth:
 # Show links to resources in log and frontend
 # introduction:
 
+python_script:
+
 frontend:
   javascript_version: latest
   themes: !include_dir_merge_named themes/
@@ -135,6 +137,7 @@ logger:
     homeassistant.components.light: info 
     homeassistant.components.zwave: info
     homeassistant.components.lock: info
+    homeassistant.components.python_script: info
 
 # View all events in a logbook
 logbook:

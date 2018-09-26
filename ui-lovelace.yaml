@@ -568,7 +568,6 @@ views:
             tap_action: toggle
           - entity: light.bedside_lamp_dimmer_level
             name: Nightstand
-            tap_action: toggle
           - entity: switch.dressing_table_light_switch
             name: Dresser
             tap_action: toggle

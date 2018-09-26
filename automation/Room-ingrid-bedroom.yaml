@@ -87,11 +87,11 @@
         entity_id: input_boolean.alarm_override_ingrid
         state: 'off'
   action:
-    - service: light.turn_on
-      entity_id: light.ingrid_bedroom_ceiling_light_level
+    - service: python_script.transition_light
       data:
-        brightness: 255
+        entity_id: light.ingrid_bedroom_ceiling_light_level
         transition: 900
+        brightness: 255
  
 - id: '82'
   alias: 'Wakeup alarm Ingrid'

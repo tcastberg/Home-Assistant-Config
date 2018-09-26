@@ -212,11 +212,11 @@
         entity_id: input_boolean.alarm_override_tor
         state: 'off'
   action:
-    - service: light.turn_on
-      entity_id: light.bedside_lamp_dimmer_level
+    - service: python_script.transition_light
       data:
+        entity_id: light.bedside_lamp_dimmer_level
+        transition: 1800
         brightness: 255
-        transition: 900
 
 - id: '83'
   alias: 'Wakeup alarm tmc'
@@ -292,8 +292,6 @@
         entity_id: input_boolean.sleep_state_tor
         state: 'off'
   action:
-    - service: light.turn_on
-      entity_id: light.bedroom_tv_backlight_level
     - service: media_player.volume_set
       data:
         entity_id: media_player.changing_room
@@ -302,96 +300,3 @@
       data:
         entity_id: media_player.changing_room
         source: 'BBC World Service News'
-    - service: switch.turn_on
-      entity_id: switch.dressing_table_light_switch
-    - service: switch.turn_on
-      entity_id: switch.dressing_room_wardrobes_switch
-
-- id: '72'
-  alias: 'Button 1 pressed once'
-  trigger:
-    platform: event
-    event_type: zwave.scene_activated
-    event_data:
-      entity_id: zwave.button_1
-      scene_id: 1
-      scene_data: 0
-  action:
-    - service: notify.html5_tor_magnus_pixel
-      data:
-        title: 'Button pressed once'
-        message: 'Button pressed once'
-        data:
-          tag: 'this-is-a-test'
-
-- id: '73'
-  alias: 'Button 1 pressed twice'
-  trigger:
-    platform: event
-    event_type: zwave.scene_activated
-    event_data:
-      entity_id: zwave.button_1
-      scene_id: 1
-      scene_data: 3
-  action:
-    - service: notify.html5_tor_magnus_pixel
-      data:
-        title: 'Button pressed twice'
-        message: 'Tor and Lande have been put to sleep'
-        data:
-          tag: 'this-is-a-test'
-    - service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.sleep_state_lande, input_boolean.sleep_state_tor
-
-- id: '74'
-  alias: 'Button 1 pressed 3 times'
-  trigger:
-    platform: event
-    event_type: zwave.scene_activated
-    event_data:
-      entity_id: zwave.button_1
-      scene_id: 1
-      scene_data: 4
-  action:
-    - service: notify.html5_tor_magnus_pixel
-      data:
-        title: 'Button pressed 3 times'
-        message: 'Button pressed 3 times'
-        data:
-          tag: 'this-is-a-test'
-
-- id: '75'
-  alias: 'Button 1 pressed 4 times'
-  trigger:
-    platform: event
-    event_type: zwave.scene_activated
-    event_data:
-      entity_id: zwave.button_1
-      scene_id: 1
-      scene_data: 5
-  action:
-    - service: notify.html5_tor_magnus_pixel
-      data:
-        title: 'Button pressed 4 times'
-        message: 'Button pressed 4 times'
-        data:
-          tag: 'this-is-a-test'
-
-- id: '76'
-  alias: 'Button 1 pressed 5 times'
-  trigger:
-    platform: event
-    event_type: zwave.scene_activated
-    event_data:
-      entity_id: zwave.button_1
-      scene_id: 1
-      scene_data: 6
-  action:
-    - service: notify.html5_tor_magnus_pixel
-      data:
-        title: 'Button pressed 5 times'
-        message: 'Button pressed 5 times'
-        data:
-          tag: 'this-is-a-test'
-
