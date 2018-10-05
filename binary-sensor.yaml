@@ -10,6 +10,8 @@
   
     washing_machine_activity:
       friendly_name: "Washing machine running state"
+      delay_on:
+        seconds: 15
       delay_off:
         minutes: 4
       value_template: >
@@ -17,6 +19,8 @@
   
     dryer_activity:
       friendly_name: "Dryer running state"
+      delay_on:
+        seconds: 10
       delay_off:
         minutes: 1
       value_template: >
