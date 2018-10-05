@@ -1,0 +1,54 @@
+- id: '44'
+  alias: 'Start charging Tesla based on electricity price'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.electricity_price
+    below: 47
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
+        state: 'on'
+      - condition: state
+        entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+        state: 'off'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+
+- id: '45'
+  alias: 'Stop charging Tesla based on electricity price'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.electricity_price
+    above: 47
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
+        state: 'on'
+      - condition: state
+        entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+        state: 'on'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+
+- id: '46'
+  alias: 'Stop charging Tesla based on electricity price'
+  trigger:
+    platform: state
+    entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: numeric_state
+        entity_id: sensor.electricity_price
+        above: 47
+  action:
+    - service: switch.turn_off
+      entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+
