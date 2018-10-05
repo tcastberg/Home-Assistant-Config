@@ -10,8 +10,6 @@ views:
     id: state
     icon: mdi:home-assistant
     cards:
-      - type: weather-forecast
-        entity: weather.dark_sky
       - type: glance
         entities:
           - entity: alarm_control_panel.home_alarm
@@ -33,6 +31,8 @@ views:
             name: Avg humidity
           - entity: light.house_ventilation_dimmer_level
             name: Ventilation
+          - entity: sensor.electricity_price
+            name: Price kWh
 
       - type: entity-filter
         entities:
@@ -75,13 +75,6 @@ views:
           type: glance
           title: People that are home
           show_state: false
-
-      - type: map
-        aspect_ratio: 60%
-        entities:
-          - device_tracker.google_maps_117621586906275495071
-          - device_tracker.google_maps_106703534047375134126
-          - device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
 
       - type: picture-elements
         image: /local/tesla.png
@@ -130,6 +123,13 @@ views:
             style:
               top: 90%
               left: 5%
+
+      - type: map
+        aspect_ratio: 60%
+        entities:
+          - device_tracker.google_maps_117621586906275495071
+          - device_tracker.google_maps_106703534047375134126
+          - device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
 
   - title: People
     id: people
