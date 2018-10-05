@@ -34,7 +34,7 @@
   trigger:
   - platform: numeric_state
     entity_id: sensor.divergence_humidity
-    below: 5
+    below: 4
   condition:
     condition: state
     entity_id: light.house_ventilation_dimmer_level
