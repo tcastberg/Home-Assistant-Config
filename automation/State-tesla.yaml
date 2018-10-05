@@ -1,9 +1,8 @@
 - id: '44'
   alias: 'Start charging Tesla based on electricity price'
   trigger:
-    platform: numeric_state
-    entity_id: sensor.electricity_price
-    below: 47
+    platform: template
+    value_template: "{% if states.sensor.elspot_kwh.state|float() < states.sensor.elspot_kwh.attributes.Average|float() %} true {% endif %}"
   condition:
     condition: and
     conditions:
@@ -20,9 +19,8 @@
 - id: '45'
   alias: 'Stop charging Tesla based on electricity price'
   trigger:
-    platform: numeric_state
-    entity_id: sensor.electricity_price
-    above: 47
+    platform: template
+    value_template: "{% if states.sensor.elspot_kwh.state|float() > states.sensor.elspot_kwh.attributes.Average|float() %} true {% endif %}"
   condition:
     condition: and
     conditions:
@@ -43,11 +41,8 @@
     entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
     to: 'on'
   condition:
-    condition: and
-    conditions:
-      - condition: numeric_state
-        entity_id: sensor.electricity_price
-        above: 47
+    condition: template
+    value_template: "{% if states.sensor.elspot_kwh.state|float() > states.sensor.elspot_kwh.attributes.Average|float() %} true {% endif %}"
   action:
     - service: switch.turn_off
       entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
