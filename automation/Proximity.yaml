@@ -3,8 +3,8 @@
   trigger:
     - platform: numeric_state
       entity_id: proximity.tmc_home
-      below: 1500
-      above: 100
+      below: 2000
+      above: 500
   condition:
     - condition: template
       value_template: '{{ states.proximity.tmc_home.attributes.dir_of_travel == "towards" }}'
@@ -27,8 +27,8 @@
   trigger:
     - platform: numeric_state
       entity_id: proximity.lande_home
-      below: 1500
-      above: 100
+      below: 2000
+      above: 500
   condition:
     - condition: template
       value_template: '{{ states.proximity.lande_home.attributes.dir_of_travel == "towards" }}'
