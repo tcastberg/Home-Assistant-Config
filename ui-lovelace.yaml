@@ -33,6 +33,7 @@ views:
             name: Ventilation
           - entity: sensor.electricity_price
             name: Price kWh
+          - entity: binary_sensor.low_priced_electricity
 
       - type: entity-filter
         entities:
@@ -387,7 +388,15 @@ views:
           - input_boolean.alarm_override_ingrid
           - input_boolean.alarm_workday_ingrid
           - input_boolean.sleep_state_ingrid
-          - device_tracker.ipad__ingrid
+          - entity: device_tracker.ipad__ingrid
+            name: Location
+      - type: entities
+        title: Guests
+        show_header_toggle: false
+        entities:
+          - input_boolean.guests_present
+          - input_boolean.sleep_state_guests
+
 
   - title: Lights
     id: lights

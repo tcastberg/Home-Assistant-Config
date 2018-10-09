@@ -170,12 +170,6 @@ sensor.weather_precipitation:
   icon: mdi:weather-pouring
 sensor.weather_wind_speed:
   icon: mdi:weather-windy-variant
-device_tracker.tormagnus_pixel2:
-  friendly_name: Location
-device_tracker.phone__lande:
-  friendly_name: Location
-device_tracker.ipad__ingrid:
-  friendly_name: Location
 device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker:
   icon: mdi:car-estate
 switch.entrance_outside_light_switch:
