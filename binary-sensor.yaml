@@ -5,8 +5,7 @@
     balcony_door_sensor_2:
       device_class: opening
       friendly_name: "Balcony door"
-      value_template: >
-        {{ states.sensor.balcony_door_sensor_access_control.state == '22' }}
+      value_template: "{{ states.sensor.balcony_door_sensor_access_control.state == '22' }}"
   
     washing_machine_activity:
       friendly_name: "Washing machine running state"
@@ -14,8 +13,7 @@
         seconds: 15
       delay_off:
         minutes: 4
-      value_template: >
-        {{ states.sensor.washing_machine_power.state | float > 45 }}
+      value_template: "{{ states.sensor.washing_machine_power.state | float > 45 }}"
   
     dryer_activity:
       friendly_name: "Dryer running state"
@@ -23,5 +21,8 @@
         seconds: 10
       delay_off:
         minutes: 1
-      value_template: >
-        {{ states.sensor.dryer_power.state | float > 45 }}
+      value_template: "{{ states.sensor.dryer_power.state | float > 45 }}"
+    
+    low_priced_electricity:
+      friendly_name: "EL price below average"
+      value_template: "{{ states.sensor.elspot_kwh.state|float() < states.sensor.elspot_kwh.attributes.Average|float() }}"

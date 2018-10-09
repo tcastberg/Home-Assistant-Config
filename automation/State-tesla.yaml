@@ -1,49 +1,76 @@
 - id: '44'
-  alias: 'Start charging Tesla based on electricity price'
+  alias: 'Start charging Tesla if electricity price goes low'
   trigger:
-    platform: template
-    value_template: "{% if states.sensor.elspot_kwh.state|float() < states.sensor.elspot_kwh.attributes.Average|float() %} true {% endif %}"
+    platform: state
+    entity_id: binary_sensor.low_priced_electricity
+    to: 'on'
   condition:
     condition: and
     conditions:
-      - condition: state
-        entity_id: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
-        state: 'on'
       - condition: state
         entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
         state: 'off'
   action:
     - service: switch.turn_on
       entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    - service: notify.html5
+      data:
+        title: 'Tesla charging'
+        message: 'Power is cheap, started charging Tesla'
 
 - id: '45'
-  alias: 'Stop charging Tesla based on electricity price'
+  alias: 'Stop charging Tesla if electricity price goes high'
   trigger:
-    platform: template
-    value_template: "{% if states.sensor.elspot_kwh.state|float() > states.sensor.elspot_kwh.attributes.Average|float() %} true {% endif %}"
+    platform: state
+    entity_id: binary_sensor.low_priced_electricity
+    to: 'off'
   condition:
     condition: and
     conditions:
-      - condition: state
-        entity_id: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
-        state: 'on'
       - condition: state
         entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
         state: 'on'
   action:
     - service: switch.turn_off
       entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    - service: notify.html5
+      data:
+        title: 'Tesla not charging'
+        message: 'Power is expensive, stopped charging Tesla'
 
 - id: '46'
-  alias: 'Stop charging Tesla based on electricity price'
+  alias: 'Stop charging Tesla while electricity price is high'
   trigger:
     platform: state
     entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
     to: 'on'
   condition:
-    condition: template
-    value_template: "{% if states.sensor.elspot_kwh.state|float() > states.sensor.elspot_kwh.attributes.Average|float() %} true {% endif %}"
+    condition: state
+    entity_id: binary_sensor.low_priced_electricity
+    state: 'off'
   action:
     - service: switch.turn_off
       entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    - service: notify.html5
+      data:
+        title: 'Tesla connected'
+        message: 'Power is expensive, stopped charging Tesla'
+
+- id: '47'
+  alias: 'Start charging Tesla while electricity price is low'
+  trigger:
+    platform: state
+    entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    to: 'off'
+  condition:
+    condition: state
+    entity_id: binary_sensor.low_priced_electricity
+    state: 'on'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    - service: notify.html5
+      data:
+        title: 'Tesla connected'
+        message: 'Power is cheap, started charging Tesla'
 
