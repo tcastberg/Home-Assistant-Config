@@ -1,0 +1,19 @@
+announce_intent:
+  speech:
+    text: "I've announced ({{message}}) on Sonos."
+  action:
+    - service: script.say_sonos
+      data_template:
+        where: 'dining_room'
+        what: '{{message}}'
+
+locate_intent:
+  speech:
+    text: >
+      {%- for state in states.device_tracker -%}
+        {%- if state.name.lower() == person.lower() -%}
+          {{ state.name }} is at {{ state.state }}.
+        {%- endif -%}
+      {%- else -%}
+        Sorry, I don't have any trackers registered.
+      {%- endfor -%}

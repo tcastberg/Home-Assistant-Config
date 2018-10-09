@@ -391,3 +391,5 @@ group: !include groups.yaml
 automation: !include_dir_merge_list automation/
 script: !include scripts.yaml
 alert: !include alerts.yaml
+intent_script: !include intent_scripts.yaml
+hangouts: !include hangout_intents.yaml
