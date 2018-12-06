@@ -1,6 +1,6 @@
 announce_intent:
   speech:
-    text: "I've announced ({{message}}) on Sonos."
+    text: "Message announced on dining room speaker"
   action:
     - service: script.say_sonos
       data_template:

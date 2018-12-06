@@ -31,18 +31,20 @@
   sensors:
     electricity_price:
       friendly_name: "GE spot price kWh"
+      entity_id: sensor.elspot_kwh
       icon_template: mdi:flash
       unit_of_measurement: "øre"
       value_template: '{{float(states.sensor.elspot_kwh.state) + 3.2}}'
 
     average_humidity:
       friendly_name: "Average house humidity"
+      entity_id: sensor.family_bathroom_multisensor_relative_humidity, sensor.master_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
       unit_of_measurement: "% avg"
       icon_template: mdi:water-percent
       value_template: >
         {% if states.sensor %}
-          {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","defined")|map(attribute='state')|map('float')|sum %}
-          {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","defined")|list|count %}
+          {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|map(attribute='state')|map('float')|sum %}
+          {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|list|count %}
           {% if totalcount > 0 %}
             {% set totalaverage = totalvalue / totalcount %}
           {% else %}
@@ -55,6 +57,7 @@
 
     divergence_humidity:
       friendly_name: "Divergence from average house humidity"
+      entity_id: sensor.average_humidity, sensor.family_bathroom_multisensor_relative_humidity, sensor.master_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
       unit_of_measurement: "% div"
       icon_template: mdi:water-percent
       value_template: >
@@ -70,6 +73,7 @@
 
     average_temperature:
       friendly_name: "Average house temperature"
+      entity_id: sensor.entrance_hallway_motion_sensor_temperature, sensor.hallway_toilet_motion_sensor_temperature, sensor.laundry_multisensor_temperature, sensor.kitchen_table_motion_sensor_temperature, sensor.kitchen_island_motion_sensor_temperature, sensor.dining_room_stairs_motion_sensor_temperature, sensor.balcony_door_sensor_temperature, sensor.tv_area_motion_sensor_temperature, sensor.family_bathroom_multisensor_temperature, sensor.dressingroom_motion_sensor_temperature, sensor.master_bathroom_multisensor_temperature, sensor.training_room_motion_sensor_temperature
       unit_of_measurement: "°C avg"
       icon_template: mdi:water-percent
       value_template: >
@@ -88,10 +92,12 @@
 
     sunrise:
       friendly_name: "Sunrise at"
+      entity_id: sun.sun
       icon_template: mdi:weather-sunset-up
       value_template: '{{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom("%H:%M") }}'
     sunset:
       friendly_name: "Sunset at"
+      entity_id: sun.sun
       icon_template: mdi:weather-sunset-down
       value_template: '{{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom("%H:%M") }}'
     fitbit_steps:

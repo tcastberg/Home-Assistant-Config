@@ -7,6 +7,12 @@
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
+    - platform: state
+      entity_id: input_boolean.sleep_state_tor
+      to: 'off'
+    - platform: state
+      entity_id: input_boolean.sleep_state_lande
+      to: 'off'
   condition:
     condition: and
     conditions:
@@ -57,12 +63,6 @@
       - condition: state
         entity_id: input_select.time_of_day
         state: 'Day'
-      - condition: state
-        entity_id: input_boolean.sleep_state_tor
-        state: 'off'
-      - condition: state
-        entity_id: input_boolean.sleep_state_lande
-        state: 'off'
   action:
     - service: light.turn_off
       entity_id: light.bedside_lamp_dimmer_level
@@ -79,6 +79,8 @@
     - platform: state
       entity_id: input_select.time_of_day
       to: 'Evening'
+      for:
+        hours: 1
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -295,7 +297,7 @@
     - service: media_player.volume_set
       data:
         entity_id: media_player.changing_room
-        volume_level: 0.35
+        volume_level: 0.25
     - service: media_player.select_source
       data:
         entity_id: media_player.changing_room

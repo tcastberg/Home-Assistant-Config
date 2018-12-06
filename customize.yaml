@@ -128,7 +128,7 @@ sensor.battery_tor_magnus:
   icon: mdi:battery-70
 sensor.average_temperature:
   icon: mdi:thermometer
-sensor.balcony_door_temperature:
+sensor.balcony_door_sensor_temperature:
   friendly_name: Balcony door temperature
 binary_sensor.balcony_door_sensor:
   device_class: opening
@@ -197,7 +197,7 @@ switch.dressing_table_light_switch:
 light.house_ventilation_dimmer_level:
   icon: mdi:fan
 sensor.weather_humidity:
-  icon: mdi:water-percent
+  icon: mdi:weather-fog
 sensor.weather_cloudiness:
   icon: mdi:cloud-outline
 zwave.dining_room_motion_sensor:

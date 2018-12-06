@@ -21,6 +21,8 @@
       data:
         title: 'Arrival'
         message: 'Tor Magnus is almost home'
+        data:
+          tag: 'arrival'
 
 - id: '90'
   alias: 'Turn on light when Lande approaches home'
@@ -45,3 +47,5 @@
       data:
         title: 'Arrival'
         message: 'Lande is almost home'
+        data:
+          tag: 'arrival'

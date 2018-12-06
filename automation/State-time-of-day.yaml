@@ -57,15 +57,12 @@
         state: 'Away'
       - condition: and
         conditions:
-          - condition: state
-            entity_id: input_boolean.sleep_state_tor
-            state: 'on'
-          - condition: state
-            entity_id: input_boolean.sleep_state_lande
-            state: 'on'
-          - condition: state
-            entity_id: input_boolean.sleep_state_ingrid
-            state: 'on'
+          - condition: template
+            value_template: '{{(not is_state("device_tracker.google_maps_117621586906275495071", "home") or is_state("input_boolean.sleep_state_tor", "on"))}}'
+          - condition: template
+            value_template: '{{(not is_state("device_tracker.google_maps_106703534047375134126", "home") or is_state("input_boolean.sleep_state_lande", "on"))}}'
+          - condition: template
+            value_template: '{{(not is_state("device_tracker.ipad__ingrid", "home") or is_state("input_boolean.sleep_state_ingrid", "on"))}}'
           - condition: template
             value_template: '{{(is_state("input_boolean.guests_present", "on") and is_state("input_boolean.sleep_state_guests", "on")) or is_state("input_boolean.guests_present","off")}}'
   action:

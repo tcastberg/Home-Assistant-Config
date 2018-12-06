@@ -39,6 +39,8 @@
       data:
         title: 'Washing machine'
         message: 'Washing machine has finished'
+        data:
+          tag: 'washing-machine'
 
 - id: '38'
   alias: 'Dryer started'
@@ -81,4 +83,6 @@
       data:
         title: 'Dryer'
         message: 'Dryer has finished'
+        data:
+          tag: 'dryer'
 

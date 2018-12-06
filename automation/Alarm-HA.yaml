@@ -47,7 +47,6 @@
         message: 'Home Alarm armed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
       data:
         data:
-          renotify: 1
           tag: 'notification-home-alarm'
     - service: input_select.select_option
       data:
@@ -73,7 +72,6 @@
         message: 'Home Alarm armed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
       data:
         data:
-          renotify: 1
           tag: 'notification-home-alarm'
     - service: input_boolean.turn_on
       data:
@@ -96,7 +94,6 @@
         message: 'Home Alarm disarmed {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
       data:
         data:
-          renotify: 1
           tag: 'notification-home-alarm'
     - service: input_select.select_option
       data:
@@ -150,5 +147,4 @@
         message: 'Triggered at {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
       data:
         data:
-          renotify: 1
           tag: 'notification-home-alarm'

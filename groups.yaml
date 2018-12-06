@@ -258,7 +258,7 @@ temperature:
     - sensor.kitchen_table_motion_sensor_temperature
     - sensor.kitchen_island_motion_sensor_temperature
     - sensor.dining_room_stairs_motion_sensor_temperature
-    - sensor.balcony_door_temperature
+    - sensor.balcony_door_sensor_temperature
     - sensor.tv_area_motion_sensor_temperature
     - sensor.family_bathroom_multisensor_temperature
     - sensor.master_bathroom_multisensor_temperature
@@ -290,7 +290,7 @@ luminance:
     - sensor.dressingroom_motion_sensor_luminance
 
 
-all_sensors:
+all_binary_sensors:
   name: Sensors
   view: yes
   icon: mdi:robot
@@ -314,16 +314,17 @@ motion:
   name: Motion sensors
   icon: mdi:robot
   entities:
-    - binary_sensor.entrance_hallway_motion_sensor_sensor
-    - binary_sensor.hallway_toilet_motion_sensor_sensor
-    - binary_sensor.laundry_multisensor_sensor
-    - binary_sensor.kitchen_table_motion_sensor_sensor
-    - binary_sensor.kitchen_island_motion_sensor_sensor
     - binary_sensor.dining_room_stairs_motion_sensor_sensor
-    - binary_sensor.tv_area_motion_sensor_sensor
-    - binary_sensor.family_bathroom_multisensor_sensor
-    - binary_sensor.master_bathroom_multisensor_sensor
     - binary_sensor.dressingroom_motion_sensor_sensor
+    - binary_sensor.entrance_hallway_motion_sensor_sensor
+    - binary_sensor.family_bathroom_multisensor_sensor
+    - binary_sensor.hallway_toilet_motion_sensor_sensor
+    - binary_sensor.kitchen_island_motion_sensor_sensor
+    - binary_sensor.kitchen_table_motion_sensor_sensor
+    - binary_sensor.laundry_multisensor_sensor
+    - binary_sensor.master_bathroom_multisensor_sensor
+    - binary_sensor.training_room_motion_sensor_sensor
+    - binary_sensor.tv_area_motion_sensor_sensor
 
 power_usage:
   name: Power

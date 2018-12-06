@@ -60,6 +60,16 @@ device_tracker:
     username: !secret google_maps_username
     password: !secret google_maps_password
 
+  - platform: googlehome
+    host: 192.168.0.123
+    rssi_threshold: -40
+  - platform: googlehome
+    host: 192.168.0.124
+    rssi_threshold: -40
+  - platform: googlehome
+    host: 192.168.0.166
+    rssi_threshold: -40
+
 # Discover some devices automatically
 #discovery:
 
@@ -162,6 +172,11 @@ cast:
   - host: 192.168.0.202
   - host: 192.168.0.203
   - host: 192.168.0.204
+
+climate:
+  - platform: mill
+    username: !secret mill_username
+    password: !secret mill_password
 
 sonos:
   media_player:
@@ -276,6 +291,38 @@ switch:
      command_state: !secret foscam_command_state
      value_template: '{{ value == "1" }}'
 
+light:
+  - platform: switch
+    name: Porch
+    entity_id: switch.entrance_outside_light_switch
+  - platform: switch
+    name: Balcony
+    entity_id: switch.balcony_outside_light_switch
+  - platform: switch
+    name: Terrace
+    entity_id: switch.terrace_outside_light_switch
+  - platform: switch
+    name: Nook
+    entity_id: switch.dining_room_standing_lamp_switch
+  - platform: switch
+    name: Sofa
+    entity_id: switch.corner_standing_lamp_switch
+  - platform: switch
+    name: Cabinet
+    entity_id: switch.cabinet_lights_switch
+  - platform: switch
+    name: Table
+    entity_id: switch.serving_table_lamp_switch
+  - platform: switch
+    name: Bookshelf
+    entity_id: switch.side_table_light_switch
+  - platform: switch
+    name: Wardrobes
+    entity_id: switch.dressing_room_wardrobes_switch
+  - platform: switch
+    name: Dresser
+    entity_id: switch.dressing_table_light_switch
+
 notify:
   - name: mail
     platform: smtp
@@ -299,9 +346,6 @@ shell_command:
 
 google_assistant:
   project_id: api-project-511361644410
-  client_id: !secret google_assistant_client_id
-  access_token: !secret google_assistant_access_token
-  agent_user_id: !secret google_assistant_agent_user_id
   api_key: !secret google_assistant_api_key
   expose_by_default: false
   entity_config:
@@ -390,6 +434,6 @@ sensor: !include sensor.yaml
 group: !include groups.yaml
 automation: !include_dir_merge_list automation/
 script: !include scripts.yaml
-alert: !include alerts.yaml
+#alert: !include alerts.yaml
 intent_script: !include intent_scripts.yaml
 hangouts: !include hangout_intents.yaml

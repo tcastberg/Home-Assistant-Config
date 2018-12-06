@@ -1,76 +1,71 @@
 - id: '44'
   alias: 'Start charging Tesla if electricity price goes low'
   trigger:
-    platform: state
-    entity_id: binary_sensor.low_priced_electricity
-    to: 'on'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
-        state: 'off'
+    condition: state
+    entity_id: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
+    state: 'off'
   action:
-    - service: switch.turn_on
-      entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
     - service: notify.html5
       data:
         title: 'Tesla charging'
-        message: 'Power is cheap, started charging Tesla'
+        message: 'Power is cheap, you should start charging Marvin'
+        data:
+          tag: 'tesla-charging'
 
 - id: '45'
   alias: 'Stop charging Tesla if electricity price goes high'
   trigger:
-    platform: state
-    entity_id: binary_sensor.low_priced_electricity
-    to: 'off'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
-        state: 'on'
+    condition: state
+    entity_id: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
+    state: 'on'
   action:
-    - service: switch.turn_off
-      entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
     - service: notify.html5
       data:
-        title: 'Tesla not charging'
-        message: 'Power is expensive, stopped charging Tesla'
+        title: 'Tesla charging'
+        message: 'Power is expensive, you should stop charging Marvin'
+        data:
+          tag: 'tesla-charging'
 
 - id: '46'
   alias: 'Stop charging Tesla while electricity price is high'
   trigger:
     platform: state
-    entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    entity_id: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
     to: 'on'
   condition:
     condition: state
     entity_id: binary_sensor.low_priced_electricity
     state: 'off'
   action:
-    - service: switch.turn_off
-      entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
     - service: notify.html5
       data:
-        title: 'Tesla connected'
-        message: 'Power is expensive, stopped charging Tesla'
+        title: 'Tesla charging'
+        message: 'Power is expensive right now, maybe you should stop charging Marvin'
+        data:
+          tag: 'tesla-charging'
 
 - id: '47'
   alias: 'Start charging Tesla while electricity price is low'
   trigger:
     platform: state
-    entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    entity_id: binary_sensor.tesla_model_x_5yjxcce22jf095567_charger_sensor
     to: 'off'
   condition:
     condition: state
     entity_id: binary_sensor.low_priced_electricity
     state: 'on'
   action:
-    - service: switch.turn_on
-      entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
     - service: notify.html5
       data:
-        title: 'Tesla connected'
-        message: 'Power is cheap, started charging Tesla'
-
+        title: 'Tesla charging'
+        message: 'Power is cheap, so you should probably keep charging Marvin'
+        data:
+          tag: 'tesla-charging'

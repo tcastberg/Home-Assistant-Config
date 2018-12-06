@@ -31,51 +31,60 @@ views:
             name: Avg humidity
           - entity: light.house_ventilation_dimmer_level
             name: Ventilation
-          - entity: sensor.electricity_price
-            name: Price kWh
-          - entity: binary_sensor.low_priced_electricity
 
-      - type: entity-filter
-        entities:
-          - binary_sensor.entrance_hallway_motion_sensor_sensor
-          - binary_sensor.hallway_toilet_motion_sensor_sensor
-          - binary_sensor.laundry_multisensor_sensor
-          - binary_sensor.kitchen_table_motion_sensor_sensor
-          - binary_sensor.kitchen_island_motion_sensor_sensor
-          - binary_sensor.dining_room_stairs_motion_sensor_sensor
-          - binary_sensor.tv_area_motion_sensor_sensor
-          - binary_sensor.family_bathroom_multisensor_sensor
-          - binary_sensor.master_bathroom_multisensor_sensor
-          - binary_sensor.dressingroom_motion_sensor_sensor
-          - binary_sensor.kitchen_window_3_sensor
-          - binary_sensor.balcony_door_sensor_2
-          - binary_sensor.bedroom_garden_door_sensor
-          - binary_sensor.backhall_garden_door_sensor
-          - binary_sensor.training_room_motion_sensor_sensor
-        state_filter:
-          - 'detected'
-          - 'on'
-        card: 
-          type: glance
-          title: Triggered sensors
-          show_state: false
-
-      - type: entity-filter
-        entities:
-          - entity: device_tracker.google_maps_117621586906275495071
-            name: Tor Magnus
-          - entity: device_tracker.google_maps_106703534047375134126
-            name: Lande
-          - entity: device_tracker.ipad__ingrid
-            name: Ingrid
-          - entity: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
-            name: Marvin
-        state_filter:
-          - 'home'
+      - type: conditional
+        conditions:
+          - entity: group.motion
+            state: "on"
         card:
-          type: glance
-          title: People that are home
-          show_state: false
+          type: entity-filter
+          entities:
+            - entity: binary_sensor.backhall_garden_door_sensor
+            - entity: binary_sensor.balcony_door_sensor_2
+            - entity: binary_sensor.bedroom_garden_door_sensor
+            - entity: binary_sensor.dining_room_stairs_motion_sensor_sensor
+            - entity: binary_sensor.dressingroom_motion_sensor_sensor
+            - entity: binary_sensor.dryer_activity
+            - entity: binary_sensor.entrance_hallway_motion_sensor_sensor
+            - entity: binary_sensor.family_bathroom_multisensor_sensor
+            - entity: binary_sensor.hallway_toilet_motion_sensor_sensor
+            - entity: binary_sensor.kitchen_island_motion_sensor_sensor
+            - entity: binary_sensor.kitchen_table_motion_sensor_sensor
+            - entity: binary_sensor.kitchen_window_3_sensor
+            - entity: binary_sensor.laundry_multisensor_sensor
+            - entity: binary_sensor.master_bathroom_multisensor_sensor
+            - entity: binary_sensor.training_room_motion_sensor_sensor
+            - entity: binary_sensor.tv_area_motion_sensor_sensor
+            - entity: binary_sensor.washing_machine_activity
+          state_filter:
+            - 'detected'
+            - 'on'
+          card: 
+            type: glance
+            title: Triggered sensors
+            show_state: false
+
+      - type: conditional
+        conditions:
+          - entity: device_tracker.google_maps_117621586906275495071
+            state: 'home'
+          - entity: device_tracker.google_maps_106703534047375134126
+            state: 'home'
+        card:
+          type: entity-filter
+          entities:
+            - entity: device_tracker.google_maps_117621586906275495071
+              name: Tor Magnus
+            - entity: device_tracker.google_maps_106703534047375134126
+              name: Lande
+            - entity: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
+              name: Marvin
+          state_filter:
+            - 'home'
+          card:
+            type: glance
+            title: People that are home
+            show_state: false
 
       - type: picture-elements
         image: /local/tesla.png
@@ -146,230 +155,10 @@ views:
           - input_boolean.sleep_state_tor
           - entity: device_tracker.google_maps_117621586906275495071
             name: Location
-#     - type: picture-elements
-#       image: /local/lovelace/icons/fitbit.png
-#       elements:
-#       - type: custom:circle-sensor-card
-#         entity: sensor.weight_loss
-#         max: 65
-#         min: 0
-#         stroke_width: 15
-#         gradient: true
-#         fill: '#125054'
-#         name: loss
-#         units: ' '
-#         font_style:
-#           font-size: 1.1em
-#           font-color: white
-#           text-shadow: '2px 2px black'
-#         style:
-#           top: 5%
-#           left: 80%
-#           width: 4em
-#           height: 4em
-#           transform: none
-#       - type: custom:circle-sensor-card
-#         entity: sensor.fitbit_steps
-#         max: 10000
-#         min: 0
-#         stroke_width: 15
-#         gradient: true
-#         fill: '#125054'
-#         name: steps
-#         units: ' '
-#         font_style:
-#           font-size: 1.1em
-#           font-color: white
-#           text-shadow: '2px 2px black'
-#         color_stops:
-#           1: '#09C7E8'
-#           10000: '#0BDF0E'
-#         style:
-#           top: 70%
-#           left: 5%
-#           width: 4em
-#           height: 4em
-#           transform: none
-#       - type: custom:circle-sensor-card
-#         entity: sensor.floors
-#         max: 10
-#         min: 0
-#         stroke_width: 15
-#         gradient: true
-#         fill: '#125054'
-#         name: floors
-#         units: ' '
-#         font_style:
-#           font-size: 1.1em
-#           font-color: white
-#           text-shadow: '2px 2px black'
-#         color_stops:
-#           1: '#09C7E8'
-#           10: '#0BDF0E'
-#         style:
-#           top: 70%
-#           left: 24%
-#           width: 4em
-#           height: 4em
-#           transform: none
-#       - type: custom:circle-sensor-card
-#         entity: sensor.distance
-#         max: 10
-#         min: 0
-#         stroke_width: 15
-#         gradient: true
-#         fill: '#125054'
-#         name: miles
-#         units: ' '
-#         font_style:
-#           font-size: 1.1em
-#           font-color: white
-#           text-shadow: '2px 2px black'
-#         color_stops:
-#           1: '#09C7E8'
-#           10: '#0BDF0E'
-#         style:
-#           top: 70%
-#           left: 43%
-#           width: 4em
-#           height: 4em
-#           transform: none
-#       - type: custom:circle-sensor-card
-#         entity: sensor.fitbit_calories
-#         max: 3000
-#         min: 0
-#         stroke_width: 15
-#         gradient: true
-#         fill: '#125054'
-#         name: cals
-#         shadow: true
-#         units: ' '
-#         font_style:
-#           font-size: 1.1em
-#           font-color: white
-#           text-shadow: '2px 2px black'
-#         color_stops:
-#           1: '#09C7E8'
-#           3000: '#0BDF0E'
-#         style:
-#           top: 70%
-#           left: 62%
-#           width: 4em
-#           height: 4em
-#           transform: none
-#       - type: custom:circle-sensor-card
-#         entity: sensor.fitbit_minutes_active
-#         max: 30
-#         min: 0
-#         stroke_width: 15
-#         gradient: true
-#         fill: '#125054'
-#         name: active
-#         units: ' '
-#         font_style:
-#           font-size: 1.1em
-#           font-color: white
-#           text-shadow: '2px 2px black'
-#         color_stops:
-#           1: '#09C7E8'
-#           30: '#0BDF0E'
-#         style:
-#           top: 70%
-#           left: 80%
-#           width: 4em
-#           height: 4em
-#           transform: none
-#       - type: custom:hui-markdown-card
-#         content: >
-#           Tor Magnus
-#         style:
-#           top: 6%
-#           left: 1%
-#           font-size: 18px
-#           color: white
-#           text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
-#           "--paper-card-background-color": none
-#           "--paper-material-elevation-1_-_box-shadow": none
-#           "--shadow-elevation-2dp_-_box-shadow": none
-#           transform: translate(0%,-50%)
-#       - type: state-icon
-#         entity: sensor.weight
-#         title: Weight
-#         style:
-#           left: 3%
-#           top: 7%
-#           "--iron-icon-fill-color": '#09C7E8'
-#           transform: none
-#       - type: state-label
-#         entity: sensor.weight
-#         title: Weight
-#         style:
-#           left: 12%
-#           top: 8%
-#           color: white
-#           transform: none
-#       - type: state-icon
-#         entity: sensor.bmi
-#         title: BMI
-#         style:
-#           left: 31%
-#           top: 7%
-#           "--iron-icon-fill-color": '#09C7E8'
-#           transform: none
-#       - type: state-label
-#         entity: sensor.bmi
-#         title: BMI
-#         style:
-#           left: 40%
-#           top: 8%
-#           color: white
-#           transform: none
-#       - type: state-icon
-#         entity: sensor.body_fat
-#         title: Body Fat
-#         style:
-#           left: 59%
-#           top: 7%
-#           "--iron-icon-fill-color": '#09C7E8'
-#           transform: none
-#       - type: state-label
-#         entity: sensor.body_fat
-#         title: Body Fat
-#         style:
-#           left: 67%
-#           top: 8%
-#           color: white
-#           transform: none
-#       - type: image
-#         entity: sensor.ionic_battery
-#         title: Ionic Battery
-#         image: /local/lovelace/icons/battery_full.png
-#         state_image:
-#           "High": /local/lovelace/icons/battery_high.png
-#           "Medium": /local/lovelace/icons/battery_medium.png
-#           "Low": /local/lovelace/icons/battery_low.png
-#         style:
-#           left: 12%
-#           top: 1%
-#           transform: none
-#           width: 24px
-#           height: 24px
-#       - type: state-icon
-#         entity: sensor.resting_heart_rate
-#         title: Resting HR
-#         style:
-#           left: 3%
-#           top: 21%
-#           "--iron-icon-fill-color": red
-#           transform: none
-#       - type: state-label
-#         entity: sensor.resting_heart_rate
-#         title: Resting HR
-#         style:
-#           left: 12%
-#           top: 22%
-#           color: white
-#           transform: none
+          - sensor.steps
+          - sensor.weight
+          - sensor.resting_heart_rate
+          - sensor.sleep_minutes_asleep
       - type: entities
         title: Lande
         show_header_toggle: false
@@ -405,13 +194,13 @@ views:
       - type: glance
         title: Outside
         entities:
-          - entity: switch.entrance_outside_light_switch
+          - entity: light.porch
             name: Porch
             tap_action: toggle
-          - entity: switch.balcony_outside_light_switch
+          - entity: light.balcony
             name: Balcony
             tap_action: toggle
-          - entity: switch.terrace_outside_light_switch
+          - entity: light.terrace
             name: Terrace
             tap_action: toggle
           - entity: sensor.weather_temperature
@@ -488,19 +277,19 @@ views:
       - type: glance
         title: Dining Room
         entities:
-          - entity: switch.dining_room_standing_lamp_switch
+          - entity: light.nook
             name: Nook
             tap_action: toggle
-          - entity: switch.corner_standing_lamp_switch
+          - entity: light.sofa
             name: Sofa
             tap_action: toggle
-          - entity: switch.cabinet_lights_switch
+          - entity: light.cabinet
             name: Cabinet
             tap_action: toggle
-          - entity: switch.serving_table_lamp_switch
+          - entity: light.table
             name: Table
             tap_action: toggle
-          - entity: switch.side_table_light_switch
+          - entity: light.bookshelf
             name: Bookshelf
             tap_action: toggle
           - entity: light.dining_room_rail_1_level
@@ -508,11 +297,13 @@ views:
           - entity: light.dining_room_rail_2_level
             name: Dining
           #- entity: light.dining_room_rail_3_level
+          - entity: climate.high_window
+            name: Heater
           - entity: sensor.dining_room_stairs_motion_sensor_temperature
             name: Temperature
           - entity: sensor.dining_room_stairs_motion_sensor_luminance
             name: Luminance
-          - entity: sensor.balcony_door_temperature
+          - entity: sensor.balcony_door_sensor_temperature
 
       - type: glance
         title: TV Lounge
@@ -548,7 +339,7 @@ views:
       - type: glance
         title: Changing Room
         entities:
-          - entity: switch.dressing_room_wardrobes_switch
+          - entity: light.wardrobes
             name: Wardrobes
             tap_action: toggle
           - entity: light.changing_room_ceiling_light_level
@@ -574,10 +365,9 @@ views:
         entities:
           - entity: light.bedroom_tv_backlight_level
             name: TV
-            tap_action: toggle
           - entity: light.bedside_lamp_dimmer_level
             name: Nightstand
-          - entity: switch.dressing_table_light_switch
+          - entity: light.dresser
             name: Dresser
             tap_action: toggle
           - entity: sensor.master_bedroom_humidity
@@ -591,7 +381,6 @@ views:
             tap_action: toggle
           - entity: light.ingrid_bedroom_bed_light_level
             name: Bed
-            tap_action: toggle
 
       - type: glance
         title: Downstairs hallway
@@ -621,6 +410,7 @@ views:
 #      - type: glance
 #        title: Work Room
 #        entities:
+
 
   - title: Cameras
     id: cameras
@@ -667,6 +457,13 @@ views:
     id: power
     icon: mdi:flash
     cards:
+      - type: glance
+        title: Price
+        entities:
+          - entity: sensor.electricity_price
+            name: Price kWh
+          - entity: binary_sensor.low_priced_electricity
+
       - type: entities
         title: Currently used
         entities:
@@ -741,3 +538,97 @@ views:
           - sensor.tv_area_energy
           - sensor.washing_machine_energy
       
+  - title: Config
+    id: config
+    icon: mdi:wrench
+    cards:
+      - type: entity-filter
+        entities:
+          - automation.alarm_triggered
+          - automation.arm_home_alarm_home
+          - automation.dining_room_off
+          - automation.dining_room_on
+          - automation.disable_autolock
+          - automation.disarm_home_alarm_home
+          - automation.downstairs_hallway_off
+          - automation.downstairs_hallway_on
+          - automation.dressing_room_ceiling_light_off
+          - automation.dressing_room_ceiling_light_off_night
+          - automation.dressing_room_ceiling_light_on
+          - automation.dressing_room_ceiling_light_on_night
+          - automation.dryer_started
+          - automation.dryer_stopped
+          - automation.enable_autolock
+          - automation.entrance_hallway_movement
+          - automation.entrance_hallway_off
+          - automation.entrance_hallway_on
+          - automation.family_bathroom_off
+          - automation.family_bathroom_on
+          - automation.guests_sleeping
+          - automation.hallway_toilet_light_on
+          - automation.heal_zwave_at_0330
+          - automation.home_alarm_armed_away
+          - automation.home_alarm_armed_home
+          - automation.home_alarm_disarmed
+          - automation.home_armed_away_to_verisure_armed_away
+          - automation.home_armed_home_to_verisure_armed_home
+          - automation.home_disarmed_from_armed_away_to_verisure_disarmed
+          - automation.home_disarmed_from_armed_home_to_verisure_disarmed
+          - automation.ingrid_awake
+          - automation.ingrid_sleeping
+          - automation.ingrids_bedroom_off
+          - automation.ingrids_bedroom_on
+          - automation.kitchen_idle
+          - automation.kitchen_off
+          - automation.kitchen_on
+          - automation.laundry_off
+          - automation.laundry_on
+          - automation.master_bathroom_off
+          - automation.master_bathroom_off_2
+          - automation.master_bathroom_on
+          - automation.master_bedroom_day
+          - automation.master_bedroom_evening
+          - automation.master_bedroom_morning
+          - automation.master_bedroom_off
+          - automation.outside_lights_off
+          - automation.outside_lights_off_2
+          - automation.outside_lights_on
+          - automation.picture_on_open_front_door
+          - automation.prewakeup_alarm_ingrid
+          - automation.prewakeup_alarm_tmc
+          - automation.set_time_of_day_to_day
+          - automation.set_time_of_day_to_evening
+          - automation.set_time_of_day_to_morning
+          - automation.set_time_of_day_to_night
+          - automation.set_evening_autolock
+          - automation.start_charging_tesla_if_electricity_price_goes_low
+          - automation.start_charging_tesla_while_electricity_price_is_low
+          - automation.stop_charging_tesla_if_electricity_price_goes_high
+          - automation.stop_charging_tesla_while_electricity_price_is_high
+          - automation.tv_lounge_chromecast_playing
+          - automation.tv_lounge_off
+          - automation.tv_lounge_on
+          - automation.tv_off
+          - automation.tv_on
+          - automation.trigger_alarm_while_armed_away
+          - automation.trigger_alarm_while_armed_home
+          - automation.turn_on_light_when_lande_approaches_home
+          - automation.turn_on_light_when_tor_magnus_approaches_home
+          - automation.ventilation_high
+          - automation.ventilation_low
+          - automation.ventilation_off
+          - automation.verisure_armed_away_to_home_armed_away
+          - automation.verisure_disarmed_to_home_disarmed
+          - automation.wake_up_house
+          - automation.wakeup_alarm_2
+          - automation.wakeup_alarm_ingrid
+          - automation.wakeup_alarm_lande
+          - automation.wakeup_alarm_tmc
+          - automation.washing_machine_started
+          - automation.washing_machine_stopped 
+        state_filter:
+          - 'off'
+        card:
+          type: glance
+          title: Disabled automations
+          show_state: true
