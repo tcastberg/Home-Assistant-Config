@@ -60,3 +60,39 @@ say_sonos:
     - service: media_player.sonos_restore
       data_template:
         entity_id: "{{ 'media_player.' ~ where }}"
+
+#
+# Vacuuming area
+#
+vacuum_island:
+      alias: "Vacuum around island"
+      sequence:
+        - service: vacuum.send_command
+          data:
+            entity_id: vacuum.xiaomi_vacuum_cleaner
+            command: app_zoned_clean
+            params: [[25900,22950,28900,20100,5]]
+vacuum_table:
+      alias: "Vacuum around table"
+      sequence:
+        - service: vacuum.send_command
+          data:
+            entity_id: vacuum.xiaomi_vacuum_cleaner
+            command: app_zoned_clean
+            params: [[25200,25700,28900,22950,1]]
+vacuum_hallway:
+      alias: "Vacuum hallway"
+      sequence:
+        - service: vacuum.send_command
+          data:
+            entity_id: vacuum.xiaomi_vacuum_cleaner
+            command: app_zoned_clean
+            params: [[27800,29000,28900,25700,1]]
+vacuum_kitchen:
+      alias: "Vacuum kitchen"
+      sequence:
+        - service: vacuum.send_command
+          data:
+            entity_id: vacuum.xiaomi_vacuum_cleaner
+            command: app_zoned_clean
+            params: [[25200,25700,28900,19800,1],[25800,22800,28900,20000,1],[27800,29000,28900,25700,1]]

@@ -16,19 +16,21 @@
         variables:
           where: 'dining_room'
           what: 'The front door is open.'
-    - service: shell_command.snapshot
+    - service: camera.snapshot
       data:
-        filename: snapshot.jpg
+        entity_id: camera.hallway_camera
+        filename: /config/www/hallway.jpg
     - delay:
-        seconds: 2
+        seconds: 3
     - service: notify.html5
       data_template:
         title: 'Door opened'
         message: 'The front door was opened'
         data:
-          image: !secret doorway_snapshot
+          image: !secret hallway_snapshot
           renotify: 1
           tag: 'door-open-notification'
+          url: !secret hallway_snapshot
 
 - id: '86'
   alias: 'Enable autolock'
@@ -68,7 +70,7 @@
       entity_id: input_boolean.door_autolock
 
 - id: '59'    
-  alias: 'Entrance hallway on'
+  alias: 'Entrance hallway idle'
   trigger:
     - platform: state
       entity_id: input_select.time_of_day
@@ -77,6 +79,9 @@
       to: 'Home'
     - platform: state
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.doorbell_state
       to: 'off'
   condition:
     condition: and
@@ -94,12 +99,19 @@
       entity_id: light.entrance_hallway_ceiling_lights_level
       data:
         brightness_pct: 5
+    - service: light.turn_on
+      entity_id: light.entrance_wardrobes
+      data:
+        brightness_pct: 25
  
 - id: '60'
   alias: 'Entrance hallway movement'
   trigger:
     - platform: state
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.doorbell_state
       to: 'on'
   action:
     - service: light.turn_on
@@ -115,6 +127,10 @@
           {%- elif is_state('input_select.time_of_day', 'Night') %}
             40
           {%- endif %}
+    - service: light.turn_on
+      entity_id: light.entrance_wardrobes
+      data:
+        brightness_pct: 100
 
 - id: '61'    
   alias: 'Entrance hallway off'
@@ -127,6 +143,9 @@
       to: 'Away'
     - platform: state
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.doorbell_state
       to: 'off'
   condition:
     condition: and
@@ -144,4 +163,44 @@
             state: 'Away'
   action:
     - service: light.turn_off
-      entity_id: light.entrance_hallway_ceiling_lights_level
+      entity_id: light.entrance_hallway_ceiling_lights_level, light.entrance_wardrobes
+
+- id: '98'
+  alias: 'Doorbell'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.doorbell
+    to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.changing_room, media_player.dining_room, media_player.master_bedroom_speaker, media_player.lounge_speaker, media_player.kitchen_speaker
+        volume_level: 0.55
+    - service:  media_player.play_media
+      data:
+        entity_id: media_player.changing_room, media_player.dining_room, media_player.master_bedroom_speaker, media_player.lounge_speaker, media_player.kitchen_speaker
+        media_content_id: https://hass.continually-evolving.net:8124/local/doorbell-6.mp3
+        media_content_type: audio/mp3
+    - service: camera.snapshot
+      data:
+        entity_id: camera.front_door
+        filename: /config/www/doorbell.jpg
+    - delay:
+        seconds: 3
+    - service: notify.html5
+      data_template:
+        title: 'Doorbell'
+        message: 'Somebody rang the doorbell'
+        data:
+          image: !secret doorbell_snapshot
+          renotify: 1
+          tag: 'doorbell-notification'
+          url: !secret doorbell_snapshot
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        volume_level: 0.10

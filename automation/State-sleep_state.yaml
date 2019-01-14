@@ -2,33 +2,10 @@
 # Control Sleep States
 ###
 - id: '15'
-  alias: 'Wake up house'
+  alias: 'Wake up people'
   trigger:
-  - entity_id: binary_sensor.dressingroom_motion_sensor_sensor, binary_sensor.dining_room_stairs_motion_sensor_sensor
-    platform: state
-    to: 'on'
   - platform: time
-    at: '09:00:00'
-  condition:
-    condition: and
-    conditions:
-      - condition: time
-        after: '05:30:00'
-        before: '12:00:00'
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: 'input_boolean.sleep_state_guests'
-            state: 'on'
-          - condition: state
-            entity_id: 'input_boolean.sleep_state_ingrid'
-            state: 'on'
-          - condition: state
-            entity_id: 'input_boolean.sleep_state_lande'
-            state: 'on'
-          - condition: state
-            entity_id: 'input_boolean.sleep_state_tor'
-            state: 'on'
+    at: '10:00:00'
   action:
     - service: input_boolean.turn_off
       data:

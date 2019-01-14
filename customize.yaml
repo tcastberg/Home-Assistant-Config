@@ -178,21 +178,7 @@ switch.balcony_outside_light_switch:
   icon: mdi:lightbulb
 switch.terrace_outside_light_switch:
   icon: mdi:lightbulb
-switch.garden_lights_switch:
-  icon: mdi:lightbulb
-switch.dining_room_standing_lamp_switch:
-  icon: mdi:lightbulb
-switch.corner_standing_lamp_switch:
-  icon: mdi:lightbulb
-switch.cabinet_lights_switch:
-  icon: mdi:lightbulb
-switch.serving_table_lamp_switch:
-  icon: mdi:lightbulb
-switch.side_table_light_switch:
-  icon: mdi:lightbulb
 switch.dressing_room_wardrobes_switch:
-  icon: mdi:lightbulb
-switch.dressing_table_light_switch:
   icon: mdi:lightbulb
 light.house_ventilation_dimmer_level:
   icon: mdi:fan
@@ -200,7 +186,5 @@ sensor.weather_humidity:
   icon: mdi:weather-fog
 sensor.weather_cloudiness:
   icon: mdi:cloud-outline
-zwave.dining_room_motion_sensor:
-  is_failed: true
 binary_sensor.dining_room_motion_sensor_sensor_2:
   hidden: true

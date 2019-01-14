@@ -14,7 +14,6 @@ homeassistant:
   customize: !include customize.yaml
   auth_providers:
    - type: homeassistant
-   - type: legacy_api_password
 
 auth:
 
@@ -59,16 +58,6 @@ device_tracker:
   - platform: google_maps
     username: !secret google_maps_username
     password: !secret google_maps_password
-
-  - platform: googlehome
-    host: 192.168.0.123
-    rssi_threshold: -40
-  - platform: googlehome
-    host: 192.168.0.124
-    rssi_threshold: -40
-  - platform: googlehome
-    host: 192.168.0.166
-    rssi_threshold: -40
 
 # Discover some devices automatically
 #discovery:
@@ -168,15 +157,15 @@ alarm_control_panel:
 
 cast:
   media_player:
-  - host: 192.168.0.201
-  - host: 192.168.0.202
-  - host: 192.168.0.203
-  - host: 192.168.0.204
-
-climate:
-  - platform: mill
-    username: !secret mill_username
-    password: !secret mill_password
+    # Google Home
+    - host: 192.168.0.123
+    - host: 192.168.0.124
+    - host: 192.168.0.125
+    # Google Chromecast
+    - host: 192.168.0.201
+    - host: 192.168.0.202
+    - host: 192.168.0.203
+    - host: 192.168.0.204
 
 sonos:
   media_player:
@@ -184,10 +173,20 @@ sonos:
       - 192.168.0.211
       - 192.168.0.212
 
+climate:
+  - platform: mill
+    username: !secret mill_username
+    password: !secret mill_password
+
 tesla:
   username: !secret tesla_username
   password: !secret tesla_password
   scan_interval: 600
+
+vacuum:
+  - platform: xiaomi_miio
+    host: !secret xiaomi_ip
+    token: !secret xiaomi_vacuum
 
 verisure:
   username: !secret verisure_username
@@ -218,6 +217,14 @@ input_select:
     options:
       - Home
       - Away
+
+  vacuum_area:
+    name: Choose an area to clean
+    options:
+      - Select Area
+      - island
+      - table
+      - hallway
 
 input_boolean:
   sleep_state_tor:
@@ -267,6 +274,17 @@ input_boolean:
     icon: mdi:food-fork-drink
     initial: off
 
+  daily_vacuum_first_run:
+    name: Daily Vacuum First Run
+    initial: 'off'
+  disable_daily_vacuum:
+    name: Disable Daily Vacuum Automation
+    initial: 'off'
+  disable_dustbin_notification:
+    name: Disable Dustbin Notification
+    initial: 'off'
+
+
 input_datetime:
   alarm_time_tor:
     name: Alarm Time
@@ -282,14 +300,69 @@ input_datetime:
     has_time: true
 
 switch:
- platform: command_line
- switches:
-   #Switch for Foscam Motion Detection
-   foscam_motion:
-     command_on: !secret foscam_command_on
-     command_off: !secret foscam_command_off
-     command_state: !secret foscam_command_state
-     value_template: '{{ value == "1" }}'
+  - platform: command_line
+    switches:
+      #Switch for Foscam Motion Detection
+      foscam_motion:
+        command_on: !secret foscam_command_on
+        command_off: !secret foscam_command_off
+        command_state: !secret foscam_command_state
+        value_template: '{{ value == "1" }}'
+  - platform: flux
+    name: Tradfri flux
+    lights:
+      - light.nook_2
+      - light.sofa_2
+      - light.serving_table
+    start_time: '06:00'
+    stop_time: '23:59'
+    start_colortemp: 5000
+    sunset_colortemp: 3000
+    stop_colortemp: 2100
+    disable_brightness_adjust: true
+    mode: rgb
+    transition: 30
+    interval: 120
+  - platform: flux
+    name: Nook flux
+    lights:
+      - light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+    start_time: '06:00'
+    stop_time: '23:59'
+    start_colortemp: 3500
+    sunset_colortemp: 2000
+    stop_colortemp: 1100
+    disable_brightness_adjust: true
+    mode: rgb
+    transition: 30
+    interval: 120
+  - platform: flux
+    name: Ingrid flux
+    lights:
+      - light.ingrid_bedroom_bed_light_level
+    start_time: '06:00'
+    stop_time: '23:59'
+    start_colortemp: 4000
+    sunset_colortemp: 2100
+    stop_colortemp: 1500
+    disable_brightness_adjust: true
+    mode: rgb
+    transition: 30
+    interval: 120
+  - platform: flux
+    name: TV backlight flux
+    lights:
+      - light.bedroom_tv_backlight_level
+    start_time: '06:00'
+    stop_time: '23:59'
+    start_colortemp: 4000
+    sunset_colortemp: 2100
+    stop_colortemp: 1500
+    disable_brightness_adjust: true
+    mode: rgb
+    transition: 30
+    interval: 120
+
 
 light:
   - platform: switch
@@ -302,26 +375,9 @@ light:
     name: Terrace
     entity_id: switch.terrace_outside_light_switch
   - platform: switch
-    name: Nook
-    entity_id: switch.dining_room_standing_lamp_switch
-  - platform: switch
-    name: Sofa
-    entity_id: switch.corner_standing_lamp_switch
-  - platform: switch
-    name: Cabinet
-    entity_id: switch.cabinet_lights_switch
-  - platform: switch
-    name: Table
-    entity_id: switch.serving_table_lamp_switch
-  - platform: switch
-    name: Bookshelf
-    entity_id: switch.side_table_light_switch
-  - platform: switch
     name: Wardrobes
     entity_id: switch.dressing_room_wardrobes_switch
-  - platform: switch
-    name: Dresser
-    entity_id: switch.dressing_table_light_switch
+
 
 notify:
   - name: mail
@@ -340,14 +396,13 @@ notify:
     default_conversations:
       - id: "UgyQRp0_hCwqYHGaPO54AaABAagBo4W8AQ"
 
-shell_command:
-  snapshot: !secret shell_command_snapshot
-
 
 google_assistant:
   project_id: api-project-511361644410
   api_key: !secret google_assistant_api_key
-  expose_by_default: false
+  exposed_domains:
+    - light
+    - climate
   entity_config:
     input_boolean.sleep_state_tor:
       name: tor magnus sleeping
@@ -364,70 +419,79 @@ google_assistant:
       name: ingrid sleeping
       expose: true
       room: Ingrid bedroom
-    light.bedside_lamp_dimmer_level:
-      name: bedside lamp
-      expose: true
-      room: Master Bedroom
-    light.bedroom_tv_backlight_level:
-      name: tv backlight
-      expose: true
-      room: Master Bedroom
-    switch.dressing_table_light_switch:
-      name: dressing table lamp
-      expose: true
-      room: Master Bedroom
-    light.kitchen_bench_ceiling_lights_level:
-      name: kitchen bench light
-      expose: true
-      room: Kitchen
-    light.kitchen_table_ceiling_lamp_level:
-      name: kitchen table light
-      expose: true
-      room: Kitchen
-    light.kitchen_hallway_ceiling_lights_level:
-      name: kitchen hallway light
-      expose: true
-      room: Kitchen
-    switch.dining_room_standing_lamp_switch:
-      name: reading light
-      expose: true
-      room: Dining room
-    switch.corner_standing_lamp_switch:
-      name: corner light
-      expose: true
-      room: Dining room
-    switch.cabinet_lights_switch:
-      name: cabinet light
-      expose: true
-      room: Dining room
-    switch.serving_table_lamp_switch:
-      name: serving table light
-      expose: true
-      room: Dining room
-    switch.side_table_light_switch:
-      name: bookshelf light
-      expose: true
-      room: Dining room
-    light.dining_room_rail_1_level:
-      name: ceiling light
-      expose: true
-      room: Dining room
-    light.dining_room_rail_2_level:
-      name: office light
-      expose: true
-      room: Dining room
-    light.tv_area_level:
-      name: tv ceiling light
-      expose: true
-      room: TV Room
-    light.sofa_area_level:
-      name: sofa ceiling light
-      expose: true
-      room: TV Room
-    light.hallway_area_level:
-      name: hallway ceiling light
-      expose: true
-      room: TV Room
+    light.house_ventilation_dimmer_level:
+      expose: false
+    light.bedroom_tv_backlight_level_2:
+      expose: false
+    light.bedroom_tv_backlight_level_3:
+      expose: false
+    light.bedroom_tv_backlight_level_4:
+      expose: false
+    light.bedroom_tv_backlight_level_5:
+      expose: false
+    light.bedroom_tv_backlight_level_6:
+      expose: false
+    light.family_bathroom_dimmer_level_2:
+      expose: false
+    light.laundry_dimmer_level_2:
+      expose: false
+    light.master_bathroom_dimmer_level_2:
+      expose: false
+    light.house_ventilation_dimmer_level_2:
+      expose: false
+    light.downstairs_hallway_pendant_level_2:
+      expose: false
+    light.dining_room_rail_1_level_2:
+      expose: false
+    light.dining_room_rail_2_level_2:
+      expose: false
+    light.dining_room_rail_3_level_2:
+      expose: false
+    light.tv_area_level_2:
+      expose: false
+    light.sofa_area_level_2:
+      expose: false
+    light.hallway_area_level_2:
+      expose: false
+    light.entrance_hallway_ceiling_lights_level_2:
+      expose: false
+    light.changing_room_ceiling_light_level_2:
+      expose: false
+    light.ingrid_bedroom_ceiling_light_level_2:
+      expose: false
+    light.ingrid_bedroom_bed_light_level_2:
+      expose: false
+    light.ingrid_bedroom_bed_light_level_3:
+      expose: false
+    light.ingrid_bedroom_bed_light_level_4:
+      expose: false
+    light.ingrid_bedroom_bed_light_level_5:
+      expose: false
+    light.ingrid_bedroom_bed_light_level_6:
+      expose: false
+    light.kitchen_bench_ceiling_lights_level_2:
+      expose: false
+    light.kitchen_table_ceiling_lamp_level_2:
+      expose: false
+    light.hallway_toilet_ceiling_dimmer_level_2:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level_2:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level_3:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level_5:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level_6:
+      expose: false
+
+netatmo:
+  api_key: !secret netatmo_api_key
+  secret_key: !secret netatmo_secret_key
+  username: !secret netatmo_username
+  password: !secret netatmo_password
+  discovery: false
 
 binary_sensor: !include binary-sensor.yaml
 sensor: !include sensor.yaml

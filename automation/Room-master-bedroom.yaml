@@ -29,6 +29,8 @@
         entity_id: input_boolean.sleep_state_lande
         state: 'off'
   action:
+    - service: switch.turn_on
+      entity_id: switch.tv_backlight_flux
     - service: light.turn_on
       entity_id: light.bedside_lamp_dimmer_level
       data:
@@ -38,8 +40,10 @@
       data:
         brightness: 255
         rgb_color: [211,221,247]
-    - service: switch.turn_on
-      entity_id: switch.dressing_table_light_switch
+    - service: light.turn_on
+      entity_id: light.dressing_table
+      data:
+        brightness: 254
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
     - service: light.turn_on
@@ -64,12 +68,14 @@
         entity_id: input_select.time_of_day
         state: 'Day'
   action:
+    - service: switch.turn_off
+      entity_id: switch.tv_backlight_flux
     - service: light.turn_off
       entity_id: light.bedside_lamp_dimmer_level
     - service: light.turn_off
       entity_id: light.bedroom_tv_backlight_level
-    - service: switch.turn_off
-      entity_id: switch.dressing_table_light_switch
+    - service: light.turn_off
+      entity_id: light.dressing_table
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
 
@@ -100,6 +106,8 @@
         entity_id: input_boolean.sleep_state_lande
         state: 'off'
   action:
+    - service: switch.turn_on
+      entity_id: switch.tv_backlight_flux
     - service: light.turn_on
       entity_id: light.bedside_lamp_dimmer_level
       data:
@@ -109,8 +117,10 @@
       data:
         brightness: 255
         rgb_color: [255,165,0]
-    - service: switch.turn_on
-      entity_id: switch.dressing_table_light_switch
+    - service: light.turn_on
+      entity_id: light.dressing_table
+      data:
+        brightness: 150
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
 
@@ -127,12 +137,14 @@
       entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande
       to: 'on'
   action:
+    - service: switch.turn_off
+      entity_id: switch.tv_backlight_flux
     - service: light.turn_off
       entity_id: light.bedside_lamp_dimmer_level
     - service: light.turn_off
       entity_id: light.bedroom_tv_backlight_level
-    - service: switch.turn_off
-      entity_id: switch.dressing_table_light_switch
+    - service: light.turn_off
+      entity_id: light.dressing_table
     - service: switch.turn_off
       entity_id: switch.dressing_room_wardrobes_switch
     - service: light.turn_off

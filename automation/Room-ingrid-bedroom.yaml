@@ -32,6 +32,8 @@
         entity_id: sensor.dining_room_stairs_motion_sensor_luminance
         below: 300
   action:
+    - service: switch.turn_on
+      entity_id: switch.ingrid_flux
     - service: light.turn_on
       entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
       data_template:
@@ -62,6 +64,8 @@
       entity_id: input_boolean.sleep_state_ingrid
       to: 'on'
   action:
+    - service: switch.turn_off
+      entity_id: switch.ingrid_flux
     - service: light.turn_off
       entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
 

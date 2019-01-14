@@ -111,6 +111,9 @@ audio:
   entities:
     - media_player.changing_room
     - media_player.dining_room
+    - media_player.master_bedroom_speaker
+    - media_player.lounge_speaker
+    - media_player.kitchen_speaker
 
 
 lights:
@@ -166,14 +169,15 @@ dining_room:
   name: Dining room
   control: hidden
   entities:
-    - switch.dining_room_standing_lamp_switch
-    - switch.corner_standing_lamp_switch
-    - switch.cabinet_lights_switch
-    - switch.serving_table_lamp_switch
-    - switch.side_table_light_switch
+    - light.nook_table
+    - light.bookshelf_2
+    - light.sofa_2
+    - light.cabinets
+    - light.serving_table
+    - light.nook_2
+    - light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
     - light.dining_room_rail_1_level
     - light.dining_room_rail_2_level
-    - light.dining_room_rail_3_level
 balcony:
   name: Balcony
   control: hidden
@@ -326,84 +330,8 @@ motion:
     - binary_sensor.training_room_motion_sensor_sensor
     - binary_sensor.tv_area_motion_sensor_sensor
 
-power_usage:
-  name: Power
-  view: yes
-  icon: mdi:flash
+presensestate:
+  name: Presence state
   entities:
-    - group.power
-    - group.energy
-power:
-  name: Current power usage
-  icon: mdi:flash
-  entities:
-    - sensor.balcony_outside_light_power
-    - sensor.bedroom_tv_backlight_power
-    - sensor.cabinet_lights_power
-    - sensor.changing_room_ceiling_light_power
-    - sensor.corner_standing_lamp_power
-    - sensor.dining_room_rail_1_power
-    - sensor.dining_room_rail_2_power
-    - sensor.dining_room_rail_3_power
-    - sensor.dining_room_standing_lamp_power
-    - sensor.downstairs_hallway_pendant_power
-    - sensor.dressing_room_wardrobes_power
-    - sensor.dressing_table_light_power
-    - sensor.dryer_power
-    - sensor.entrance_hallway_ceiling_lights_power
-    - sensor.entrance_outside_light_power
-    - sensor.family_bathroom_dimmer_power
-    - sensor.tv_room_tv_power
-    - sensor.hallway_area_power
-    - sensor.hallway_toilet_ceiling_dimmer_power
-    - sensor.house_ventilation_dimmer_power
-    - sensor.ingrid_bedroom_bed_light_power
-    - sensor.ingrid_bedroom_ceiling_light_power
-    - sensor.kitchen_bench_ceiling_lights_power
-    - sensor.kitchen_hallway_ceiling_lights_power
-    - sensor.kitchen_table_ceiling_lamp_power
-    - sensor.laundry_dimmer_power
-    - sensor.master_bathroom_dimmer_power
-    - sensor.serving_table_lamp_power
-    - sensor.side_table_light_power
-    - sensor.sofa_area_power
-    - sensor.terrace_outside_light_power
-    - sensor.tv_area_power
-    - sensor.washing_machine_power
-energy:
-  name: Total power usage
-  icon: mdi:flash
-  entities:
-    - sensor.balcony_outside_light_energy
-    - sensor.bedroom_tv_backlight_energy
-    - sensor.cabinet_lights_energy
-    - sensor.changing_room_ceiling_light_energy
-    - sensor.corner_standing_lamp_energy
-    - sensor.dining_room_rail_1_energy
-    - sensor.dining_room_rail_2_energy
-    - sensor.dining_room_rail_3_energy
-    - sensor.dining_room_standing_lamp_energy
-    - sensor.downstairs_hallway_pendant_energy
-    - sensor.dressing_room_wardrobes_energy
-    - sensor.dressing_table_light_unknown
-    - sensor.dryer_energy
-    - sensor.entrance_hallway_ceiling_lights_energy
-    - sensor.entrance_outside_light_energy
-    - sensor.family_bathroom_dimmer_energy
-    - sensor.tv_room_tv_energy
-    - sensor.hallway_area_energy
-    - sensor.hallway_toilet_ceiling_dimmer_energy
-    - sensor.house_ventilation_dimmer_unknown
-    - sensor.ingrid_bedroom_bed_light_energy
-    - sensor.ingrid_bedroom_ceiling_light_energy
-    - sensor.kitchen_bench_ceiling_lights_energy
-    - sensor.kitchen_hallway_ceiling_lights_energy
-    - sensor.kitchen_table_ceiling_lamp_energy
-    - sensor.laundry_dimmer_energy
-    - sensor.master_bathroom_dimmer_energy
-    - sensor.serving_table_lamp_energy
-    - sensor.side_table_light_energy
-    - sensor.sofa_area_energy
-    - sensor.terrace_outside_light_energy
-    - sensor.tv_area_energy
-    - sensor.washing_machine_energy
+    - device_tracker.google_maps_117621586906275495071
+    - device_tracker.google_maps_106703534047375134126

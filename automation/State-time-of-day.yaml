@@ -4,15 +4,23 @@
 - id: '7'
   alias: 'Set Time of Day to Morning'
   trigger:
+    - entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.tv_area_motion_sensor_sensor
+      platform: state
+      to: 'on'
     - platform: state
       entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande, input_boolean.sleep_state_ingrid, input_boolean.sleep_state_guests
       to: 'off'
     - platform: time
       at: '08:45:00'   
   condition:
-    condition: state
-    entity_id: input_select.time_of_day
-    state: 'Night'
+    condition: and
+    conditions:
+      - condition: time
+        after: '05:30:00'
+        before: '12:00:00'
+      - condition: state
+        entity_id: input_select.time_of_day
+        state: 'Night'
   action:
     - service: input_select.select_option
       data:
@@ -34,7 +42,7 @@
   alias: 'Set Time of Day to Evening'
   trigger:
     - platform: time
-      at: '20:00:00'
+      at: '19:30:00'
   action:
     - service: input_select.select_option
       data:
