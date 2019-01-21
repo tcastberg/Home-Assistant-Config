@@ -6,7 +6,7 @@
     to: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.master_bathroom_dimmer_level
+      entity_id: light.ceiling
       data_template:
         brightness: >
           {%- if is_state('input_select.time_of_day', 'Morning') %}
@@ -27,4 +27,4 @@
     to: 'off'
   action:
     - service: light.turn_off
-      entity_id: light.master_bathroom_dimmer_level
+      entity_id: light.ceiling

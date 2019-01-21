@@ -109,9 +109,13 @@
     - platform: state
       entity_id: binary_sensor.backhall_garden_door_sensor, binary_sensor.balcony_door_sensor_2, binary_sensor.bedroom_garden_door_sensor, binary_sensor.kitchen_window_3_sensor
       to: 'on'
+      for:
+        minutes: 3
     - platform: state
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor, binary_sensor.laundry_multisensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor, binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.tv_area_motion_sensor_sensor, binary_sensor.family_bathroom_multisensor_sensor, binary_sensor.master_bathroom_multisensor_sensor, binary_sensor.dressingroom_motion_sensor_sensor
       to: 'on'
+      for:
+        minutes: 3
   condition:
     - condition: state
       entity_id: alarm_control_panel.home_alarm
@@ -126,6 +130,8 @@
     - platform: state
       entity_id: binary_sensor.backhall_garden_door_sensor, binary_sensor.balcony_door_sensor_2, binary_sensor.bedroom_garden_door_sensor, binary_sensor.kitchen_window_3_sensor
       to: 'on'
+      for:
+        minutes: 3
   condition:
     - condition: state
       entity_id: alarm_control_panel.home_alarm
@@ -140,6 +146,10 @@
     platform: state
     entity_id: alarm_control_panel.home_alarm
     to: 'triggered'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: 'armed_home'
   action:
     - service: notify.html5
       data_template:
@@ -148,3 +158,48 @@
       data:
         data:
           tag: 'notification-home-alarm'
+
+- id: '100'
+  alias: 'Red alert on'
+  trigger:
+    platform: state
+    entity_id: input_boolean.red_alert
+    to: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.nook_table, light.bookshelf_2, light.cabinets, light.dining_room_rail_1_level, light.dining_room_rail_2_level
+        brightness_pct: 5
+    - service: switch.turn_off
+      data:
+        entity_id: switch.nook_flux, switch.tradfri_flux
+    - service: script.turn_on
+      data:
+        entity_id: script.red_alert_flash
+
+
+- id: '101'
+  alias: 'Red alert off'
+  trigger:
+    platform: state
+    entity_id: input_boolean.red_alert
+    to: 'off'
+  action:
+    - service: script.turn_off
+      data:
+        entity_id: script.red_alert_flash, script.red_alert_loop
+    - service: automation.trigger
+      data_template:
+        entity_id: >
+          {% if is_state('input_select.time_of_day', 'Morning') %}
+            automation.dining_room_morning
+          {% elif is_state('input_select.time_of_day', 'Day') %}
+            automation.dining_room_day
+          {% elif is_state('input_select.time_of_day', 'Evening') %}
+            automation.dining_room_evening
+          {% elif is_state('input_select.time_of_day', 'Night') %}
+            automation.dining_room_night
+          {% endif %}
+    - service: switch.turn_on
+      data:
+        entity_id: switch.nook_flux, switch.tradfri_flux

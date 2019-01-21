@@ -41,4 +41,6 @@
       entity_id: sensor.water_heater
       device_class: heat
       friendly_name: "Water heater"
-      min_gradient: 0.0056
+      min_gradient: 0.0016
+      max_samples: 5
+      sample_duration: 10

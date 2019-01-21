@@ -65,34 +65,88 @@ say_sonos:
 # Vacuuming area
 #
 vacuum_island:
-      alias: "Vacuum around island"
-      sequence:
-        - service: vacuum.send_command
-          data:
-            entity_id: vacuum.xiaomi_vacuum_cleaner
-            command: app_zoned_clean
-            params: [[25900,22950,28900,20100,5]]
+  alias: "Vacuum around island"
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[25900,22950,28900,20100,5]]
 vacuum_table:
-      alias: "Vacuum around table"
-      sequence:
-        - service: vacuum.send_command
-          data:
-            entity_id: vacuum.xiaomi_vacuum_cleaner
-            command: app_zoned_clean
-            params: [[25200,25700,28900,22950,1]]
+  alias: "Vacuum around table"
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[25200,25700,28900,22950,1]]
 vacuum_hallway:
-      alias: "Vacuum hallway"
-      sequence:
-        - service: vacuum.send_command
-          data:
-            entity_id: vacuum.xiaomi_vacuum_cleaner
-            command: app_zoned_clean
-            params: [[27800,29000,28900,25700,1]]
+  alias: "Vacuum hallway"
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[27800,29000,28900,25700,1]]
 vacuum_kitchen:
-      alias: "Vacuum kitchen"
-      sequence:
-        - service: vacuum.send_command
-          data:
-            entity_id: vacuum.xiaomi_vacuum_cleaner
-            command: app_zoned_clean
-            params: [[25200,25700,28900,19800,1],[25800,22800,28900,20000,1],[27800,29000,28900,25700,1]]
+  alias: "Vacuum kitchen"
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[25200,25700,28900,19800,1],[25800,22800,28900,20000,1],[27800,29000,28900,25700,1]]
+
+#
+# Red Alert
+#
+red_alert_flash:
+  alias: Red Alert
+  sequence:
+    - alias: Light On
+      service: light.turn_on
+      data:
+        entity_id: light.nook_2, light.serving_table, light.sofa_2, light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+        color_name: red
+        brightness: 255
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.dining_room
+        volume_level: 0.55
+    - service:  media_player.play_media
+      data:
+        entity_id: media_player.dining_room
+        media_content_id: https://hass.continually-evolving.net:8124/local/tng_red_alert3.mp3
+        media_content_type: audio/mp3
+    - delay:
+        # time for flash light on
+        milliseconds: 250
+    - alias: Light Off
+      service: light.turn_off
+      data:
+        entity_id: light.nook_2, light.serving_table, light.sofa_2, light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+    - alias: loop
+      service: script.turn_on
+      data:
+        entity_id: script.red_alert_loop
+
+red_alert_loop:
+  alias: Flash loop
+  sequence:
+    - delay:
+        # time for flash light off
+        milliseconds: 250
+    - alias: loop red alert
+      service: script.turn_on
+      data:
+        entity_id: script.red_alert_flash
+
+toggle_samsung_tv:
+  alias: Toggle Samsung TV
+  sequence:
+    - alias: Toggle
+      service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_161
+      data:
+        command:
+          - 'power'

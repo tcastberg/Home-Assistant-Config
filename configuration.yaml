@@ -59,6 +59,10 @@ device_tracker:
     username: !secret google_maps_username
     password: !secret google_maps_password
 
+  - platform: icloud
+    username: !secret icloud_username
+    password: !secret icloud_password
+
 # Discover some devices automatically
 #discovery:
 
@@ -101,6 +105,39 @@ proximity:
       - device_tracker.google_maps_106703534047375134126
     tolerance: 100
     unit_of_measurement: m
+
+remote:
+  - platform: xiaomi_miio
+    name: "TV Room remote"
+    host: !secret xiaomi_ir_ip
+    token: !secret xiaomi_ir_token
+    hidden: true
+    commands:
+      power:
+        command:
+          - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
+      hdmi_1:
+        command:
+          - 'pronto:0000 006D 0000 0022 00AB 00AB 0015 003F 0015 003F 0015 003F 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003F 0015 003F 0015 003F 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003F 0015 0015 0015 0015 0015 003F 0015 0015 0015 003F 0015 003F 0015 003F 0015 0015 0015 003F 0015 003F 0015 0015 0015 003F 0015 0015 0015 0015 0015 0015 0015 071C'
+      hdmi_2:
+        command:
+          - 'pronto:0000 006D 0000 0022 00AC 00AB 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0689'
+      hdmi_3:
+        command:
+          - 'pronto:0000 006D 0000 0022 00AC 00AC 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0689'
+      hdmi_4:
+        command:
+          - 'pronto:0000 006D 0000 0022 00AC 00AB 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0016 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0689'
+      volume_up:
+        command:
+          - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
+      volume_down:
+        command:
+          - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
+      mute:
+        command:
+          - 'pronto:0000 006c 0022 0003 00ab 00aa 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 003f 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0714 00ab 00aa 0015 0015 0015 0e91'
+
 
 camera:
   - platform: ffmpeg
@@ -185,8 +222,8 @@ tesla:
 
 vacuum:
   - platform: xiaomi_miio
-    host: !secret xiaomi_ip
-    token: !secret xiaomi_vacuum
+    host: !secret xiaomi_roborock_ip
+    token: !secret xiaomi_roborock_token
 
 verisure:
   username: !secret verisure_username
@@ -212,6 +249,7 @@ input_select:
       - Day
       - Evening
   home_state:
+
     name: Home State
     icon: mdi:home-circle
     options:
@@ -226,64 +264,12 @@ input_select:
       - table
       - hallway
 
-input_boolean:
-  sleep_state_tor:
-    name: Sleeping
-    icon: mdi:sleep
-  alarm_override_tor:
-    name: Alarm Disabled
-    icon: mdi:cancel
-  alarm_workday_tor:
-    name: Workdays Only
-    icon: mdi:calendar-check
-
-  sleep_state_lande:
-    name: Sleeping
-    icon: mdi:sleep
-  alarm_override_lande:
-    name: Alarm Disabled
-    icon: mdi:cancel
-  alarm_workday_lande:
-    name: Workdays Only
-    icon: mdi:calendar-check
-
-  sleep_state_ingrid:
-    name: Sleeping
-    icon: mdi:sleep
-  alarm_override_ingrid:
-    name: Alarm Disabled
-    icon: mdi:cancel
-  alarm_workday_ingrid:
-    name: Workdays Only
-    icon: mdi:calendar-check
-
-  sleep_state_guests:
-    name: Sleeping
-    icon: mdi:sleep
-  guests_present:
-    name: Hospitality
-    icon: mdi:account-multiple-plus
-  vacation_mode:
-    name: Vacation
-    icon: mdi:beach
-  door_autolock:
-    name: Auto lock
-    icon: mdi:lock-reset
-  dinner_time:
-    name: Dinner time
-    icon: mdi:food-fork-drink
-    initial: off
-
-  daily_vacuum_first_run:
-    name: Daily Vacuum First Run
-    initial: 'off'
-  disable_daily_vacuum:
-    name: Disable Daily Vacuum Automation
-    initial: 'off'
-  disable_dustbin_notification:
-    name: Disable Dustbin Notification
-    initial: 'off'
-
+  tv_state:
+    name: Current TV state
+    options:
+      - off
+      - idle
+      - playing
 
 input_datetime:
   alarm_time_tor:
@@ -298,70 +284,6 @@ input_datetime:
     name: Alarm Time
     has_date: false
     has_time: true
-
-switch:
-  - platform: command_line
-    switches:
-      #Switch for Foscam Motion Detection
-      foscam_motion:
-        command_on: !secret foscam_command_on
-        command_off: !secret foscam_command_off
-        command_state: !secret foscam_command_state
-        value_template: '{{ value == "1" }}'
-  - platform: flux
-    name: Tradfri flux
-    lights:
-      - light.nook_2
-      - light.sofa_2
-      - light.serving_table
-    start_time: '06:00'
-    stop_time: '23:59'
-    start_colortemp: 5000
-    sunset_colortemp: 3000
-    stop_colortemp: 2100
-    disable_brightness_adjust: true
-    mode: rgb
-    transition: 30
-    interval: 120
-  - platform: flux
-    name: Nook flux
-    lights:
-      - light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
-    start_time: '06:00'
-    stop_time: '23:59'
-    start_colortemp: 3500
-    sunset_colortemp: 2000
-    stop_colortemp: 1100
-    disable_brightness_adjust: true
-    mode: rgb
-    transition: 30
-    interval: 120
-  - platform: flux
-    name: Ingrid flux
-    lights:
-      - light.ingrid_bedroom_bed_light_level
-    start_time: '06:00'
-    stop_time: '23:59'
-    start_colortemp: 4000
-    sunset_colortemp: 2100
-    stop_colortemp: 1500
-    disable_brightness_adjust: true
-    mode: rgb
-    transition: 30
-    interval: 120
-  - platform: flux
-    name: TV backlight flux
-    lights:
-      - light.bedroom_tv_backlight_level
-    start_time: '06:00'
-    stop_time: '23:59'
-    start_colortemp: 4000
-    sunset_colortemp: 2100
-    stop_colortemp: 1500
-    disable_brightness_adjust: true
-    mode: rgb
-    transition: 30
-    interval: 120
 
 
 light:
@@ -419,6 +341,10 @@ google_assistant:
       name: ingrid sleeping
       expose: true
       room: Ingrid bedroom
+    input_boolean.red_alert:
+      name: Red Alert
+      expose: true
+      room: Dining room
     light.house_ventilation_dimmer_level:
       expose: false
     light.bedroom_tv_backlight_level_2:
@@ -493,6 +419,8 @@ netatmo:
   password: !secret netatmo_password
   discovery: false
 
+input_boolean: !include input_boolean.yaml
+switch: !include switch.yaml
 binary_sensor: !include binary-sensor.yaml
 sensor: !include sensor.yaml
 group: !include groups.yaml

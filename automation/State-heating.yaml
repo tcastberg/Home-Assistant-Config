@@ -13,7 +13,7 @@
   action:
     - service: climate.set_temperature
       data:
-        entity_id: climate.high_window
+        entity_id: climate.high_window, climate.fan_heater
         temperature: 21
 
 - id: '95'
@@ -28,7 +28,7 @@
   action:
     - service: climate.set_temperature
       data:
-        entity_id: climate.high_window
+        entity_id: climate.high_window, climate.fan_heater
         temperature: 19
 
 - id: '96'
@@ -40,7 +40,7 @@
   action:
     - service: climate.turn_off
       data:
-        entity_id: climate.high_window
+        entity_id: climate.high_window, climate.fan_heater
 
 - id: '97'
   alias: 'Heating vacation off'
@@ -51,4 +51,4 @@
   action:
     - service: climate.turn_on
       data:
-        entity_id: climate.high_window
+        entity_id: climate.high_window, climate.fan_heater

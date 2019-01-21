@@ -126,7 +126,7 @@
 
 
 - id: '91'    
-  alias: 'TV on'
+  alias: 'TV switch on'
   trigger:
     - platform: state
       entity_id: input_select.time_of_day
@@ -151,7 +151,7 @@
       entity_id: switch.tv_room_tv_switch
 
 - id: '92'    
-  alias: 'TV off'
+  alias: 'TV switch off'
   trigger:
     - platform: state
       entity_id: input_select.time_of_day
