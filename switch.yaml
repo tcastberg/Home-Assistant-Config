@@ -1,0 +1,62 @@
+- platform: command_line
+  switches:
+    #Switch for Foscam Motion Detection
+    foscam_motion:
+      command_on: !secret foscam_command_on
+      command_off: !secret foscam_command_off
+      command_state: !secret foscam_command_state
+      value_template: '{{ value == "1" }}'
+
+- platform: flux
+  name: Tradfri flux
+  lights:
+    - light.nook_2
+    - light.sofa_2
+    - light.serving_table
+  start_time: '06:00'
+  stop_time: '23:59'
+  start_colortemp: 5000
+  sunset_colortemp: 3000
+  stop_colortemp: 2100
+  disable_brightness_adjust: true
+  mode: rgb
+  interval: 120
+
+- platform: flux
+  name: Nook flux
+  lights:
+    - light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+  start_time: '06:00'
+  stop_time: '23:59'
+  start_colortemp: 3500
+  sunset_colortemp: 2000
+  stop_colortemp: 1100
+  disable_brightness_adjust: true
+  mode: rgb
+  interval: 120
+
+- platform: flux
+  name: Ingrid flux
+  lights:
+    - light.ingrid_bedroom_bed_light_level
+  start_time: '06:00'
+  stop_time: '23:59'
+  start_colortemp: 4000
+  sunset_colortemp: 2100
+  stop_colortemp: 1500
+  disable_brightness_adjust: true
+  mode: rgb
+  interval: 120
+
+- platform: flux
+  name: TV backlight flux
+  lights:
+    - light.bedroom_tv_backlight_level
+  start_time: '06:00'
+  stop_time: '23:59'
+  start_colortemp: 4000
+  sunset_colortemp: 2100
+  stop_colortemp: 1500
+  disable_brightness_adjust: true
+  mode: rgb
+  interval: 120

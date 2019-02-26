@@ -203,3 +203,15 @@
     - service: switch.turn_on
       data:
         entity_id: switch.nook_flux, switch.tradfri_flux
+
+- id: '102'
+  alias: 'Guests on'
+  trigger:
+    platform: state
+    entity_id: input_boolean.guests_present
+    to: 'on'
+  action:
+    - service: notify.html5
+      data_template:
+        title: 'Guests enabled'
+        message: 'Guests enabled {{now().strftime("%Y-%m-%d %H:%M:%S")}}'

@@ -26,10 +26,10 @@
       - min_temp
       - max_temp
 
-- platform: nordpool
-  currency: 'NOK'
-  region: 'Oslo'
-  name: "Elspot kWh"
+#- platform: nordpool
+#  currency: 'NOK'
+#  region: 'Oslo'
+#  name: "Elspot kWh"
 
 - platform: time_date
   display_options:
@@ -55,12 +55,12 @@
 
 - platform: template
   sensors:
-    electricity_price:
-      friendly_name: "GE spot price kWh"
-      entity_id: sensor.elspot_kwh
-      icon_template: mdi:flash
-      unit_of_measurement: "øre"
-      value_template: '{{float(states.sensor.elspot_kwh.state) + 3.2}}'
+#    electricity_price:
+#      friendly_name: "GE spot price kWh"
+#      entity_id: sensor.elspot_kwh
+#      icon_template: mdi:flash
+#      unit_of_measurement: "øre"
+#      value_template: '{{float(states.sensor.elspot_kwh.state) + 3.2}}'
 
     average_humidity:
       friendly_name: "Average house humidity"
@@ -115,6 +115,13 @@
         {% else %}
           20
         {% endif %}
+
+    total_power_consumption:
+      friendly_name: "kWh consumed"
+      entity_id: sensor.time
+      unit_of_measurement: "kWh total"
+      value_template: >
+        {{ states.sensor | selectattr("attributes.unit_of_measurement","equalto","kWh") | map(attribute='state')|map('float')| sum }}
 
     sunrise:
       friendly_name: "Sunrise at"

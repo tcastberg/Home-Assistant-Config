@@ -34,7 +34,11 @@ recorder:
   db_url: !secret mysql_connection
 
 http:
-  api_password: !secret http_api_password
+  trusted_proxies: 
+    - 172.17.0.8
+  use_x_forwarded_for: true
+  ip_ban_enabled: true
+  #api_password: !secret http_api_password
   #base_url: !secret http_base_url
 
 zwave:
@@ -43,6 +47,11 @@ zwave:
   autoheal: false
 
 prometheus:
+
+mqtt:
+  broker: localhost
+  discovery: true
+  discovery_prefix: homeassistant
 
 weather:
   - platform: darksky
@@ -174,12 +183,19 @@ logger:
     homeassistant.components.zwave: info
     homeassistant.components.lock: info
     homeassistant.components.python_script: info
+    homeassistant.components.http.ban: warning
 
 # View all events in a logbook
 logbook:
+  exclude:
+    domains:
+      - sensor
 
 # Track the sun
 sun:
+
+tibber:
+  access_token: !secret tibber_token
 
 alarm_control_panel:
   - platform: manual
@@ -209,6 +225,16 @@ sonos:
     hosts:
       - 192.168.0.211
       - 192.168.0.212
+
+media_player:
+  - platform: universal
+    name: All audio
+    children:
+      - media_player.dining_room
+      - media_player.changing_room
+      - media_player.kitchen_speaker
+      - media_player.lounge_speaker
+      - media_player.master_bedroom_speaker
 
 climate:
   - platform: mill
@@ -264,12 +290,6 @@ input_select:
       - table
       - hallway
 
-  tv_state:
-    name: Current TV state
-    options:
-      - off
-      - idle
-      - playing
 
 input_datetime:
   alarm_time_tor:
@@ -418,6 +438,26 @@ netatmo:
   username: !secret netatmo_username
   password: !secret netatmo_password
   discovery: false
+
+utility_meter:
+  water_yearly:
+    source: sensor.water_consumption
+    cycle: yearly
+  water_monthly:
+    source: sensor.water_consumption
+    cycle: monthly
+  water_daily:
+    source: sensor.water_consumption
+    cycle: daily
+  electricity_yearly:
+    source: sensor.total_power_consumption
+    cycle: yearly
+  electricity_monthly:
+    source: sensor.total_power_consumption
+    cycle: monthly
+  electricity_daily:
+    source: sensor.total_power_consumption
+    cycle: daily
 
 input_boolean: !include input_boolean.yaml
 switch: !include switch.yaml

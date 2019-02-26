@@ -1,0 +1,60 @@
+sleep_state_tor:
+  name: Sleeping
+  icon: mdi:sleep
+alarm_override_tor:
+  name: Alarm Disabled
+  icon: mdi:cancel
+alarm_workday_tor:
+  name: Workdays Only
+  icon: mdi:calendar-check
+
+sleep_state_lande:
+  name: Sleeping
+  icon: mdi:sleep
+alarm_override_lande:
+  name: Alarm Disabled
+  icon: mdi:cancel
+alarm_workday_lande:
+  name: Workdays Only
+  icon: mdi:calendar-check
+
+sleep_state_ingrid:
+  name: Sleeping
+  icon: mdi:sleep
+alarm_override_ingrid:
+  name: Alarm Disabled
+  icon: mdi:cancel
+alarm_workday_ingrid:
+  name: Workdays Only
+  icon: mdi:calendar-check
+
+sleep_state_guests:
+  name: Sleeping
+  icon: mdi:sleep
+guests_present:
+  name: Hospitality
+  icon: mdi:account-multiple-plus
+vacation_mode:
+  name: Vacation
+  icon: mdi:beach
+door_autolock:
+  name: Auto lock
+  icon: mdi:lock-reset
+dinner_time:
+  name: Dinner time
+  icon: mdi:food-fork-drink
+  initial: off
+
+daily_vacuum_first_run:
+  name: Daily Vacuum First Run
+  initial: 'off'
+disable_daily_vacuum:
+  name: Disable Daily Vacuum Automation
+  initial: 'off'
+disable_dustbin_notification:
+  name: Disable Dustbin Notification
+  initial: 'off'
+
+red_alert:
+  name: "Red Alert"
+  initial: 'off'

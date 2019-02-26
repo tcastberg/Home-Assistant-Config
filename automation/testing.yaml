@@ -6,7 +6,7 @@
 #    event_data:
 #     action: 'blah'
 #  action:
-#    - service: notify.html5_tor_magnus_pixel
+#    - service: notify.html5_tor_magnus_pixel_2
 #      data:
 #        message: 'Someone at door'
 #        data:
@@ -29,15 +29,15 @@
 #          tag: 'test-notification'
 
 
-- id: '1000'
-  alias: 'Casting camera'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.doorbell
-    to: 'on'
-  action:
-    - service:  media_player.play_media
-      data:
-        entity_id: media_player.tv_room
-        media_content_id: "https://hass.continually-evolving.net:8124/local/stairs.m3u8"
-        media_content_type: video/mp4
+#- id: '1000'
+#  alias: 'Casting camera'
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.doorbell
+#    to: 'on'
+#  action:
+#    - service:  media_player.play_media
+#      data:
+#        entity_id: media_player.tv_room
+#        media_content_id: "https://hass.continually-evolving.net:8124/local/stairs.m3u8"
+#        media_content_type: video/mp4

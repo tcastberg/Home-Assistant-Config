@@ -73,7 +73,7 @@ lande:
     - input_boolean.alarm_override_lande
     - input_boolean.alarm_workday_lande
     - input_boolean.sleep_state_lande
-    - device_tracker.phone__lande
+    - device_tracker.phone_lande
 ingridsofia:
   name: Ingrid Sofia
   icon: mdi:account
@@ -83,7 +83,7 @@ ingridsofia:
     - input_boolean.alarm_override_ingrid
     - input_boolean.alarm_workday_ingrid
     - input_boolean.sleep_state_ingrid
-    - device_tracker.ipad__ingrid
+    - device_tracker.ipad_ingrid
 guests:
   name: Guests
   icon: mdi:account-multiple

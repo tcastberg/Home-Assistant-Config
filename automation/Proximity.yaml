@@ -17,7 +17,7 @@
         variables:
           where: 'dining_room'
           what: 'Tor Magnus is almost home.'
-    - service: notify.html5_tor_magnus_pixel
+    - service: notify.html5_tor_magnus_pixel_2
       data:
         title: 'Arrival'
         message: 'Tor Magnus is almost home'
@@ -43,7 +43,7 @@
         variables:
           where: 'dining_room'
           what: 'Lande is almost home.'
-    - service: notify.html5_tor_magnus_pixel
+    - service: notify.html5_tor_magnus_pixel_2
       data:
         title: 'Arrival'
         message: 'Lande is almost home'

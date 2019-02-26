@@ -25,7 +25,7 @@
     
     low_priced_electricity:
       friendly_name: "EL price below average"
-      value_template: "{{ states('sensor.elspot_kwh') | float() < state_attr('sensor.elspot_kwh', 'Average') | float }}"
+      value_template: "{{ states('sensor.electricity_price_holmsens_vei_29b') | float() < state_attr('sensor.electricity_price_holmsens_vei_29b', 'avg_price') | float }}"
 
     doorbell_state:
       friendly_name: "Doorbell"
