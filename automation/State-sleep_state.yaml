@@ -6,6 +6,21 @@
   trigger:
   - platform: time
     at: '10:00:00'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_boolean.sleep_state_tor
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_lande
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_ingrid
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_guests
+        state: 'on'
   action:
     - service: input_boolean.turn_off
       data:

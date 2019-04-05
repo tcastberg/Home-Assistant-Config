@@ -14,7 +14,7 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.high_window, climate.oil_heater
-        temperature: 21
+        temperature: 20
 
 - id: '95'
   alias: 'Heating medium'
@@ -29,7 +29,7 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.high_window, climate.oil_heater
-        temperature: 19
+        temperature: 18
 
 - id: '96'
   alias: 'Heating vacation on'

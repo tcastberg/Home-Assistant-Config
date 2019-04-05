@@ -14,8 +14,13 @@ homeassistant:
   customize: !include customize.yaml
   auth_providers:
    - type: homeassistant
+   - type: trusted_networks
+     trusted_networks:
+        - 127.0.0.1/32
 
 auth:
+
+system_health:
 
 # Show links to resources in log and frontend
 # introduction:
@@ -27,7 +32,7 @@ frontend:
   themes: !include_dir_merge_named themes/
 
 config:
-
+person:
 map:
 
 recorder:
@@ -52,10 +57,6 @@ mqtt:
   broker: localhost
   discovery: true
   discovery_prefix: homeassistant
-
-weather:
-  - platform: darksky
-    api_key: !secret darksky_apikey
 
 device_tracker:
   - platform: unifi
@@ -151,25 +152,61 @@ remote:
 camera:
   - platform: ffmpeg
     name: Hallway Camera
-    input: !secret foscam_url 
+    input: !secret foscam_ffmpeg 
+  - platform: generic
+    name:  Hallway Camera generic
+    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.hallway_camera
+    stream_source: !secret foscam_rtsp
+
   - platform: ffmpeg
     name: Side lawn
-    input: !secret nvr_front_south
+    input: !secret nvr_front_south_ffmpeg
+  - platform: generic
+    name: Side lawn generic
+    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.side_lawn
+    stream_source: !secret nvr_front_south_rtsp
+
   - platform: ffmpeg
     name: Front door
-    input: !secret nvr_front_stairs
+    input: !secret nvr_front_stairs_ffmpeg
+  - platform: generic
+    name: Front door generic
+    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.front_door
+    stream_source: !secret nvr_front_stairs_rtsp
+
   - platform: ffmpeg
     name: Front lawn
-    input: !secret nvr_front_east
+    input: !secret nvr_front_east_ffmpeg
+  - platform: generic
+    name: Front lawn generic
+    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.front_lawn
+    stream_source: !secret nvr_front_east_rtsp
+
   - platform: ffmpeg
     name: Car parking
-    input: !secret nvr_front_north
+    input: !secret nvr_front_north_ffmpeg
+  - platform: generic
+    name: Car parking generic
+    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.car_parking
+    stream_source: !secret nvr_front_north_rtsp
+
   - platform: ffmpeg
     name: Tool shed
-    input: !secret nvr_rear_south
+    input: !secret nvr_rear_south_ffmpeg
+  - platform: generic
+    name: Tool shed generic
+    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.tool_shed
+    stream_source: !secret nvr_rear_south_rtsp
+
   - platform: ffmpeg
     name: Back garden
-    input: !secret nvr_rear_north
+    input: !secret nvr_rear_north_ffmpeg
+  - platform: generic
+    name: Back garden generic
+    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.back_garden
+    stream_source: !secret nvr_rear_north_rtsp
+
+stream:
 
 # Enables support for tracking state changes over time
 history:
