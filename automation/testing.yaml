@@ -36,8 +36,7 @@
 #    entity_id: binary_sensor.doorbell
 #    to: 'on'
 #  action:
-#    - service:  media_player.play_media
+#    - service: camera.play_stream
 #      data:
-#        entity_id: media_player.tv_room
-#        media_content_id: "https://hass.continually-evolving.net:8124/local/stairs.m3u8"
-#        media_content_type: video/mp4
+#        entity_id: camera.front_door_generic
+#        media_player: media_player.tv_room

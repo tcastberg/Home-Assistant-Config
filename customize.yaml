@@ -80,12 +80,12 @@ sensor.dining_room_stairs_motion_sensor_temperature:
 binary_sensor.dining_room_stairs_motion_sensor_sensor:
   device_class: motion
   friendly_name: Dining room stairs motion
-sensor.tv_area_motion_sensor_luminance:
+sensor.tv_lounge_motion_sensor_luminance:
   icon: mdi:brightness-5
   friendly_name: TV lounge luminance
-sensor.tv_area_motion_sensor_temperature:
+sensor.tv_lounge_motion_sensor_temperature:
   friendly_name: TV lounge temperature
-binary_sensor.tv_area_motion_sensor_sensor:
+binary_sensor.tv_lounge_motion_sensor_sensor:
   device_class: motion
   friendly_name: TV lounge motion
 sensor.dressingroom_motion_sensor_luminance:

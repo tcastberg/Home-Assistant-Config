@@ -44,3 +44,24 @@
       min_gradient: 0.0016
       max_samples: 5
       sample_duration: 10
+
+- platform: tod
+  name: Morning
+  after: '06:00'
+  before: '09:00'
+  
+- platform: tod
+  name: Day
+  after: '09:00'
+  before: '19:30'
+  
+- platform: tod
+  name: Evening
+  after: '19:30'
+  before: '01:00'
+  
+- platform: tod
+  name: Night
+  after: '01:00'
+  before: '06:00'
+  

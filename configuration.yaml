@@ -1,15 +1,15 @@
 homeassistant:
   # Name of the location where Home Assistant is running
-  name: Home
+  #name: Home
   # Location required to calculate the time the sun rises and sets
-  latitude: !secret home_latitude_short
-  longitude: !secret home_longitude_short
+  #latitude: !secret home_latitude_short
+  #longitude: !secret home_longitude_short
   # Impacts weather/sunrise data (altitude above sea level in meters)
-  elevation: 154
+  #elevation: 154
   # metric for Metric, imperial for Imperial
-  unit_system: metric
+  #unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  time_zone: Europe/Oslo
+  #time_zone: Europe/Oslo
   # Customization file
   customize: !include customize.yaml
   auth_providers:
@@ -19,6 +19,8 @@ homeassistant:
         - 127.0.0.1/32
 
 auth:
+#ssdp:
+#zeroconf:
 
 system_health:
 
@@ -55,8 +57,7 @@ prometheus:
 
 mqtt:
   broker: localhost
-  discovery: true
-  discovery_prefix: homeassistant
+  discovery: false
 
 device_tracker:
   - platform: unifi
@@ -221,6 +222,7 @@ logger:
     homeassistant.components.lock: info
     homeassistant.components.python_script: info
     homeassistant.components.http.ban: warning
+    homeassistant.components.prometheus: error
 
 # View all events in a logbook
 logbook:
@@ -300,7 +302,10 @@ verisure:
 
 # Text to speech
 tts:
-  - platform: google
+  - platform: google_translate
+    service_name: google_say
+    cache: true
+    time_memory: 3600
 
 input_select:
   time_of_day:
@@ -368,8 +373,9 @@ notify:
     port: 25
   - name: html5
     platform: html5
-    gcm_api_key: !secret gcm_sender_key
-    gcm_sender_id: !secret gcm_sender_id
+    vapid_pub_key: !secret vapid_pub_key
+    vapid_prv_key: !secret vapid_prv_key
+    vapid_email: !secret vapid_email
   - name: hangouts
     platform: hangouts
     default_conversations:
@@ -506,3 +512,4 @@ script: !include scripts.yaml
 #alert: !include alerts.yaml
 intent_script: !include intent_scripts.yaml
 hangouts: !include hangout_intents.yaml
+fan: !include fans.yaml

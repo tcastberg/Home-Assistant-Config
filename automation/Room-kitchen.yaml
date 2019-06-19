@@ -18,7 +18,7 @@
       to: 'off'
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
-      below: 200
+      below: 400
       for:
         seconds: 120
   condition:
@@ -31,6 +31,9 @@
         entity_id: binary_sensor.kitchen_island_motion_sensor_sensor
         state: 'off'
       - condition: state
+        entity_id: binary_sensor.kitchen_table_motion_sensor_sensor
+        state: 'off'
+      - condition: state
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
@@ -40,7 +43,7 @@
         value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
       - condition: numeric_state
         entity_id: sensor.kitchen_table_motion_sensor_luminance
-        below: 250
+        below: 400
   action:
     - service: light.turn_on
       entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level
@@ -66,7 +69,7 @@
     conditions:
       - condition: numeric_state
         entity_id: sensor.kitchen_table_motion_sensor_luminance
-        below: 250
+        below: 400
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
@@ -92,7 +95,7 @@
       to: 'off'
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
-      above: 300
+      above: 500
       for:
         seconds: 120
   condition:

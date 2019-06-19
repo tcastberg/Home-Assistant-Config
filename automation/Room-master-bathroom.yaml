@@ -6,17 +6,13 @@
     to: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.ceiling
+      entity_id: light.ceiling_2
       data_template:
-        brightness: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
-            200
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
-            255
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
-            150
+        brightness_pct: >
+          {%- if is_state('input_select.time_of_day', 'Night') %}
+            10
           {%- else %}
-            30
+            100
           {%- endif %}
 
 - id: '29'    
@@ -27,4 +23,4 @@
     to: 'off'
   action:
     - service: light.turn_off
-      entity_id: light.ceiling
+      entity_id: light.ceiling_2

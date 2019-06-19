@@ -9,7 +9,7 @@
       for:
         seconds: 5
     - platform: numeric_state
-      entity_id: sensor.tv_area_motion_sensor_luminance
+      entity_id: sensor.tv_lounge_motion_sensor_luminance
       below: 200
       for:
         seconds: 120
@@ -30,7 +30,7 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: numeric_state
-        entity_id: sensor.tv_area_motion_sensor_luminance
+        entity_id: sensor.tv_lounge_motion_sensor_luminance
         below: 200
       - condition: template
         value_template: "{{not is_state('media_player.tv_room','playing')}}"
@@ -116,7 +116,7 @@
       for:
         seconds: 5
     - platform: numeric_state
-      entity_id: sensor.tv_area_motion_sensor_luminance
+      entity_id: sensor.tv_lounge_motion_sensor_luminance
       above: 250
       for:
         seconds: 120
@@ -166,3 +166,25 @@
   action:
     - service: switch.turn_off
       entity_id: switch.tv_room_tv_switch
+
+- id: '111'
+  alias: 'Chromecast auto volume'
+  trigger:
+  - entity_id: media_player.tv_room
+    from: 'off'
+    platform: state
+    to: idle
+  - entity_id: media_player.tv_room
+    from: 'off'
+    platform: state
+    to: playing
+  - entity_id: media_player.tv_room
+    from: 'off'
+    platform: state
+    to: paused
+  condition: []
+  action:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.tv_room
+      volume_level: 0.5

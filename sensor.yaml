@@ -9,6 +9,23 @@
     - cloudiness
 
 - platform: netatmo
+  station: Home
+  modules:
+    Indoor:
+      - temperature
+      - humidity
+      - pressure
+      - co2
+      - noise
+      - wifi_status
+    Outdoor:
+      - battery_percent
+      - temperature
+      - humidity
+      - min_temp
+      - max_temp
+      - rf_status
+- platform: netatmo
   station: Værstasjon33
   modules:
     Innesensor:
@@ -16,6 +33,7 @@
       - humidity
       - pressure
       - co2
+      - noise
     Vindmåler:
       - windangle
       - windstrength
@@ -239,3 +257,19 @@
       value_template: 'Operation'
     vacuum_accessories:
       value_template: 'Maintenance'
+
+- platform: mqtt
+  name: water_consumption
+  unit_of_measurement: "m3"
+  state_topic: "homeassistant/sensor/MyMeter/58079516/state"
+  value_template: "{{value_json.total_m3}}"
+- platform: mqtt
+  name: water_internal_temperature
+  unit_of_measurement: "°C"
+  state_topic: "homeassistant/sensor/MyMeter/58079516/state"
+  value_template: "{{value_json.flow_temperature}}"
+- platform: mqtt
+  name: water_external_temperature
+  unit_of_measurement: "°C"
+  state_topic: "homeassistant/sensor/MyMeter/58079516/state"
+  value_template: "{{value_json.external_temperature}}"
