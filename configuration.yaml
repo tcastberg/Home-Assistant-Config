@@ -70,9 +70,9 @@ device_tracker:
     username: !secret google_maps_username
     password: !secret google_maps_password
 
-  - platform: icloud
-    username: !secret icloud_username
-    password: !secret icloud_password
+#  - platform: icloud
+#    username: !secret icloud_username
+#    password: !secret icloud_password
 
 # Discover some devices automatically
 #discovery:
@@ -480,7 +480,7 @@ netatmo:
   secret_key: !secret netatmo_secret_key
   username: !secret netatmo_username
   password: !secret netatmo_password
-  discovery: false
+  discovery: true
 
 utility_meter:
   water_yearly:
