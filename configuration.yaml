@@ -506,7 +506,6 @@ input_boolean: !include input_boolean.yaml
 switch: !include switch.yaml
 binary_sensor: !include binary-sensor.yaml
 sensor: !include sensor.yaml
-group: !include groups.yaml
 automation: !include_dir_merge_list automation/
 script: !include scripts.yaml
 #alert: !include alerts.yaml
