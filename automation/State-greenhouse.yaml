@@ -1,84 +1,84 @@
-- id: '107'
-  alias: 'Start ventilating greenhouse'
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.greenhouse_temperature
-      above: 30
-      for:
-        minutes: 5
-    - platform: numeric_state
-      entity_id: sensor.greenhouse_humidity
-      above: 90
-      for:
-        minutes: 5
-  condition:
-    condition: state
-    entity_id: cover.greenhouse_windows
-    state: 'closed'
-  action:
-    - service: cover.set_cover_position
-      data:
-        entity_id: cover.greenhouse_windows
-        position: 10
-
-- id: '108'
-  alias: 'Stop ventilating greenhouse'
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.greenhouse_temperature
-      below: 28
-      for:
-        minutes: 5
-    - platform: numeric_state
-      entity_id: sensor.greenhouse_humidity
-      below: 60
-      for:
-        minutes: 5
-  condition:
-    condition: state
-    entity_id: cover.greenhouse_windows
-    state: 'open'
-  action:
-    - service: cover.close_cover
-      data:
-        entity_id: cover.greenhouse_windows
-
-- id: '109'
-  alias: 'Water greenhouse'
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.greenhouse_soil_humidity
-      below: 500
-      for:
-        minutes: 30
-  condition:
-    condition: state
-    entity_id: switch.greenhouse_water_relay_1
-    state: 'off'
-  action:
-    - service: switch.turn_on
-      data:
-        entity_id: switch.greenhouse_water_relay_1
-    - delay:
-        minutes: 3
-    - service: switch.turn_off
-      data:
-        entity_id: switch.greenhouse_water_relay_1
-
-- id: '110'
-  alias: 'Water greenhouse'
-  trigger:
-    - platform: state
-      entity_id: switch.greenhouse_water_relay_1
-      to: 'on'
-      for:
-        minutes: 3
-  condition:
-    condition: state
-    entity_id: switch.greenhouse_water_relay_1
-    state: 'on'
-  action:
-    - service: switch.turn_off
-      data:
-        entity_id: switch.greenhouse_water_relay_1
-
+#- id: '107'
+#  alias: 'Start ventilating greenhouse'
+#  trigger:
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_temperature
+#      above: 30
+#      for:
+#        minutes: 5
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_humidity
+#      above: 90
+#      for:
+#        minutes: 5
+#  condition:
+#    condition: state
+#    entity_id: cover.greenhouse_windows
+#    state: 'closed'
+#  action:
+#    - service: cover.set_cover_position
+#      data:
+#        entity_id: cover.greenhouse_windows
+#        position: 10
+#
+#- id: '108'
+#  alias: 'Stop ventilating greenhouse'
+#  trigger:
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_temperature
+#      below: 28
+#      for:
+#        minutes: 5
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_humidity
+#      below: 60
+#      for:
+#        minutes: 5
+#  condition:
+#    condition: state
+#    entity_id: cover.greenhouse_windows
+#    state: 'open'
+#  action:
+#    - service: cover.close_cover
+#      data:
+#        entity_id: cover.greenhouse_windows
+#
+#- id: '109'
+#  alias: 'Water greenhouse'
+#  trigger:
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_soil_humidity
+#      below: 500
+#      for:
+#        minutes: 30
+#  condition:
+#    condition: state
+#    entity_id: switch.greenhouse_water_relay_1
+#    state: 'off'
+#  action:
+#    - service: switch.turn_on
+#      data:
+#        entity_id: switch.greenhouse_water_relay_1
+#    - delay:
+#        minutes: 3
+#    - service: switch.turn_off
+#      data:
+#        entity_id: switch.greenhouse_water_relay_1
+#
+#- id: '110'
+#  alias: 'Water greenhouse'
+#  trigger:
+#    - platform: state
+#      entity_id: switch.greenhouse_water_relay_1
+#      to: 'on'
+#      for:
+#        minutes: 3
+#  condition:
+#    condition: state
+#    entity_id: switch.greenhouse_water_relay_1
+#    state: 'on'
+#  action:
+#    - service: switch.turn_off
+#      data:
+#        entity_id: switch.greenhouse_water_relay_1
+#
