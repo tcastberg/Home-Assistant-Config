@@ -6,13 +6,15 @@
     above: 5
     below: 9
   condition:
-    condition: template
-    value_template: "{{not is_state_attr('light.house_ventilation_dimmer_level', 'brightness', 126)}}"
+    condition: numeric_state
+    entity_id: fan.humidity_fan
+    value_template: '{{ states.fan.humidity_fan.attributes.speed }}'
+    above: 1
   action:
-    - service: light.turn_on
-      entity_id: light.house_ventilation_dimmer_level
+    - service: fan.turn_on
+      entity_id: fan.humidity_fan
       data:
-        brightness_pct: 50
+        speed: 1
 
 - id: '32'
   alias: 'Ventilation high'
@@ -21,13 +23,15 @@
     entity_id: sensor.divergence_humidity
     above: 11
   condition:
-    condition: template
-    value_template: "{{not is_state_attr('light.house_ventilation_dimmer_level', 'brightness', 255)}}"
+    condition: numeric_state
+    entity_id: fan.humidity_fan
+    value_template: '{{ states.fan.humidity_fan.attributes.speed }}'
+    below: 3
   action:
-    - service: light.turn_on
-      entity_id: light.house_ventilation_dimmer_level
+    - service: fan.turn_on
+      entity_id: fan.humidity_fan
       data:
-        brightness_pct: 100
+        speed: 3
 
 - id: '33'
   alias: 'Ventilation off'
@@ -37,8 +41,8 @@
     below: 3
   condition:
     condition: state
-    entity_id: light.house_ventilation_dimmer_level
+    entity_id: fan.humidity_fan
     state: 'on'
   action:
-    - service: light.turn_off
-      entity_id: light.house_ventilation_dimmer_level
+    - service: fan.turn_off
+      entity_id: fan.humidity_fan
