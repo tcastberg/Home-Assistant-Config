@@ -6,7 +6,9 @@ Also using Prometheus/Grafana for graphing, both running in Docker containers.
  
 
 # Interface
-![UI1](images/Status.png)  
-![UI2](images/People.png)  
-![UI3](images/Lights.png)
-![UI4](images/Power.png)
+![UI1](images/Screenshot 1.png)  
+![UI2](images/Screenshot 2.png)  
+![UI3](images/Screenshot 3.png)
+![UI4](images/Screenshot 4.png)
+![UI5](images/Screenshot 5.png)
+![UI6](images/Screenshot 6.png)
