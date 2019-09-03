@@ -11,38 +11,16 @@
 - platform: netatmo
   station: Home
   modules:
-    Indoor:
-      - temperature
-      - humidity
-      - pressure
-      - co2
-      - noise
-      - wifi_status
-    Outdoor:
-      - battery_percent
-      - temperature
-      - humidity
-      - min_temp
-      - max_temp
-      - rf_status
+    - Indoor
+    - Outdoor
+    - Rain gauge
 - platform: netatmo
   station: Værstasjon33
   modules:
-    Innesensor:
-      - temperature
-      - humidity
-      - pressure
-      - co2
-      - noise
-    Vindmåler:
-      - windangle
-      - windstrength
-      - guststrength
-    Utesensor:
-      - temperature
-      - humidity
-      - min_temp
-      - max_temp
+    - Innesensor
+    - Vindmåler
+    - Utesensor
+#    - Regnmåler
 
 #- platform: nordpool
 #  currency: 'NOK'
@@ -73,22 +51,15 @@
 
 - platform: template
   sensors:
-#    electricity_price:
-#      friendly_name: "GE spot price kWh"
-#      entity_id: sensor.elspot_kwh
-#      icon_template: mdi:flash
-#      unit_of_measurement: "øre"
-#      value_template: '{{float(states.sensor.elspot_kwh.state) + 3.2}}'
-
     average_humidity:
       friendly_name: "Average house humidity"
       entity_id: sensor.family_bathroom_multisensor_relative_humidity, sensor.master_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
-      unit_of_measurement: "% avg"
+      unit_of_measurement: "%"
       icon_template: mdi:water-percent
       value_template: >
         {% if states.sensor %}
-          {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|map(attribute='state')|map('float')|sum %}
-          {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|list|count %}
+          {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|rejectattr("state", "equalto", "unavailable")|rejectattr("name", "equalto", "Netatmo Innesensor Humidity")|rejectattr("name", "equalto", "Netatmo Utesensor Humidity")|rejectattr("name", "equalto", "Netatmo Outdoor Humidity")|map(attribute='state')|map('float')|sum %}
+          {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|rejectattr("state", "equalto", "unavailable")|rejectattr("name", "equalto", "Netatmo Innesensor Humidity")|rejectattr("name", "equalto", "Netatmo Utesensor Humidity")|rejectattr("name", "equalto", "Netatmo Outdoor Humidity")|list|count %}
           {% if totalcount > 0 %}
             {% set totalaverage = totalvalue / totalcount %}
           {% else %}
@@ -101,24 +72,40 @@
 
     divergence_humidity:
       friendly_name: "Divergence from average house humidity"
-      entity_id: sensor.average_humidity, sensor.family_bathroom_multisensor_relative_humidity, sensor.master_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
-      unit_of_measurement: "% div"
+      entity_id: sensor.netatmo_indoor_humidity, sensor.family_bathroom_multisensor_relative_humidity, sensor.master_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
+      unit_of_measurement: "%"
       icon_template: mdi:water-percent
       value_template: >
-          {% if states.sensor.average_humidity.state and states.sensor.family_bathroom_multisensor_relative_humidity.state and states.sensor.master_bathroom_multisensor_relative_humidity.state and states.sensor.laundry_multisensor_relative_humidity.state %}
-            {% set average =  states('sensor.average_humidity') | float %}
+          {% if states.sensor.netatmo_indoor_humidity.state and states.sensor.family_bathroom_multisensor_relative_humidity.state and states.sensor.master_bathroom_multisensor_relative_humidity.state and states.sensor.laundry_multisensor_relative_humidity.state %}
+            {% set average =  states('sensor.netatmo_indoor_humidity') | float %}
             {% set family  =  states('sensor.family_bathroom_multisensor_relative_humidity') | float - average %}
             {% set master  =  states('sensor.master_bathroom_multisensor_relative_humidity') | float - average %}
-            {% set laundry = (states('sensor.laundry_multisensor_relative_humidity') | float - average) - 6 %}
+            {% set laundry = (states('sensor.laundry_multisensor_relative_humidity') | float - average) - 4 %}
             {{[family,master,laundry]|max|round(1)}}
           {% else %}
             0
           {% endif %}
 
+#    divergence_humidity:
+#      friendly_name: "Divergence from average house humidity"
+#      entity_id: sensor.average_humidity, sensor.family_bathroom_multisensor_relative_humidity, sensor.master_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
+#      unit_of_measurement: "% div"
+#      icon_template: mdi:water-percent
+#      value_template: >
+#          {% if states.sensor.average_humidity.state and states.sensor.family_bathroom_multisensor_relative_humidity.state and states.sensor.master_bathroom_multisensor_relative_humidity.state and states.sensor.laundry_multisensor_relative_humidity.state %}
+#            {% set average =  states('sensor.average_humidity') | float %}
+#            {% set family  =  states('sensor.family_bathroom_multisensor_relative_humidity') | float - average %}
+#            {% set master  =  states('sensor.master_bathroom_multisensor_relative_humidity') | float - average %}
+#            {% set laundry = (states('sensor.laundry_multisensor_relative_humidity') | float - average) - 4 %}
+#            {{[family,master,laundry]|max|round(1)}}
+#          {% else %}
+#            0
+#          {% endif %}
+
     average_temperature:
       friendly_name: "Average house temperature"
       entity_id: sensor.entrance_hallway_motion_sensor_temperature, sensor.hallway_toilet_motion_sensor_temperature, sensor.laundry_multisensor_temperature, sensor.kitchen_table_motion_sensor_temperature, sensor.kitchen_island_motion_sensor_temperature, sensor.dining_room_stairs_motion_sensor_temperature, sensor.balcony_door_sensor_temperature, sensor.tv_area_motion_sensor_temperature, sensor.family_bathroom_multisensor_temperature, sensor.dressingroom_motion_sensor_temperature, sensor.master_bathroom_multisensor_temperature, sensor.training_room_motion_sensor_temperature
-      unit_of_measurement: "°C avg"
+      unit_of_measurement: "°C"
       icon_template: mdi:water-percent
       value_template: >
         {% if states.sensor %}
@@ -133,13 +120,6 @@
         {% else %}
           20
         {% endif %}
-
-    total_power_consumption:
-      friendly_name: "kWh consumed"
-      entity_id: sensor.time
-      unit_of_measurement: "kWh total"
-      value_template: >
-        {{ states.sensor | selectattr("attributes.unit_of_measurement","equalto","kWh") | map(attribute='state')|map('float')| sum }}
 
     sunrise:
       friendly_name: "Sunrise at"
@@ -208,7 +188,7 @@
       icon_template: 'mdi:timer'
     vacuum_cleaned_area:
       friendly_name: Area of Last Cycle
-      unit_of_measurement: 'm ²'
+      unit_of_measurement: 'm²'
       entity_id:
         - vacuum.xiaomi_vacuum_cleaner
       value_template: '{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.cleaned_area }}'
@@ -257,10 +237,25 @@
       value_template: 'Operation'
     vacuum_accessories:
       value_template: 'Maintenance'
+    electricity_meter_consumption:
+        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'lastMeterConsumption') }}"
+        unit_of_measurement: "kWh"
+    electricity_meter_accmulated_consumption:
+        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'accumulatedConsumption') }}"
+        unit_of_measurement: "kWh"
+    electricity_meter_accmulated_cost:
+        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'accumulatedCost') }}"
+        unit_of_measurement: "NOK"
+    electricity_meter_phase1_current:
+        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentPhase1') }}"
+        unit_of_measurement: "A"
+    electricity_meter_phase3_current:
+        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentPhase3') }}"
+        unit_of_measurement: "A"
 
 - platform: mqtt
-  name: water_consumption
-  unit_of_measurement: "m3"
+  name: water_consumption_volume
+  unit_of_measurement: "m³"
   state_topic: "homeassistant/sensor/MyMeter/58079516/state"
   value_template: "{{value_json.total_m3}}"
 - platform: mqtt

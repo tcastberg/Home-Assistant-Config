@@ -85,6 +85,7 @@ sensor.tv_lounge_motion_sensor_luminance:
   friendly_name: TV lounge luminance
 sensor.tv_lounge_motion_sensor_temperature:
   friendly_name: TV lounge temperature
+  device_class: temperature
 binary_sensor.tv_lounge_motion_sensor_sensor:
   device_class: motion
   friendly_name: TV lounge motion
@@ -130,18 +131,6 @@ sensor.average_temperature:
   icon: mdi:thermometer
 sensor.balcony_door_sensor_temperature:
   friendly_name: Balcony door temperature
-binary_sensor.balcony_door_sensor:
-  device_class: opening
-  friendly_name: Balcony door
-binary_sensor.backhall_garden_door_sensor:
-  device_class: opening
-  friendly_name: Hallway garden door
-binary_sensor.bedroom_garden_door_sensor:
-  device_class: opening
-  friendly_name: Bedroom garden door
-binary_sensor.kitchen_window_3_sensor:
-  device_class: opening
-  friendly_name: Kitchen window 3
 light.bedroom_tv_backlight_level:
   friendly_name: TV backlight
 light.bedroom_tv_backlight_level_2:
@@ -170,7 +159,7 @@ sensor.weather_precipitation:
   icon: mdi:weather-pouring
 sensor.weather_wind_speed:
   icon: mdi:weather-windy-variant
-device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker:
+device_tracker.tesla_model_x_location_tracker:
   icon: mdi:car-estate
 switch.entrance_outside_light_switch:
   icon: mdi:lightbulb
@@ -188,3 +177,19 @@ sensor.weather_cloudiness:
   icon: mdi:cloud-outline
 binary_sensor.dining_room_motion_sensor_sensor_2:
   hidden: true
+binary_sensor.balcony_door_sensor_2:
+  device_class: door
+binary_sensor.bedroom_garden_door_sensor:
+  device_class: door
+  friendly_name: Bedroom garden door
+binary_sensor.backhall_garden_door_sensor:
+  device_class: door
+binary_sensor.kitchen_window_3_sensor:
+  device_class: window
+binary_sensor.tesla_model_x_charger_sensor:
+  device_class: plug
+binary_sensor.tesla_model_x_parking_brake_sensor:
+  device_class: safety
+binary_sensor.doorbell_state:
+  device_class: power
+sensor.water_heater: {}

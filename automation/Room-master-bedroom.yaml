@@ -2,8 +2,8 @@
   alias: 'Master bedroom morning'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Morning'
+      entity_id: binary_sensor.morning
+      to: 'on'
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -20,8 +20,8 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
-        entity_id: input_select.time_of_day
-        state: 'Morning'
+        entity_id: binary_sensor.morning
+        state: 'on'
       - condition: state
         entity_id: input_boolean.sleep_state_tor
         state: 'off'
@@ -53,8 +53,8 @@
   alias: 'Master bedroom day'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Day'
+      entity_id: binary_sensor.day
+      to: 'on'
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -65,8 +65,8 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
-        entity_id: input_select.time_of_day
-        state: 'Day'
+        entity_id: binary_sensor.day
+        state: 'on'
   action:
     - service: switch.turn_off
       entity_id: switch.tv_backlight_flux
@@ -83,10 +83,10 @@
   alias: 'Master bedroom evening'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Evening'
+      entity_id: binary_sensor.evening
+      to: 'on'
       for:
-        hours: 1
+        hours: 2
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -97,8 +97,8 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
-        entity_id: input_select.time_of_day
-        state: 'Evening'
+        entity_id: binary_sensor.evening
+        state: 'on'
       - condition: state
         entity_id: input_boolean.sleep_state_tor
         state: 'off'
@@ -128,8 +128,8 @@
   alias: 'Master bedroom off'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
     - platform: state
       entity_id: input_select.home_state
       to: 'Away'
@@ -150,6 +150,36 @@
     - service: light.turn_off
       entity_id: light.changing_room_ceiling_light_level
 
+- id: '115'    
+  alias: 'TV master bedroom switch on'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+      for:
+        seconds: 10
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.master_bedroom_tv_switch
+
+- id: '116'    
+  alias: 'TV master switch off'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 10
+  action:
+    - service: switch.turn_off
+      entity_id: switch.master_bedroom_tv_switch
+
 - id: '69'    
   alias: 'Dressing room ceiling light on'
   trigger:
@@ -157,8 +187,9 @@
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'on'
   condition:
-    condition: template
-    value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
+    condition: state
+    entity_id: binary_sensor.sleep_state
+    state: 'off'
   action:
     - service: light.turn_on
       entity_id: light.changing_room_ceiling_light_level
@@ -170,67 +201,70 @@
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'off'
   condition:
-    condition: template
-    value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
+    condition: state
+    entity_id: binary_sensor.sleep_state
+    state: 'off'
   action:
     - service: light.turn_off
       entity_id: light.changing_room_ceiling_light_level
 
 - id: '80'    
-  alias: 'Dressing room ceiling light on night'
+  alias: 'Dressing room light on night'
   trigger:
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'on'
   condition:
     condition: state
-    entity_id: input_select.time_of_day
-    state: 'Night'
+    entity_id: binary_sensor.sleep_state
+    state: 'on'
   action:
     - service: switch.turn_on
       entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '81'    
-  alias: 'Dressing room ceiling light off night'
+  alias: 'Dressing room light off night'
   trigger:
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'off'
   condition:
     condition: state
-    entity_id: input_select.time_of_day
-    state: 'Night'
+    entity_id: binary_sensor.sleep_state
+    state: 'on'
   action:
     - service: switch.turn_off
       entity_id: switch.dressing_room_wardrobes_switch
 
-- id: '35'
-  alias: 'Pre-wakeup alarm tmc'
-  trigger:
-    platform: state
-    entity_id: sensor.time
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_select.home_state
-        state: 'Home'
-      - condition: state
-        entity_id: input_boolean.sleep_state_tor
-        state: 'on'
-      - condition: template
-        value_template: '{{(now().strftime("%s") | int +900) | timestamp_custom("%H:%M")  == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_tor.attributes.hour | int, states.input_datetime.alarm_time_tor.attributes.minute | int)}}'
-      - condition: template
-        value_template: '{{(is_state("input_boolean.alarm_workday_tor", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_tor","off")}}'
-      - condition: state
-        entity_id: input_boolean.alarm_override_tor
-        state: 'off'
-  action:
-    - service: python_script.transition_light
-      data:
-        entity_id: light.bedside_lamp_dimmer_level
-        transition: 1800
-        brightness: 255
+
+
+#- id: '35'
+#  alias: 'Pre-wakeup alarm tmc'
+#  trigger:
+#    platform: state
+#    entity_id: sensor.time
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: state
+#        entity_id: input_select.home_state
+#        state: 'Home'
+#      - condition: state
+#        entity_id: input_boolean.sleep_state_tor
+#        state: 'on'
+#      - condition: template
+#        value_template: '{{(now().strftime("%s") | int +900) | timestamp_custom("%H:%M")  == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_tor.attributes.hour | int, states.input_datetime.alarm_time_tor.attributes.minute | int)}}'
+#      - condition: template
+#        value_template: '{{(is_state("input_boolean.alarm_workday_tor", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_tor","off")}}'
+#      - condition: state
+#        entity_id: input_boolean.alarm_override_tor
+#        state: 'off'
+#  action:
+#    - service: python_script.transition_light
+#      data:
+#        entity_id: light.bedside_lamp_dimmer_level
+#        transition: 1800
+#        brightness: 255
 
 - id: '83'
   alias: 'Wakeup alarm tmc'

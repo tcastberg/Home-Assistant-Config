@@ -4,7 +4,7 @@
     foscam_motion:
       command_on: !secret foscam_command_on
       command_off: !secret foscam_command_off
-      command_state: !secret foscam_command_state
+      #command_state: !secret foscam_command_state
       value_template: '{{ value == "1" }}'
 
 - platform: flux
@@ -25,7 +25,7 @@
 - platform: flux
   name: Nook flux
   lights:
-    - light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+    - light.nook_mood_level
   start_time: '06:00'
   stop_time: '23:59'
   start_colortemp: 3500

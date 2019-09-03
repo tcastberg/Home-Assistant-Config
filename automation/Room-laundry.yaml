@@ -6,9 +6,9 @@
     to: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.laundry_dimmer_level
+      entity_id: light.laundry_dimmer_level, light.laundry_bench_light
       data:
-        brightness: 200
+        brightness_pct: 100
 
 - id: '26'    
   alias: 'Laundry off'
@@ -18,4 +18,4 @@
     to: 'off'
   action:
     - service: light.turn_off
-      entity_id: light.laundry_dimmer_level
+      entity_id: light.laundry_dimmer_level, light.laundry_bench_light

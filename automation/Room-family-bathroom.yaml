@@ -9,11 +9,11 @@
       entity_id: light.family_bathroom_dimmer_level
       data_template:
         brightness: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
+          {%- if is_state('binary_sensor.morning', 'on') %}
             175
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
+          {%- elif is_state('binary_sensor.day', 'on') %}
             255
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+          {%- elif is_state('binary_sensor.evening', 'on') %}
             200
           {%- else %}
             125

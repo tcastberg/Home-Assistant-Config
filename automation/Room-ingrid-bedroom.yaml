@@ -2,13 +2,13 @@
   alias: 'Ingrids bedroom on'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
     - platform: numeric_state
       entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-      below: 250
+      below: 180
       for:
         seconds: 120
     - platform: state
@@ -24,13 +24,11 @@
         entity_id: input_boolean.sleep_state_ingrid
         state: 'off'
       - condition: state
-        entity_id: input_boolean.sleep_state_ingrid
+        entity_id: binary_sensor.sleep_state
         state: 'off'
-      - condition: template
-        value_template: "{{not is_state('input_select.time_of_day','Night')}}"
       - condition: numeric_state
         entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-        below: 300
+        below: 200
   action:
     - service: switch.turn_on
       entity_id: switch.ingrid_flux
@@ -38,26 +36,28 @@
       entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
       data_template:
         brightness_pct: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
+          {%- if is_state('binary_sensor.morning', 'on') %}
             75
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
+          {%- elif is_state('binary_sensor.day', 'on') %}
             100
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+          {%- elif is_state('binary_sensor.evening', 'on') %}
             35
+          {%- else %}
+            20
           {%- endif %}
 
 - id: '63'    
   alias: 'Ingrids bedroom off'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
     - platform: state
       entity_id: input_select.home_state
       to: 'Away'
     - platform: numeric_state
       entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-      above: 300
+      above: 200
       for:
         seconds: 120
     - platform: state
@@ -69,33 +69,33 @@
     - service: light.turn_off
       entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
 
-- id: '71'
-  alias: 'Pre-wakeup alarm Ingrid'
-  trigger:
-    platform: state
-    entity_id: sensor.time
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_select.home_state
-        state: 'Home'
-      - condition: state
-        entity_id: input_boolean.sleep_state_ingrid
-        state: 'on'
-      - condition: template
-        value_template: '{{(now().strftime("%s") | int +900) | timestamp_custom("%H:%M")  == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_ingrid.attributes.hour | int, states.input_datetime.alarm_time_ingrid.attributes.minute | int)}}'
-      - condition: template
-        value_template: '{{(is_state("input_boolean.alarm_workday_ingrid", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_ingrid","off")}}'
-      - condition: state
-        entity_id: input_boolean.alarm_override_ingrid
-        state: 'off'
-  action:
-    - service: python_script.transition_light
-      data:
-        entity_id: light.ingrid_bedroom_ceiling_light_level
-        transition: 900
-        brightness: 255
+#- id: '71'
+#  alias: 'Pre-wakeup alarm Ingrid'
+#  trigger:
+#    platform: state
+#    entity_id: sensor.time
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: state
+#        entity_id: input_select.home_state
+#        state: 'Home'
+#      - condition: state
+#        entity_id: input_boolean.sleep_state_ingrid
+#        state: 'on'
+#      - condition: template
+#        value_template: '{{(now().strftime("%s") | int +900) | timestamp_custom("%H:%M")  == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_ingrid.attributes.hour | int, states.input_datetime.alarm_time_ingrid.attributes.minute | int)}}'
+#      - condition: template
+#        value_template: '{{(is_state("input_boolean.alarm_workday_ingrid", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_ingrid","off")}}'
+#      - condition: state
+#        entity_id: input_boolean.alarm_override_ingrid
+#        state: 'off'
+#  action:
+#    - service: python_script.transition_light
+#      data:
+#        entity_id: light.ingrid_bedroom_ceiling_light_level
+#        transition: 900
+#        brightness: 255
  
 - id: '82'
   alias: 'Wakeup alarm Ingrid'

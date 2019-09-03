@@ -1,7 +1,7 @@
-- id: '85'
-  alias: 'Heal Z-wave at 03:30'
-  trigger:
-    platform: time
-    at: '03:30:00'
-  action:
-    service: zwave.heal_network
+#- id: '85'
+#  alias: 'Heal Z-wave at 03:30'
+#  trigger:
+#    platform: time
+#    at: '03:30:00'
+#  action:
+#    service: zwave.heal_network

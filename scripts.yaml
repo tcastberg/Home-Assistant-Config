@@ -7,13 +7,13 @@ kitchen_on:
       entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level, light.kitchen_hallway_ceiling_lights_level
       data_template:
         brightness_pct: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
+          {%- if is_state('binary_sensor.morning', 'on') %}
             79
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
+          {%- elif is_state('binary_sensor.day', 'on') %}
             99
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+          {%- elif is_state('binary_sensor.evening', 'on') %}
             60
-          {%- elif is_state('input_select.time_of_day', 'Night') %}
+          {%- elif is_state('binary_sensor.night', 'on') %}
             20
           {%- endif %}
 
@@ -106,7 +106,7 @@ red_alert_flash:
     - alias: Light On
       service: light.turn_on
       data:
-        entity_id: light.nook_2, light.serving_table, light.sofa_2, light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+        entity_id: light.nook_2, light.serving_table, light.sofa_2, light.nook_mood_level
         color_name: red
         brightness: 255
     - service: media_player.volume_set
@@ -124,7 +124,7 @@ red_alert_flash:
     - alias: Light Off
       service: light.turn_off
       data:
-        entity_id: light.nook_2, light.serving_table, light.sofa_2, light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+        entity_id: light.nook_2, light.serving_table, light.sofa_2, light.nook_mood_level
     - alias: loop
       service: script.turn_on
       data:

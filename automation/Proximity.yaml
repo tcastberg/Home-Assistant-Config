@@ -1,5 +1,5 @@
 - id: '89'
-  alias: 'Turn on light when Tor Magnus approaches home'
+  alias: 'Tor Magnus approaches home'
   trigger:
     - platform: numeric_state
       entity_id: proximity.tmc_home
@@ -25,7 +25,7 @@
           tag: 'arrival'
 
 - id: '90'
-  alias: 'Turn on light when Lande approaches home'
+  alias: 'Lande approaches home'
   trigger:
     - platform: numeric_state
       entity_id: proximity.lande_home
@@ -47,5 +47,29 @@
       data:
         title: 'Arrival'
         message: 'Lande is almost home'
+        data:
+          tag: 'arrival'
+
+- id: '112'
+  alias: 'Ingrid Sofia approaches home'
+  trigger:
+    - platform: numeric_state
+      entity_id: proximity.tmc_home
+      below: 1000
+      above: 500
+  condition:
+    - condition: template
+      value_template: '{{ states.proximity.ingrid_home.attributes.dir_of_travel == "towards" }}'
+  action:
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'Ingrid Sofia is almost home.'
+    - service: notify.html5_tor_magnus_pixel_2
+      data:
+        title: 'Arrival'
+        message: 'Ingrid Sofia is almost home'
         data:
           tag: 'arrival'

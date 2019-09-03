@@ -2,8 +2,8 @@
   alias: 'Disarm Home Alarm home'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Morning'
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
   condition:
     condition: state
     entity_id: input_select.home_state
@@ -18,8 +18,8 @@
   alias: 'Arm Home Alarm home'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
   condition:
     condition: state
     entity_id: input_select.home_state
@@ -191,13 +191,13 @@
     - service: automation.trigger
       data_template:
         entity_id: >
-          {% if is_state('input_select.time_of_day', 'Morning') %}
+          {% if is_state('binary_sensor.morning', 'on') %}
             automation.dining_room_morning
-          {% elif is_state('input_select.time_of_day', 'Day') %}
+          {% elif is_state('binary_sensor.day', 'on') %}
             automation.dining_room_day
-          {% elif is_state('input_select.time_of_day', 'Evening') %}
+          {% elif is_state('binary_sensor.evening', 'on') %}
             automation.dining_room_evening
-          {% elif is_state('input_select.time_of_day', 'Night') %}
+          {% elif is_state('binary_sensor.night', 'on') %}
             automation.dining_room_night
           {% endif %}
     - service: switch.turn_on

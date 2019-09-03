@@ -2,8 +2,11 @@
   alias: 'Dining room morning'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Morning'
+      entity_id: binary_sensor.morning
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -11,26 +14,29 @@
         seconds: 20
     - platform: numeric_state
       entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-      below: 250
+      below: 200
       for:
         seconds: 120
   condition:
     condition: and
     conditions:
       - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.morning
+        state: 'on'
+      - condition: state
         entity_id: input_select.home_state
         state: 'Home'
-      - condition: state
-        entity_id: input_select.time_of_day
-        state: 'Morning'
       - condition: numeric_state
         entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-        below: 300
+        below: 250
   action:
     - service: switch.turn_on
       entity_id: switch.tradfri_flux, switch.nook_flux
     - service: light.turn_on
-      entity_id: light.nook_table, light.bookshelf_2, light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+      entity_id: light.nook_table, light.bookshelf_2, light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.nook_mood_level
       data:
         brightness_pct: 90
     - service: light.turn_on
@@ -42,8 +48,11 @@
   alias: 'Dining room day'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Day'
+      entity_id: binary_sensor.day
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -51,26 +60,29 @@
         seconds: 20
     - platform: numeric_state
       entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-      below: 250
+      below: 200
       for:
         seconds: 120
   condition:
     condition: and
     conditions:
       - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.day
+        state: 'on'
+      - condition: state
         entity_id: input_select.home_state
         state: 'Home'
-      - condition: state
-        entity_id: input_select.time_of_day
-        state: 'Day'
       - condition: numeric_state
         entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-        below: 300
+        below: 250
   action:
     - service: switch.turn_on
       entity_id: switch.tradfri_flux, switch.nook_flux
     - service: light.turn_on
-      entity_id: light.nook_table, light.bookshelf_2, light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+      entity_id: light.nook_table, light.bookshelf_2, light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.nook_mood_level
       data:
         brightness_pct: 100
     - service: light.turn_on
@@ -82,8 +94,8 @@
   alias: 'Dining room evening'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Evening'
+      entity_id: binary_sensor.evening
+      to: 'on'
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -91,26 +103,29 @@
         seconds: 20
     - platform: numeric_state
       entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-      below: 250
+      below: 200
       for:
         seconds: 120
   condition:
     condition: and
     conditions:
       - condition: state
+        entity_id: binary_sensor.evening
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: state
         entity_id: input_select.home_state
         state: 'Home'
-      - condition: state
-        entity_id: input_select.time_of_day
-        state: 'Evening'
       - condition: numeric_state
         entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-        below: 300
+        below: 250
   action:
     - service: switch.turn_on
       entity_id: switch.tradfri_flux, switch.nook_flux
     - service: light.turn_on
-      entity_id: light.nook_table, light.bookshelf_2, light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+      entity_id: light.nook_table, light.bookshelf_2, light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.nook_mood_level
       data:
         brightness_pct: 85
     - service: light.turn_on
@@ -122,20 +137,28 @@
   alias: 'Dining room Night'
   trigger:
     - platform: state
-      entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor
+      entity_id: binary_sensor.night
       to: 'on'
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: input_select.home_state
+      to: 'Home'
+      for:
+        seconds: 20
+    - platform: state
+      entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor
+      to: 'on'
   condition:
     condition: and
     conditions:
       - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.night
+        state: 'on'
+      - condition: state
         entity_id: input_select.home_state
         state: 'Home'
-      - condition: state
-        entity_id: input_select.time_of_day
-        state: 'Night'
       - condition: state
         entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor
         state: 'on'
@@ -143,7 +166,7 @@
     - service: switch.turn_off
       entity_id: switch.tradfri_flux, switch.nook_flux
     - service: light.turn_on
-      entity_id: light.sofa_2, light.serving_table, light.nook_2, light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+      entity_id: light.sofa_2, light.serving_table, light.nook_2, light.nook_mood_level
       data:
         brightness_pct: 20
         rgb_color: [255,0,0]
@@ -152,8 +175,8 @@
   alias: 'Dining room off'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
       for:
         seconds: 20
     - platform: state
@@ -166,7 +189,7 @@
       to: 'off'
     - platform: numeric_state
       entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-      above: 300
+      above: 250
       for:
         seconds: 120
   condition:
@@ -181,13 +204,13 @@
             entity_id: input_select.home_state
             state: 'Away'
           - condition: state
-            entity_id: input_select.time_of_day
-            state: 'Night'
+            entity_id: binary_sensor.sleep_state
+            state: 'on'
           - condition: numeric_state
             entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-            above: 300
+            above: 250
   action:
     - service: switch.turn_off
       entity_id: switch.tradfri_flux, switch.nook_flux
     - service: light.turn_off
-      entity_id: light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.nook_table, light.bookshelf_2, light.dining_room_rail_1_level, light.dining_room_rail_2_level, light.fibaro_system_fgrgbwm441_rgbw_controller_level_4
+      entity_id: light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.nook_table, light.bookshelf_2, light.dining_room_rail_1_level, light.dining_room_rail_2_level, light.nook_mood_level

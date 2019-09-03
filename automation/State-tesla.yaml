@@ -17,7 +17,7 @@
           tag: 'tesla-charging'
     - service: switch.turn_on
       data:
-        entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+        entity_id: switch.tesla_model_x_charger_switch
 
 - id: '45'
   alias: 'Stop charging Tesla if electricity price goes high'
@@ -29,7 +29,7 @@
     condition: and
     conditions: 
       - condition: state
-        entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+        entity_id: switch.tesla_model_x_charger_switch
         state: 'on'
       - condition: state
         entity_id: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
@@ -43,13 +43,13 @@
           tag: 'tesla-charging'
     - service: switch.turn_off
       data:
-        entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+        entity_id: switch.tesla_model_x_charger_switch
 
 - id: '46'
   alias: 'Stop charging Tesla while electricity price is high'
   trigger:
     platform: state
-    entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    entity_id: switch.tesla_model_x_charger_switch
     to: 'on'
   condition:
     condition: and
@@ -69,13 +69,13 @@
           tag: 'tesla-charging'
     - service: switch.turn_off
       data:
-        entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+        entity_id: switch.tesla_model_x_charger_switch
 
 - id: '47'
   alias: 'Restart charging Tesla if it stops'
   trigger:
     platform: state
-    entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+    entity_id: switch.tesla_model_x_charger_switch
     to: 'off'
     for:
       minutes: 10
@@ -97,4 +97,4 @@
           tag: 'tesla-charging'
     - service: switch.turn_on
       data:
-        entity_id: switch.tesla_model_x_5yjxcce22jf095567_charger_switch
+        entity_id: switch.tesla_model_x_charger_switch

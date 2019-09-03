@@ -72,7 +72,7 @@
   alias: 'Entrance hallway idle'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -85,8 +85,9 @@
   condition:
     condition: and
     conditions:
-      - condition: template
-        value_template: "{{not is_state('input_select.time_of_day','Night')}}"
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
@@ -112,18 +113,22 @@
     - platform: state
       entity_id: binary_sensor.doorbell_state
       to: 'on'
+  condition:
+    condition: state
+    entity_id: binary_sensor.sleep_state
+    state: 'off'
   action:
     - service: light.turn_on
       entity_id: light.entrance_hallway_ceiling_lights_level
       data_template:
         brightness_pct: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
+          {%- if is_state('binary_sensor.morning', 'on') %}
             65
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
+          {%- elif is_state('binary_sensor.day', 'on') %}
             99
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+          {%- elif is_state('binary_sensor.evening', 'on') %}
             50
-          {%- elif is_state('input_select.time_of_day', 'Night') %}
+          {%- elif is_state('binary_sensor.night', 'on') %}
             40
           {%- endif %}
     - service: light.turn_on
@@ -135,8 +140,8 @@
   alias: 'Entrance hallway off'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
     - platform: state
       entity_id: input_select.home_state
       to: 'Away'
@@ -155,8 +160,8 @@
       - condition: or
         conditions:
           - condition: state
-            entity_id: input_select.time_of_day
-            state: 'Night'
+            entity_id: binary_sensor.sleep_state
+            state: 'on'
           - condition: state
             entity_id: input_select.home_state
             state: 'Away'

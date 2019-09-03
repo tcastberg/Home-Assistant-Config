@@ -3,13 +3,22 @@
   trigger:
   - platform: numeric_state
     entity_id: sensor.divergence_humidity
-    above: 5
+    above: 4
     below: 9
   condition:
-    condition: numeric_state
-    entity_id: fan.humidity_fan
-    value_template: '{{ states.fan.humidity_fan.attributes.speed }}'
-    above: 1
+  - condition: or
+    conditions:
+      - condition: numeric_state
+        entity_id: fan.humidity_fan
+        value_template: '{{ states.fan.humidity_fan.attributes.speed }}'
+        above: 1
+      - condition: numeric_state
+        entity_id: fan.humidity_fan
+        value_template: '{{ states.fan.humidity_fan.attributes.speed }}'
+        below: 1
+      - condition: state
+        entity_id: fan.humidity_fan
+        state: 'off'
   action:
     - service: fan.turn_on
       entity_id: fan.humidity_fan
@@ -21,7 +30,7 @@
   trigger:
   - platform: numeric_state
     entity_id: sensor.divergence_humidity
-    above: 11
+    above: 10
   condition:
     condition: numeric_state
     entity_id: fan.humidity_fan

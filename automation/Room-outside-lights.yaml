@@ -5,15 +5,17 @@
       platform: state
       to: 'below_horizon'
     - platform: state
-      entity_id: input_select.time_of_day
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: sun.sun
         state: 'below_horizon'
-      - condition: template
-        value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
   action:
     - service: switch.turn_on
       entity_id: switch.entrance_outside_light_switch
@@ -29,8 +31,8 @@
       platform: state
       to: 'above_horizon'
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
   action:
     - service: switch.turn_off
       entity_id: switch.terrace_outside_light_switch
@@ -40,17 +42,11 @@
       entity_id: switch.entrance_outside_light_switch
 
 - id: '93'    
-  alias: 'Outside lights off'
+  alias: 'Downstairs outside lights off'
   trigger:
     - platform: state
       entity_id: input_boolean.sleep_state_ingrid
       to: 'on'
-    - entity_id: sun.sun
-      platform: state
-      to: 'above_horizon'
-    - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
   action:
     - service: switch.turn_off
       entity_id: switch.terrace_outside_light_switch

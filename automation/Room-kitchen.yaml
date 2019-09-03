@@ -2,7 +2,7 @@
   alias: 'Kitchen idle'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -12,13 +12,11 @@
       entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
     - platform: state
-      entity_id: input_select.time_of_day
-    - platform: state
       entity_id: input_boolean.dinner_time
       to: 'off'
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
-      below: 400
+      below: 250
       for:
         seconds: 120
   condition:
@@ -39,11 +37,12 @@
       - condition: state
         entity_id: input_boolean.dinner_time
         state: 'off'
-      - condition: template
-        value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
       - condition: numeric_state
         entity_id: sensor.kitchen_table_motion_sensor_luminance
-        below: 400
+        below: 300
   action:
     - service: light.turn_on
       entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level
@@ -69,7 +68,7 @@
     conditions:
       - condition: numeric_state
         entity_id: sensor.kitchen_table_motion_sensor_luminance
-        below: 400
+        below: 300
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
@@ -81,8 +80,8 @@
   alias: 'Kitchen off'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
       for:
         seconds: 3
     - platform: state
@@ -95,7 +94,7 @@
       to: 'off'
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
-      above: 500
+      above: 300
       for:
         seconds: 120
   condition:
@@ -113,8 +112,8 @@
       - condition: or
         conditions:
           - condition: state
-            entity_id: input_select.time_of_day
-            state: 'Night'
+            entity_id: binary_sensor.sleep_state
+            state: 'on'
           - condition: state
             entity_id: input_select.home_state
             state: 'Away'

@@ -27,7 +27,7 @@ system_health:
 # Show links to resources in log and frontend
 # introduction:
 
-python_script:
+#python_script:
 
 frontend:
   javascript_version: latest
@@ -46,7 +46,7 @@ http:
   use_x_forwarded_for: true
   ip_ban_enabled: true
   #api_password: !secret http_api_password
-  #base_url: !secret http_base_url
+  base_url: !secret http_base_url
 
 zwave:
   usb_path: /dev/ttyACM0
@@ -54,6 +54,11 @@ zwave:
   autoheal: false
 
 prometheus:
+  component_config_glob:
+    sensor.*_volume:
+      override_metric: water_volume
+    sensor.*_area:
+      override_metric: room_area
 
 mqtt:
   broker: localhost
@@ -68,7 +73,8 @@ device_tracker:
 
   - platform: google_maps
     username: !secret google_maps_username
-    password: !secret google_maps_password
+    scan_interval: 60
+    #password: !secret google_maps_password
 
 #  - platform: icloud
 #    username: !secret icloud_username
@@ -81,30 +87,43 @@ zone:
   - name: Home
     latitude: !secret home_latitude
     longitude: !secret home_longitude
-    radius: 30
+    radius: 100
     icon: mdi:home-modern
   - name: School
     latitude: !secret school_latitude
     longitude: !secret school_longitude
-    radius: 70
+    radius: 150
+    icon: mdi:school
+  - name: Dancing
+    latitude: !secret dancing_latitude
+    longitude: !secret dancing_longitude
+    radius: 100
     icon: mdi:school
   - name: Tor Magnus Work
     latitude: !secret tor_magnus_work_latitude
     longitude: !secret tor_magnus_work_longitude
-    radius: 70
+    radius: 120
     icon: mdi:worker
   - name: Lande Work
     latitude: !secret lande_work_latitude
     longitude: !secret lande_work_longitude
-    radius: 70
+    radius: 120
     icon: mdi:worker
   - name: Cabin
     latitude: !secret cabin_latitude
     longitude: !secret cabin_longitude
-    radius: 100
+    radius: 1000
     icon: mdi:image-filter-hdr
 
 proximity:
+  vacation:
+    zone: home
+    devices: 
+      - device_tracker.google_maps_117621586906275495071
+      - device_tracker.google_maps_106703534047375134126
+      - device_tracker.ingrid_phone
+    tolerance: 10000
+    unit_of_measurement: m
   tmc_home:
     zone: home
     devices:
@@ -112,8 +131,15 @@ proximity:
     tolerance: 100
     unit_of_measurement: m
   lande_home:
+    zone: home
     devices:
       - device_tracker.google_maps_106703534047375134126
+    tolerance: 100
+    unit_of_measurement: m
+  ingrid_home:
+    zone: home
+    devices:
+      - device_tracker.ingrid_phone
     tolerance: 100
     unit_of_measurement: m
 
@@ -266,14 +292,10 @@ sonos:
       - 192.168.0.212
 
 media_player:
-  - platform: universal
-    name: All audio
-    children:
-      - media_player.dining_room
-      - media_player.changing_room
-      - media_player.kitchen_speaker
-      - media_player.lounge_speaker
-      - media_player.master_bedroom_speaker
+  - platform: spotify
+    name: Spotify
+    client_id: !secret spotify_client_id
+    client_secret: !secret spotify_secret
 
 climate:
   - platform: mill
@@ -308,21 +330,13 @@ tts:
     time_memory: 3600
 
 input_select:
-  time_of_day:
-    name: Time of Day
-    icon: mdi:chart-timeline
-    options:
-      - Night
-      - Morning
-      - Day
-      - Evening
   home_state:
-
     name: Home State
     icon: mdi:home-circle
     options:
       - Home
       - Away
+      - Vacation
 
   vacuum_area:
     name: Choose an area to clean
@@ -464,46 +478,49 @@ google_assistant:
       expose: false
     light.hallway_toilet_ceiling_dimmer_level_2:
       expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level:
-      expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level_2:
-      expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level_3:
-      expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level_5:
-      expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level_6:
-      expose: false
 
 netatmo:
   api_key: !secret netatmo_api_key
   secret_key: !secret netatmo_secret_key
   username: !secret netatmo_username
   password: !secret netatmo_password
-  discovery: true
+  discovery: false
 
 utility_meter:
   water_yearly:
-    source: sensor.water_consumption
+    source: sensor.water_consumption_volume
     cycle: yearly
+    tariffs:
+      - fixed
   water_monthly:
-    source: sensor.water_consumption
+    source: sensor.water_consumption_volume
     cycle: monthly
+    tariffs:
+      - fixed
   water_daily:
-    source: sensor.water_consumption
+    source: sensor.water_consumption_volume
     cycle: daily
+    tariffs:
+      - fixed
   electricity_yearly:
-    source: sensor.total_power_consumption
+    source: sensor.electricity_meter_consumption
     cycle: yearly
+    tariffs:
+      - fixed
   electricity_monthly:
-    source: sensor.total_power_consumption
+    source: sensor.electricity_meter_consumption
     cycle: monthly
+    tariffs:
+      - fixed
   electricity_daily:
-    source: sensor.total_power_consumption
+    source: sensor.electricity_meter_consumption
     cycle: daily
+    tariffs:
+      - fixed
 
 input_boolean: !include input_boolean.yaml
 switch: !include switch.yaml
+group: !include groups.yaml
 binary_sensor: !include binary-sensor.yaml
 sensor: !include sensor.yaml
 automation: !include_dir_merge_list automation/

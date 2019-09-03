@@ -9,7 +9,7 @@
       entity_id: light.ceiling_2
       data_template:
         brightness_pct: >
-          {%- if is_state('input_select.time_of_day', 'Night') %}
+          {%- if is_state('binary_sensor.sleep_state', 'on') %}
             10
           {%- else %}
             100

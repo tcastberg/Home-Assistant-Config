@@ -1,0 +1,6 @@
+people:
+  name: People
+  entities:
+    - person.tor_magnus
+    - person.lande
+    - person.ingrid_sofia

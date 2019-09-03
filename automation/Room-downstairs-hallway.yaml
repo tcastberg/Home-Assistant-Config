@@ -2,7 +2,7 @@
   alias: 'Downstairs hallway on'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -10,32 +10,31 @@
         seconds: 7
     - platform: numeric_state
       entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-      below: 250
+      below: 180
       for:
         seconds: 120
-    - platform: state
-      entity_id: input_select.time_of_day
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
-      - condition: template
-        value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
       - condition: numeric_state
         entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-        below: 300
+        below: 200
   action:
     - service: light.turn_on
       entity_id: light.downstairs_hallway_pendant_level
       data_template:
         brightness_pct: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
+          {%- if is_state('binary_sensor.morning', 'on') %}
             75
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
+          {%- elif is_state('binary_sensor.day', 'on') %}
             100
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+          {%- elif is_state('binary_sensor.evening', 'on') %}
             55
           {%- else %}
             5
@@ -45,8 +44,8 @@
   alias: 'Downstairs hallway off'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
       for:
         seconds: 7
     - platform: state
@@ -56,7 +55,7 @@
         seconds: 7
     - platform: numeric_state
       entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-      above: 300
+      above: 200
       for:
         seconds: 120
   action:

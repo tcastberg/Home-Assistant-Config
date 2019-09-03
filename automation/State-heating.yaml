@@ -23,8 +23,8 @@
       entity_id: input_select.home_state
       to: 'Away'
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
   action:
     - service: climate.set_temperature
       data:

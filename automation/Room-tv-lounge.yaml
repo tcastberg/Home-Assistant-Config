@@ -2,12 +2,15 @@
   alias: 'TV lounge on'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
       for:
         seconds: 5
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
     - platform: numeric_state
       entity_id: sensor.tv_lounge_motion_sensor_luminance
       below: 200
@@ -29,34 +32,35 @@
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
       - condition: numeric_state
         entity_id: sensor.tv_lounge_motion_sensor_luminance
         below: 200
       - condition: template
         value_template: "{{not is_state('media_player.tv_room','playing')}}"
-      - condition: template
-        value_template: "{{not is_state('input_select.time_of_day', 'Night')}}"
   action:
     - service: light.turn_on
       entity_id: light.tv_area_level, light.sofa_area_level
       data_template:
         brightness_pct: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
+          {%- if is_state('binary_sensor.morning', 'on') %}
             60
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
+          {%- elif is_state('binary_sensor.day', 'on') %}
             80
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+          {%- elif is_state('binary_sensor.evening', 'on') %}
             40
           {%- endif %}
     - service: light.turn_on
       entity_id: light.hallway_area_level
       data_template:
         brightness_pct: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
+          {%- if is_state('binary_sensor.morning', 'on') %}
             80
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
+          {%- elif is_state('binary_sensor.day', 'on') %}
             100
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+          {%- elif is_state('binary_sensor.evening', 'on') %}
             60
           {%- endif %}
  
@@ -64,7 +68,7 @@
   alias: 'TV lounge chromecast playing'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
     - platform: state
       entity_id: media_player.tv_room
       to: 'playing'
@@ -79,26 +83,26 @@
       entity_id: light.tv_area_level, light.sofa_area_level
       data_template:
         brightness_pct: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
+          {%- if is_state('binary_sensor.morning', 'on') %}
             30
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
+          {%- elif is_state('binary_sensor.day', 'on') %}
             35
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+          {%- elif is_state('binary_sensor.evening', 'on') %}
             15
-          {%- elif is_state('input_select.time_of_day', 'Night') %}
+          {%- elif is_state('binary_sensor.night', 'on') %}
             10
           {%- endif %}
     - service: light.turn_on
       entity_id: light.hallway_area_level
       data_template:
         brightness_pct: >
-          {%- if is_state('input_select.time_of_day', 'Morning') %}
+          {%- if is_state('binary_sensor.morning', 'on') %}
             50
-          {%- elif is_state('input_select.time_of_day', 'Day') %}
+          {%- elif is_state('binary_sensor.day', 'on') %}
             50
-          {%- elif is_state('input_select.time_of_day', 'Evening') %}
+          {%- elif is_state('binary_sensor.evening', 'on') %}
             30
-          {%- elif is_state('input_select.time_of_day', 'Night') %}
+          {%- elif is_state('binary_sensor.night', 'on') %}
             10
           {%- endif %}
 
@@ -106,8 +110,8 @@
   alias: 'TV lounge off'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
       for:
         seconds: 5
     - platform: state
@@ -129,8 +133,8 @@
   alias: 'TV switch on'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Morning'
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
       for:
         seconds: 10
     - platform: state
@@ -144,8 +148,6 @@
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
-      - condition: template
-        value_template: "{{not is_state('input_select.time_of_day', 'Night')}}" 
   action:
     - service: switch.turn_on
       entity_id: switch.tv_room_tv_switch
@@ -154,8 +156,8 @@
   alias: 'TV switch off'
   trigger:
     - platform: state
-      entity_id: input_select.time_of_day
-      to: 'Night'
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
       for:
         seconds: 10
     - platform: state

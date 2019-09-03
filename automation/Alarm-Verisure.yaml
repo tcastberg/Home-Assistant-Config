@@ -3,7 +3,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.verisure_status_plug_power
-    above: 0.3
+    above: 1.0
   condition:
     condition: template
     value_template: "{{not is_state('alarm_control_panel.home_alarm','armed_away')}}"
@@ -48,7 +48,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.verisure_status_plug_power
-    below: 0.3
+    below: 1.0
   condition:
     condition: and
     conditions:
@@ -76,7 +76,7 @@
         value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','disarmed')}}"
       - condition: numeric_state
         entity_id: sensor.verisure_status_plug_power
-        above: 0.3
+        above: 1.0
   action:
     - service: alarm_control_panel.alarm_disarm
       entity_id: alarm_control_panel.holmsens_vei_alarm
