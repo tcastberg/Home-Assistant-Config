@@ -60,3 +60,30 @@
   disable_brightness_adjust: true
   mode: rgb
   interval: 120
+
+- platform: template
+  switches:
+    dinner_time:
+      friendly_name: Dinner time
+      entity_id: input_boolean.dinner_time
+      value_template: "{{ is_state('input_boolean.dinner_time', 'on') }}"
+      turn_on:
+        service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.dinner_time
+      turn_off:
+        service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.dinner_time
+    red_alert:
+      friendly_name: Red alert
+      entity_id: input_boolean.red_alert
+      value_template: "{{ is_state('input_boolean.red_alert', 'on') }}"
+      turn_on:
+        service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.red_alert
+      turn_off:
+        service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.red_alert

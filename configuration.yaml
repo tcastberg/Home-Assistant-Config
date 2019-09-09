@@ -362,21 +362,6 @@ input_datetime:
     has_time: true
 
 
-light:
-  - platform: switch
-    name: Porch
-    entity_id: switch.entrance_outside_light_switch
-  - platform: switch
-    name: Balcony
-    entity_id: switch.balcony_outside_light_switch
-  - platform: switch
-    name: Terrace
-    entity_id: switch.terrace_outside_light_switch
-  - platform: switch
-    name: Wardrobes
-    entity_id: switch.dressing_room_wardrobes_switch
-
-
 notify:
   - name: mail
     platform: smtp
@@ -486,6 +471,7 @@ netatmo:
   password: !secret netatmo_password
   discovery: false
 
+
 utility_meter:
   water_yearly:
     source: sensor.water_consumption_volume
@@ -529,3 +515,4 @@ script: !include scripts.yaml
 intent_script: !include intent_scripts.yaml
 hangouts: !include hangout_intents.yaml
 fan: !include fans.yaml
+light: !include light.yaml

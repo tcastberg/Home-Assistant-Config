@@ -7,6 +7,16 @@
     - windSpeed
     - humidity
     - cloudiness
+- platform: yr
+  name: Weather forecast
+  forecast: 2
+  monitored_conditions:
+    - temperature
+    - symbol
+    - precipitation
+    - windSpeed
+    - humidity
+    - cloudiness
 
 - platform: netatmo
   station: Home
@@ -268,3 +278,4 @@
   unit_of_measurement: "°C"
   state_topic: "homeassistant/sensor/MyMeter/58079516/state"
   value_template: "{{value_json.external_temperature}}"
+

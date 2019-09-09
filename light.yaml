@@ -1,0 +1,51 @@
+- platform: switch
+  name: Porch
+  entity_id: switch.entrance_outside_light_switch
+- platform: switch
+  name: Balcony
+  entity_id: switch.balcony_outside_light_switch
+- platform: switch
+  name: Terrace
+  entity_id: switch.terrace_outside_light_switch
+- platform: switch
+  name: Wardrobes
+  entity_id: switch.dressing_room_wardrobes_switch
+
+- platform: group
+  name: Kitchen
+  entities:
+    - light.kitchen_bench_ceiling_lights_level
+    - light.kitchen_table_ceiling_lamp_level
+    - light.kitchen_hallway_ceiling_lights_level
+- platform: group
+  name: TV Lounge
+  entities:
+    - light.tv_area_level
+    - light.sofa_area_level
+    - light.hallway_area_level
+- platform: group
+  name: Entrance
+  entities:
+    - light.entrance_hallway_ceiling_lights_level
+    - light.entrance_wardrobes
+- platform: group
+  name: Dining room
+  entities:
+    - light.nook_2
+    - light.nook_mood_level
+    - light.nook_table
+    - light.bookshelf_2
+    - light.dining_room_rail_1_level
+    - light.dining_room_rail_2_level
+    - light.serving_table
+    - light.sofa_2
+    - light.cabinets
+- platform: group
+  name: Master bedroom
+  entities:
+    - light.bedroom_tv_backlight_level
+    - light.bedside_lamp_dimmer_level
+    - light.dressing_table
+    - light.wardrobes
+    - light.changing_room_ceiling_light_level
+
