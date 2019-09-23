@@ -60,10 +60,6 @@ prometheus:
     sensor.*_area:
       override_metric: room_area
 
-mqtt:
-  broker: localhost
-  discovery: false
-
 device_tracker:
   - platform: unifi
     host: !secret unifi_host
@@ -73,8 +69,6 @@ device_tracker:
 
   - platform: google_maps
     username: !secret google_maps_username
-    scan_interval: 60
-    #password: !secret google_maps_password
 
 #  - platform: icloud
 #    username: !secret icloud_username
