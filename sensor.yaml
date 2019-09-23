@@ -259,6 +259,9 @@
     electricity_meter_phase1_current:
         value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentPhase1') }}"
         unit_of_measurement: "A"
+    electricity_meter_phase2_current:
+        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentPhase2') }}"
+        unit_of_measurement: "A"
     electricity_meter_phase3_current:
         value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentPhase3') }}"
         unit_of_measurement: "A"
