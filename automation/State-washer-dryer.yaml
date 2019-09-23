@@ -1,23 +1,23 @@
-- id: '36'
-  alias: 'Washing machine started'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.washing_machine_activity
-    from: "off"
-    to: "on"
-  action:
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.dining_room
-        volume_level: 0.55
-    - service: script.turn_on
-      entity_id: script.say_sonos
-      data:
-        variables:
-          where: 'dining_room'
-          what: 'The washing machine has started'
+#- id: '35'
+#  alias: 'Washing machine started'
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.washing_machine_activity
+#    from: "off"
+#    to: "on"
+#  action:
+#    - service: media_player.volume_set
+#      data:
+#        entity_id: media_player.dining_room
+#        volume_level: 0.55
+#    - service: script.turn_on
+#      entity_id: script.say_sonos
+#      data:
+#        variables:
+#          where: 'dining_room'
+#          what: 'The washing machine has started'
 
-- id: '37'
+- id: '36'
   alias: 'Washing machine stopped'
   trigger:
     platform: state
@@ -42,26 +42,26 @@
         data:
           tag: 'washing-machine'
 
-- id: '38'
-  alias: 'Dryer started'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.dryer_activity
-    from: "off"
-    to: "on"
-  action:
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.dining_room
-        volume_level: 0.55
-    - service: script.turn_on
-      entity_id: script.say_sonos
-      data:
-        variables:
-          where: 'dining_room'
-          what: 'The dryer has started'
+#- id: '37'
+#  alias: 'Dryer started'
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.dryer_activity
+#    from: "off"
+#    to: "on"
+#  action:
+#    - service: media_player.volume_set
+#      data:
+#        entity_id: media_player.dining_room
+#        volume_level: 0.55
+#    - service: script.turn_on
+#      entity_id: script.say_sonos
+#      data:
+#        variables:
+#          where: 'dining_room'
+#          what: 'The dryer has started'
 
-- id: '39'
+- id: '38'
   alias: 'Dryer stopped'
   trigger:
     platform: state
@@ -85,4 +85,29 @@
         message: 'Dryer has finished'
         data:
           tag: 'dryer'
+
+- id: '39'
+  alias: 'Dishwasher stopped'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.dishwasher_activity
+    from: "on"
+    to: "off"
+  action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.dining_room
+        volume_level: 0.55
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'The dishwasher has finished'
+    - service: notify.html5
+      data:
+        title: 'Dishwasher'
+        message: 'Dishwasher has finished'
+        data:
+          tag: 'dishwasher'
 
