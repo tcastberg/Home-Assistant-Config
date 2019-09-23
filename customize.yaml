@@ -190,8 +190,6 @@ binary_sensor.tesla_model_x_charger_sensor:
   device_class: plug
 binary_sensor.tesla_model_x_parking_brake_sensor:
   device_class: safety
-binary_sensor.doorbell_state:
-  device_class: power
 sensor.water_heater: {}
 switch.dinner_time:
   icon: mdi:food-fork-drink
@@ -201,3 +199,11 @@ sensor.weather_forecast_wind_speed:
   icon: mdi:weather-windy
 sensor.weather_forecast_precipitation:
   icon: mdi:weather-rainy
+binary_sensor.ingrid_bedroom_window_sensor:
+  device_class: window
+binary_sensor.nook_window_sensor:
+  device_class: window
+binary_sensor.laundry_window_sensor:
+  device_class: window
+binary_sensor.guest_bedroom_window_sensor:
+  device_class: window
