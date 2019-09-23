@@ -14,7 +14,7 @@
       data:
         code: !secret alarm_control_panel_code
 
-- id: '13'
+- id: '7'
   alias: 'Arm Home Alarm home'
   trigger:
     - platform: state
@@ -30,7 +30,7 @@
       data:
         code: !secret alarm_control_panel_code
 
-- id: '19'
+- id: '8'
   alias: 'Home Alarm armed away'
   trigger:
     platform: state
@@ -59,7 +59,7 @@
       data:
         entity_id: input_boolean.door_autolock
 
-- id: '20'
+- id: '9'
   alias: 'Home Alarm armed home'
   trigger:
     platform: state
@@ -77,7 +77,7 @@
       data:
         entity_id: input_boolean.door_autolock
 
-- id: '34'
+- id: '10'
   alias: 'Home Alarm disarmed'
   trigger:
     platform: state
@@ -103,11 +103,55 @@
       data:
         entity_id: switch.foscam_motion
 
+- id: '13'
+  alias: 'Send notification if pending and insecure'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: 'pending'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.backhall_garden_door_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.bedroom_garden_door_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.balcony_door_sensor_2
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.kitchen_window_3_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.laundry_window_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.nook_window_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.ingrid_bedroom_window_sensor
+        state: 'on'
+  action:
+    - service: notify.html5
+      data_template:
+        title: 'Home Alarm pending'
+        message: 'A door or window has been left open!'
+      data:
+        data:
+          tag: 'notification-home-alarm'
+    - service:  media_player.play_media
+      data:
+        entity_id: media_player.dining_room
+        media_content_id: https://hass.continually-evolving.net:8124/local/radio_interruption.mp3
+        media_content_type: audio/mp3
+
 - id: '3'
   alias: 'Trigger alarm while armed away'
   trigger:
     - platform: state
-      entity_id: binary_sensor.backhall_garden_door_sensor, binary_sensor.balcony_door_sensor_2, binary_sensor.bedroom_garden_door_sensor, binary_sensor.kitchen_window_3_sensor
+      entity_id: binary_sensor.backhall_garden_door_sensor, binary_sensor.balcony_door_sensor_2, binary_sensor.bedroom_garden_door_sensor, binary_sensor.kitchen_window_3_sensor, binary_sensor.laundry_window_sensor, binary_sensor.nook_window_sensor, binary_sensor.ingrid_bedroom_window_sensor
       to: 'on'
       for:
         minutes: 3
@@ -128,7 +172,7 @@
   alias: 'Trigger alarm while armed home'
   trigger:
     - platform: state
-      entity_id: binary_sensor.backhall_garden_door_sensor, binary_sensor.balcony_door_sensor_2, binary_sensor.bedroom_garden_door_sensor, binary_sensor.kitchen_window_3_sensor
+      entity_id: binary_sensor.backhall_garden_door_sensor, binary_sensor.balcony_door_sensor_2, binary_sensor.bedroom_garden_door_sensor, binary_sensor.kitchen_window_3_sensor, binary_sensor.laundry_window_sensor, binary_sensor.nook_window_sensor, binary_sensor.ingrid_bedroom_window_sensor
       to: 'on'
       for:
         minutes: 3
