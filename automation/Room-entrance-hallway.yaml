@@ -80,8 +80,10 @@
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
       to: 'off'
     - platform: state
-      entity_id: binary_sensor.doorbell_state
+      entity_id: binary_sensor.doorbell_switch
       to: 'off'
+      for:
+        minutes: 3
   condition:
     condition: and
     conditions:
@@ -111,7 +113,7 @@
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
       to: 'on'
     - platform: state
-      entity_id: binary_sensor.doorbell_state
+      entity_id: binary_sensor.doorbell_switch
       to: 'on'
   condition:
     condition: state
@@ -149,8 +151,10 @@
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
       to: 'off'
     - platform: state
-      entity_id: binary_sensor.doorbell_state
+      entity_id: binary_sensor.doorbell_switch
       to: 'off'
+      for:
+        minutes: 3
   condition:
     condition: and
     conditions:
@@ -173,7 +177,7 @@
   alias: 'Doorbell'
   trigger:
     platform: state
-    entity_id: binary_sensor.doorbell
+    entity_id: binary_sensor.doorbell_switch
     to: 'on'
   condition:
     condition: state

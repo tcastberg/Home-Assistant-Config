@@ -33,7 +33,7 @@
 #  alias: 'Casting camera'
 #  trigger:
 #    platform: state
-#    entity_id: binary_sensor.doorbell
+#    entity_id: binary_sensor.doorbell_switch
 #    to: 'on'
 #  action:
 #    - service: camera.play_stream
