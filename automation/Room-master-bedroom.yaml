@@ -76,8 +76,6 @@
       entity_id: light.bedroom_tv_backlight_level
     - service: light.turn_off
       entity_id: light.dressing_table
-    - service: switch.turn_on
-      entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '42'    
   alias: 'Master bedroom evening'
@@ -181,7 +179,7 @@
       entity_id: switch.master_bedroom_tv_switch
 
 - id: '69'    
-  alias: 'Dressing room ceiling light on'
+  alias: 'Dressing room lights on'
   trigger:
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
@@ -193,6 +191,8 @@
   action:
     - service: light.turn_on
       entity_id: light.changing_room_ceiling_light_level
+    - service: switch.turn_on
+      entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '70'    
   alias: 'Dressing room ceiling light off'
@@ -207,6 +207,8 @@
   action:
     - service: light.turn_off
       entity_id: light.changing_room_ceiling_light_level
+    - service: switch.turn_off
+      entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '80'    
   alias: 'Dressing room light on night'
@@ -238,7 +240,7 @@
 
 
 
-#- id: '35'
+#- id: '34'
 #  alias: 'Pre-wakeup alarm tmc'
 #  trigger:
 #    platform: state
