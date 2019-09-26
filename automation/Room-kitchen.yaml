@@ -11,6 +11,8 @@
     - platform: state
       entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
+      for:
+        minutes: 5
     - platform: state
       entity_id: input_boolean.dinner_time
       to: 'off'
@@ -55,7 +57,7 @@
 
 
 - id: '67'
-  alias: 'Kitchen on'
+  alias: 'Kitchen active'
   trigger:
     - platform: state
       entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
@@ -92,6 +94,7 @@
     - platform: state
       entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
+      
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
       above: 300
@@ -103,6 +106,8 @@
       - condition: state
         entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor
         state: 'off'
+        for:
+          minutes: 3
       - condition: state
         entity_id: binary_sensor.kitchen_table_motion_sensor_sensor
         state: 'off'

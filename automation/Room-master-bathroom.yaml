@@ -1,5 +1,5 @@
 - id: '28'    
-  alias: 'Master bathroom on'
+  alias: 'Master bathroom active'
   trigger:
   - entity_id: binary_sensor.master_bathroom_multisensor_sensor
     platform: state
@@ -21,6 +21,8 @@
   - entity_id: binary_sensor.master_bathroom_multisensor_sensor
     platform: state
     to: 'off'
+    for:
+      minutes: 15
   action:
     - service: light.turn_off
       entity_id: light.ceiling_2

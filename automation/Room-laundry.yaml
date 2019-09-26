@@ -1,5 +1,5 @@
 - id: '25'    
-  alias: 'Laundry on'
+  alias: 'Laundry active'
   trigger:
   - entity_id: binary_sensor.laundry_multisensor_sensor
     platform: state
@@ -16,6 +16,8 @@
   - entity_id: binary_sensor.laundry_multisensor_sensor
     platform: state
     to: 'off'
+    for:
+      mintues: 5
   action:
     - service: light.turn_off
       entity_id: light.laundry_dimmer_level, light.laundry_bench_light

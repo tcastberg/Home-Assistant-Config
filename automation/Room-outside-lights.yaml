@@ -1,5 +1,5 @@
 - id: '30'    
-  alias: 'Outside lights on'
+  alias: 'Outside lights active'
   trigger:
     - entity_id: sun.sun
       platform: state

@@ -204,7 +204,7 @@
           tag: 'notification-home-alarm'
 
 - id: '100'
-  alias: 'Red alert on'
+  alias: 'Red alert active'
   trigger:
     platform: state
     entity_id: input_boolean.red_alert

@@ -1,5 +1,5 @@
 - id: '105'
-  alias: 'Movement on'
+  alias: 'Training room active'
   trigger:
     - entity_id: binary_sensor.training_room_motion_sensor_sensor
       platform: state
@@ -11,11 +11,13 @@
       entity_id: switch.training_room_tv_switch
 
 - id: '106'
-  alias: 'Movement off'
+  alias: 'Training room off'
   trigger:
     - entity_id: binary_sensor.training_room_motion_sensor_sensor
       platform: state
       to: 'off'
+      for:
+        minutes: 10
   action:
     - service: light.turn_off
       entity_id: light.lamp

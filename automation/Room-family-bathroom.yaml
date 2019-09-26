@@ -1,5 +1,5 @@
 - id: '23'    
-  alias: 'Family bathroom on'
+  alias: 'Family bathroom active'
   trigger:
   - entity_id: binary_sensor.family_bathroom_multisensor_sensor
     platform: state
@@ -25,6 +25,8 @@
   - entity_id: binary_sensor.family_bathroom_multisensor_sensor
     platform: state
     to: 'off'
+    for:
+      minutes: 15
   action:
     - service: light.turn_off
       entity_id: light.family_bathroom_dimmer_level

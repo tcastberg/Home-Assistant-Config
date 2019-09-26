@@ -1,5 +1,5 @@
 - id: '48'
-  alias: 'Downstairs hallway on'
+  alias: 'Downstairs hallway active'
   trigger:
     - platform: state
       entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night

@@ -44,7 +44,6 @@
         parameter: 1
         value: 'Disable Away, Auto Lock'
 
-
 - id: '87'
   alias: 'Disable autolock'
   trigger:
@@ -79,6 +78,8 @@
     - platform: state
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
       to: 'off'
+      for:
+        minutes: 5
     - platform: state
       entity_id: binary_sensor.doorbell_switch
       to: 'off'
@@ -107,7 +108,7 @@
         brightness_pct: 25
  
 - id: '60'
-  alias: 'Entrance hallway movement'
+  alias: 'Entrance hallway active'
   trigger:
     - platform: state
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
@@ -150,6 +151,8 @@
     - platform: state
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
       to: 'off'
+      for:
+        minutes: 3
     - platform: state
       entity_id: binary_sensor.doorbell_switch
       to: 'off'

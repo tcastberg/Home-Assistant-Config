@@ -179,7 +179,7 @@
       entity_id: switch.master_bedroom_tv_switch
 
 - id: '69'    
-  alias: 'Dressing room lights on'
+  alias: 'Dressing room lights active'
   trigger:
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
@@ -195,11 +195,13 @@
       entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '70'    
-  alias: 'Dressing room ceiling light off'
+  alias: 'Dressing room ceiling off'
   trigger:
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'off'
+      for:
+        minutes: 5
   condition:
     condition: state
     entity_id: binary_sensor.sleep_state
@@ -211,7 +213,7 @@
       entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '80'    
-  alias: 'Dressing room light on night'
+  alias: 'Dressing room light active night'
   trigger:
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
@@ -230,6 +232,8 @@
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'off'
+      for:
+        minutes: 2
   condition:
     condition: state
     entity_id: binary_sensor.sleep_state
