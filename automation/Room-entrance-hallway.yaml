@@ -79,7 +79,7 @@
       entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
       to: 'off'
       for:
-        minutes: 5
+        minutes: 3
     - platform: state
       entity_id: binary_sensor.doorbell_switch
       to: 'off'

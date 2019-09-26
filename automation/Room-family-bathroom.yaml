@@ -26,7 +26,7 @@
     platform: state
     to: 'off'
     for:
-      minutes: 15
+      minutes: 5
   action:
     - service: light.turn_off
       entity_id: light.family_bathroom_dimmer_level
