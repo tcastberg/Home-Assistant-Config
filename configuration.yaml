@@ -1,33 +1,19 @@
 homeassistant:
-  # Name of the location where Home Assistant is running
-  #name: Home
-  # Location required to calculate the time the sun rises and sets
-  #latitude: !secret home_latitude_short
-  #longitude: !secret home_longitude_short
-  # Impacts weather/sunrise data (altitude above sea level in meters)
-  #elevation: 154
-  # metric for Metric, imperial for Imperial
-  #unit_system: metric
-  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  #time_zone: Europe/Oslo
   # Customization file
   customize: !include customize.yaml
   auth_providers:
    - type: homeassistant
    - type: trusted_networks
      trusted_networks:
-        - 127.0.0.1/32
+        - 127.0.0.1
 
 auth:
-#ssdp:
+# Discover some devices automatically
+#discovery:
 #zeroconf:
+#ssdp:
 
 system_health:
-
-# Show links to resources in log and frontend
-# introduction:
-
-#python_script:
 
 frontend:
   javascript_version: latest
@@ -41,11 +27,9 @@ recorder:
   db_url: !secret mysql_connection
 
 http:
-  trusted_proxies: 
-    - 172.17.0.8
-  use_x_forwarded_for: true
   ip_ban_enabled: true
-  #api_password: !secret http_api_password
+  ssl_certificate: /config/ssl/fullchain.pem
+  ssl_key: /config/ssl/privkey.pem
   base_url: !secret http_base_url
 
 zwave:
@@ -61,11 +45,11 @@ prometheus:
       override_metric: room_area
 
 device_tracker:
-  - platform: unifi
-    host: !secret unifi_host
-    verify_ssl: False
-    username: !secret unifi_username
-    password: !secret unifi_password
+#  - platform: unifi
+#    host: !secret unifi_host
+#    verify_ssl: False
+#    username: !secret unifi_username
+#    password: !secret unifi_password
 
   - platform: google_maps
     username: !secret google_maps_username
@@ -74,8 +58,7 @@ device_tracker:
 #    username: !secret icloud_username
 #    password: !secret icloud_password
 
-# Discover some devices automatically
-#discovery:
+mobile_app:
 
 zone:
   - name: Home
@@ -116,7 +99,7 @@ proximity:
       - device_tracker.google_maps_117621586906275495071
       - device_tracker.google_maps_106703534047375134126
       - device_tracker.ingrid_phone
-    tolerance: 10000
+    tolerance: 50000
     unit_of_measurement: m
   tmc_home:
     zone: home
@@ -176,7 +159,7 @@ camera:
     input: !secret foscam_ffmpeg 
   - platform: generic
     name:  Hallway Camera generic
-    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.hallway_camera
+    still_image_url: !secret foscam_rtsp
     stream_source: !secret foscam_rtsp
 
   - platform: ffmpeg
@@ -184,7 +167,7 @@ camera:
     input: !secret nvr_front_south_ffmpeg
   - platform: generic
     name: Side lawn generic
-    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.side_lawn
+    still_image_url: !secret nvr_front_south_rtsp
     stream_source: !secret nvr_front_south_rtsp
 
   - platform: ffmpeg
@@ -192,7 +175,7 @@ camera:
     input: !secret nvr_front_stairs_ffmpeg
   - platform: generic
     name: Front door generic
-    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.front_door
+    still_image_url: !secret nvr_front_stairs_rtsp
     stream_source: !secret nvr_front_stairs_rtsp
 
   - platform: ffmpeg
@@ -200,7 +183,7 @@ camera:
     input: !secret nvr_front_east_ffmpeg
   - platform: generic
     name: Front lawn generic
-    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.front_lawn
+    still_image_url: !secret nvr_front_east_rtsp
     stream_source: !secret nvr_front_east_rtsp
 
   - platform: ffmpeg
@@ -208,7 +191,7 @@ camera:
     input: !secret nvr_front_north_ffmpeg
   - platform: generic
     name: Car parking generic
-    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.car_parking
+    still_image_url: !secret nvr_front_north_rtsp
     stream_source: !secret nvr_front_north_rtsp
 
   - platform: ffmpeg
@@ -216,7 +199,7 @@ camera:
     input: !secret nvr_rear_south_ffmpeg
   - platform: generic
     name: Tool shed generic
-    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.tool_shed
+    still_image_url: !secret nvr_rear_south_rtsp
     stream_source: !secret nvr_rear_south_rtsp
 
   - platform: ffmpeg
@@ -224,7 +207,7 @@ camera:
     input: !secret nvr_rear_north_ffmpeg
   - platform: generic
     name: Back garden generic
-    still_image_url: http://127.0.0.1:8123/api/camera_proxy/camera.back_garden
+    still_image_url: !secret nvr_rear_north_rtsp
     stream_source: !secret nvr_rear_north_rtsp
 
 stream:
@@ -243,6 +226,7 @@ logger:
     homeassistant.components.python_script: info
     homeassistant.components.http.ban: warning
     homeassistant.components.prometheus: error
+    homeassistant.components.netatmo: error
 
 # View all events in a logbook
 logbook:
@@ -256,23 +240,13 @@ sun:
 tibber:
   access_token: !secret tibber_token
 
-alarm_control_panel:
-  - platform: manual
-    name: Home Alarm
-    code: !secret alarm_control_panel_code
-    pending_time: 30
-    armed_home:
-      pending_time: 0
-    triggered:
-      pending_time: 30
-    trigger_time: 4 
-
 cast:
   media_player:
     # Google Home
     - host: 192.168.0.123
     - host: 192.168.0.124
     - host: 192.168.0.125
+    - host: 192.168.0.126
     # Google Chromecast
     - host: 192.168.0.201
     - host: 192.168.0.202
@@ -290,6 +264,8 @@ media_player:
     name: Spotify
     client_id: !secret spotify_client_id
     client_secret: !secret spotify_secret
+    aliases:
+      c9eda3351755203eb884ee413f2552d58b115aa4: "TMC phone"
 
 climate:
   - platform: mill
@@ -401,6 +377,44 @@ google_assistant:
       name: Red Alert
       expose: true
       room: Dining room
+    input_boolean.fireplace:
+      name: Fireplace
+      expose: true
+      room: TV room
+    light.fibaro_system_fgd212_dimmer_2_level:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_2:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_3:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_4:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_5:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_6:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_7:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_8:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_9:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_10:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_13:
+      expose: false
+    light.fibaro_system_fgd212_dimmer_2_level_12:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level_2:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level_3:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level_4:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level_5:
+      expose: false
+    light.fibaro_system_fgrgbwm441_rgbw_controller_level_6:
+      expose: false
     light.house_ventilation_dimmer_level:
       expose: false
     light.bedroom_tv_backlight_level_2:
@@ -457,14 +471,42 @@ google_assistant:
       expose: false
     light.hallway_toilet_ceiling_dimmer_level_2:
       expose: false
+    light.entrance_hallway_ceiling_lights_level_2:
+      expose: false
+    light.ingrid_bedroom_bed_light_blue_level:
+      expose: false
+    light.ingrid_bedroom_bed_light_green_level:
+      expose: false
+    light.ingrid_bedroom_bed_light_level_2:
+      expose: false
+    light.ingrid_bedroom_bed_light_red_level:
+      expose: false
+    light.ingrid_bedroom_bed_light_white_level:
+      expose: false
+    light.nook_mood_blue_level:
+      expose: false
+    light.nook_mood_green_level:
+      expose: false
+    light.nook_mood_level_2:
+      expose: false
+    light.nook_mood_red_level:
+      expose: false
+    light.nook_mood_white_level:
+      expose: false    
 
 netatmo:
   api_key: !secret netatmo_api_key
   secret_key: !secret netatmo_secret_key
   username: !secret netatmo_username
   password: !secret netatmo_password
-  discovery: false
+  discovery: true
 
+octoprint:
+  host: !secret octoprint_host
+  api_key: !secret octoprint_key
+  name: "Prusa i3 MK2S"
+  bed: true
+  number_of_tools: 1
 
 utility_meter:
   water_yearly:
@@ -494,6 +536,21 @@ utility_meter:
       - fixed
   electricity_daily:
     source: sensor.electricity_meter_consumption
+    cycle: daily
+    tariffs:
+      - fixed
+  electricity_cost_yearly:
+    source: sensor.electricity_meter_accmulated_cost
+    cycle: yearly
+    tariffs:
+      - fixed
+  electricity_cost_monthly:
+    source: sensor.electricity_meter_accmulated_cost
+    cycle: monthly
+    tariffs:
+      - fixed
+  electricity_cost_daily:
+    source: sensor.electricity_meter_accmulated_cost
     cycle: daily
     tariffs:
       - fixed

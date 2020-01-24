@@ -193,12 +193,12 @@
     - service: media_player.volume_set
       data:
         entity_id: media_player.dining_room, media_player.changing_room, media_player.lounge_speaker, media_player.kitchen_speaker, media_player.master_bedroom_speaker
-        volume_level: 0.55
+        volume_level: 0.70
     - service:  media_player.play_media
       data:
         entity_id: media_player.dining_room, media_player.changing_room, media_player.lounge_speaker, media_player.kitchen_speaker, media_player.master_bedroom_speaker
-        media_content_id: https://hass.continually-evolving.net:8124/local/doorbell-6.mp3
-        media_content_type: audio/mp3
+        media_content_id: https://192.168.0.8:8123/local/doorbell-6.mp3
+        media_content_type: music
     - service: camera.snapshot
       data:
         entity_id: camera.front_door
@@ -214,7 +214,7 @@
           renotify: 1
           tag: 'doorbell-notification'
           url: !secret doorbell_snapshot
-    - service: sonos.snapshot
+    - service: sonos.restore
       data:
         entity_id: media_player.dining_room, media_player.changing_room
     - service: media_player.volume_set

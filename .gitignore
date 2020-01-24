@@ -11,3 +11,5 @@
 secrets.yaml
 known_devices.yaml
 entity_registry.yaml
+automation/State-cube-sensor-01.yaml
+automation/testing.yaml

@@ -207,3 +207,21 @@ binary_sensor.laundry_window_sensor:
   device_class: window
 binary_sensor.guest_bedroom_window_sensor:
   device_class: window
+sensor.prusa_i3_mk2s_actual_tool0_temp:
+  friendly_name: Prusa i3 MK2S actual nozzle temp
+sensor.prusa_i3_mk2s_target_tool0_temp:
+  friendly_name: Prusa i3 MK2S target nozzle temp
+cover.middle_nook_blind:
+  device_class: blind
+cover.left_nook_blind:
+  device_class: blind
+cover.right_nook_blind:
+  device_class: blind
+group.nook_blinds:
+  icon: mdi:blinds
+cover.ingrid_bedroom_blind:
+  device_class: blind
+cover.office_blind:
+  device_class: blind
+cover.master_bedroom_blind:
+  device_class: blind

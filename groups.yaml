@@ -4,3 +4,10 @@ people:
     - person.tor_magnus
     - person.lande
     - person.ingrid_sofia
+
+nook_blinds:
+  name: Nook blinds
+  entities:
+    - cover.left_nook_blind
+    - cover.middle_nook_blind
+    - cover.right_nook_blind

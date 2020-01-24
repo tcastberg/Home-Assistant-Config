@@ -43,6 +43,10 @@
       entity_id: light.dining_room_rail_1_level, light.dining_room_rail_2_level
       data:
         brightness_pct: 40
+    - service: light.turn_on
+      entity_id: light.dining_room_stairs_level
+      data:
+        brightness_pct: 20
 
 - id: '50'    
   alias: 'Dining room day'
@@ -89,6 +93,10 @@
       entity_id: light.dining_room_rail_1_level, light.dining_room_rail_2_level
       data:
         brightness_pct: 50
+    - service: light.turn_on
+      entity_id: light.dining_room_stairs_level
+      data:
+        brightness_pct: 30
 
 - id: '52'    
   alias: 'Dining room evening'
@@ -132,6 +140,10 @@
       entity_id: light.dining_room_rail_1_level, light.dining_room_rail_2_level
       data:
         brightness_pct: 10
+    - service: light.turn_on
+      entity_id: light.dining_room_stairs_level
+      data:
+        brightness_pct: 5
 
 - id: '53'    
   alias: 'Dining room night'
@@ -164,7 +176,7 @@
         state: 'on'
   action:
     - service: switch.turn_off
-      entity_id: switch.tradfri_flux, switch.nook_flux
+      entity_id: switch.tradfri_flux, switch.nook_flux, light.dining_room_rail_1_level, light.dining_room_rail_2_level, light.dining_room_stairs_level
     - service: light.turn_on
       entity_id: light.sofa_2, light.serving_table, light.nook_2, light.nook_mood_level
       data:
@@ -182,6 +194,11 @@
     - platform: state
       entity_id: input_select.home_state
       to: 'Away'
+      for:
+        seconds: 20
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
       for:
         seconds: 20
     - platform: state
@@ -206,6 +223,9 @@
             entity_id: input_select.home_state
             state: 'Away'
           - condition: state
+            entity_id: input_select.home_state
+            state: 'Vacation'
+          - condition: state
             entity_id: binary_sensor.sleep_state
             state: 'on'
           - condition: numeric_state
@@ -215,4 +235,84 @@
     - service: switch.turn_off
       entity_id: switch.tradfri_flux, switch.nook_flux
     - service: light.turn_off
-      entity_id: light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.nook_table, light.bookshelf_2, light.dining_room_rail_1_level, light.dining_room_rail_2_level, light.nook_mood_level
+      entity_id: light.sofa_2, light.cabinets, light.serving_table, light.nook_2, light.nook_table, light.bookshelf_2, light.dining_room_rail_1_level, light.dining_room_rail_2_level, light.dining_room_stairs_level, light.nook_mood_level
+
+
+- id: '72'    
+  alias: 'Dining room blinds close'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+      above: 500
+      for:
+        seconds: 120
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+      for:
+        seconds: 120
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 120
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+      for:
+        seconds: 120
+  action:
+    - service: cover.close_cover
+      entity_id: cover.office_blind
+    - delay:
+        seconds: 2
+    - service: cover.close_cover
+      entity_id: cover.left_nook_blind
+    - delay:
+        seconds: 2
+    - service: cover.close_cover
+      entity_id: cover.middle_nook_blind
+    - delay:
+        seconds: 2
+    - service: cover.close_cover
+      entity_id: cover.right_nook_blind
+
+- id: '73'    
+  alias: 'Dining room blinds open'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+      below: 300
+      for:
+        seconds: 120
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
+      for:
+        seconds: 120
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+      for:
+        seconds: 120
+  condition:
+    - condition: state
+      entity_id: input_select.home_state
+      state: 'Home'
+      for:
+        seconds: 120
+  action:
+    - service: cover.open_cover
+      entity_id: cover.right_nook_blind
+    - delay:
+        seconds: 2
+    - service: cover.open_cover
+      entity_id: cover.middle_nook_blind
+    - delay:
+        seconds: 2
+    - service: cover.open_cover
+      entity_id: cover.left_nook_blind
+    - delay:
+        seconds: 2
+    - service: cover.open_cover
+      entity_id: cover.office_blind

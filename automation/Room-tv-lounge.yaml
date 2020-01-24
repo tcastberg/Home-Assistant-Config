@@ -26,6 +26,9 @@
       to: 'off'
       for:
         seconds: 5
+    - platform: state
+      entity_id: input_binary.fireplace
+      to: 'off'
   condition:
     condition: and
     conditions:
@@ -40,6 +43,9 @@
         below: 200
       - condition: template
         value_template: "{{not is_state('media_player.tv_room','playing')}}"
+      - condition: state
+        entity_id: input_boolean.fireplace
+        state: 'off'
   action:
     - service: light.turn_on
       entity_id: light.tv_area_level, light.sofa_area_level
@@ -63,6 +69,8 @@
           {%- elif is_state('binary_sensor.evening', 'on') %}
             60
           {%- endif %}
+    - service: switch.turn_on
+      entity_id: switch.tv_room_lamp_switch
  
 - id: '57'
   alias: 'TV lounge chromecast playing'
@@ -74,10 +82,18 @@
       to: 'playing'
       for:
         seconds: 5
+    - platform: state
+      entity_id: input_boolean.fireplace
+      to: 'on'
   condition:
-    condition: state
-    entity_id: media_player.tv_room
-    state: 'playing'
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: media_player.tv_room
+        state: 'playing'
+      - condition: state
+        entity_id: input_boolean.fireplace
+        state: 'on'
   action:
     - service: light.turn_on
       entity_id: light.tv_area_level, light.sofa_area_level
@@ -105,6 +121,8 @@
           {%- elif is_state('binary_sensor.night', 'on') %}
             10
           {%- endif %}
+    - service: switch.turn_on
+      entity_id: switch.tv_room_lamp_switch
 
 - id: '56'    
   alias: 'TV lounge off'
@@ -127,6 +145,11 @@
   action:
     - service: light.turn_off
       entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level
+    - service: switch.turn_off
+      entity_id: switch.tv_room_lamp_switch
+    - service: switch.turn_off
+      entity_id: switch.fireplace
+
 
 
 - id: '91'    
@@ -189,4 +212,4 @@
   - service: media_player.volume_set
     data:
       entity_id: media_player.tv_room
-      volume_level: 0.5
+      volume_level: 0.4

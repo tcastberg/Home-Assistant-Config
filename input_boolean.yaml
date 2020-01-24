@@ -34,15 +34,16 @@ sleep_state_guests:
 guests_present:
   name: Hospitality
   icon: mdi:account-multiple-plus
-vacation_mode:
-  name: Vacation
-  icon: mdi:beach
 door_autolock:
   name: Auto lock
   icon: mdi:lock-reset
 dinner_time:
   name: Dinner time
   icon: mdi:food-fork-drink
+  initial: off
+fireplace:
+  name: Fireplace
+  icon: mdi:fireplace
   initial: off
 
 daily_vacuum_first_run:

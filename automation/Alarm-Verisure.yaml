@@ -51,6 +51,7 @@
       above: 1.0
     - platform: state
       entity_id: alarm_control_panel.holmsens_vei_alarm
+      from: 'disarmed'
       to: 'armed_away'
   action:
     - service: input_select.select_option
@@ -69,6 +70,7 @@
   trigger:
     platform: state
     entity_id: alarm_control_panel.holmsens_vei_alarm
+    from: 'disarmed'
     to: 'armed_home'
   action:
     - service: input_boolean.turn_on
@@ -86,6 +88,11 @@
       below: 1.0
     - platform: state
       entity_id: alarm_control_panel.holmsens_vei_alarm
+      from: 'armed_away'
+      to: 'disarmed'
+    - platform: state
+      entity_id: alarm_control_panel.holmsens_vei_alarm
+      from: 'armed_home'
       to: 'disarmed'
   action:
     - service: input_select.select_option 

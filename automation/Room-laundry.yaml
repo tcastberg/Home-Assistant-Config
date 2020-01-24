@@ -17,7 +17,7 @@
     platform: state
     to: 'off'
     for:
-      mintues: 5
+      minutes: 5
   action:
     - service: light.turn_off
       entity_id: light.laundry_dimmer_level, light.laundry_bench_light

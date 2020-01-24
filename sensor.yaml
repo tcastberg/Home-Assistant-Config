@@ -18,18 +18,19 @@
     - humidity
     - cloudiness
 
-- platform: netatmo
-  station: Home
-  modules:
-    - Indoor
-    - Outdoor
-    - Rain gauge
-- platform: netatmo
-  station: Værstasjon33
-  modules:
-    - Innesensor
-    - Vindmåler
-    - Utesensor
+#- platform: netatmo
+#  station: Home
+#  modules:
+#    - Indoor
+#    - Outdoor
+#    - Rain gauge
+#    - Master bedroom
+#- platform: netatmo
+#  station: Værstasjon33
+#  modules:
+#    - Innesensor
+#    - Vindmåler
+#    - Utesensor
 #    - Regnmåler
 
 #- platform: nordpool

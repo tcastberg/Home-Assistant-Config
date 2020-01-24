@@ -10,6 +10,9 @@
 - platform: switch
   name: Wardrobes
   entity_id: switch.dressing_room_wardrobes_switch
+- platform: switch
+  name: TV room table lamp
+  entity_id: switch.tv_room_lamp_switch
 
 - platform: group
   name: Kitchen

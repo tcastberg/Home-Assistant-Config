@@ -119,9 +119,9 @@
         entity_id: input_boolean.alarm_override_ingrid
         state: 'off'
   action:
-    - service: input_boolean.turn_off
+    - service: automation.trigger
       data:
-        entity_id: input_boolean.sleep_state_ingrid
+        entity_id: automation.ingrid_awake
 
 - id: '64'
   alias: 'Ingrid sleeping'
@@ -138,6 +138,8 @@
     - service: input_boolean.turn_on
       data:
         entity_id: input_boolean.sleep_state_ingrid
+    - service: cover.close_cover
+      entity_id: cover.ingrid_bedroom_blind
 
 - id: '65'
   alias: 'Ingrid awake'
@@ -158,4 +160,6 @@
     - service: input_boolean.turn_off
       data:
         entity_id: input_boolean.sleep_state_ingrid
+    - service: cover.open_cover
+      entity_id: cover.ingrid_bedroom_blind
 

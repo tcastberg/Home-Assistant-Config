@@ -29,6 +29,8 @@
         entity_id: input_boolean.sleep_state_lande
         state: 'off'
   action:
+    - service: cover.open_cover
+      entity_id: cover.master_bedroom_blind
     - service: switch.turn_on
       entity_id: switch.tv_backlight_flux
     - service: light.turn_on
@@ -68,6 +70,8 @@
         entity_id: binary_sensor.day
         state: 'on'
   action:
+    - service: cover.open_cover
+      entity_id: cover.master_bedroom_blind
     - service: switch.turn_off
       entity_id: switch.tv_backlight_flux
     - service: light.turn_off
@@ -104,6 +108,8 @@
         entity_id: input_boolean.sleep_state_lande
         state: 'off'
   action:
+    - service: cover.close_cover
+      entity_id: cover.master_bedroom_blind
     - service: switch.turn_on
       entity_id: switch.tv_backlight_flux
     - service: light.turn_on
@@ -130,11 +136,13 @@
       to: 'on'
     - platform: state
       entity_id: input_select.home_state
-      to: 'Away'
+      from: 'Home'
     - platform: state
       entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande
       to: 'on'
   action:
+    - service: cover.close_cover
+      entity_id: cover.master_bedroom_blind
     - service: switch.turn_off
       entity_id: switch.tv_backlight_flux
     - service: light.turn_off
@@ -201,7 +209,7 @@
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'off'
       for:
-        minutes: 5
+        minutes: 7
   condition:
     condition: state
     entity_id: binary_sensor.sleep_state
@@ -232,8 +240,6 @@
     - platform: state
       entity_id: binary_sensor.dressingroom_motion_sensor_sensor
       to: 'off'
-      for:
-        minutes: 2
   condition:
     condition: state
     entity_id: binary_sensor.sleep_state

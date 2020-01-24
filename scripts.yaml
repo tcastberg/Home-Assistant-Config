@@ -116,7 +116,7 @@ red_alert_flash:
     - service:  media_player.play_media
       data:
         entity_id: media_player.dining_room
-        media_content_id: https://hass.continually-evolving.net:8124/local/tng_red_alert3.mp3
+        media_content_id: https://hass.continually-evolving.net:8123/local/tng_red_alert3.mp3
         media_content_type: audio/mp3
     - delay:
         # time for flash light on
@@ -150,3 +150,82 @@ toggle_samsung_tv:
       data:
         command:
           - 'power'
+
+halloween_on:
+  alias: Halloween on
+  sequence:
+    - service: automation.turn_off
+      data:
+        entity_id: automation.entrance_hallway_active
+    - service: automation.turn_off
+      data:
+        entity_id: automation.entrance_hallway_idle
+    - service: automation.turn_off
+      data:
+        entity_id: automation.entrance_hallway_off
+    - service: automation.turn_off
+      data:
+        entity_id: automation.kitchen_active
+    - service: automation.turn_off
+      data:
+        entity_id: automation.kitchen_idle
+    - service: automation.turn_off
+      data:
+        entity_id: automation.kitchen_off
+    - service: automation.turn_off
+      data:
+        entity_id: automation.laundry_active
+    - service: automation.turn_off
+      data:
+        entity_id: automation.laundry_off
+    - service: automation.turn_off
+      data:
+        entity_id: automation.kitchen_off
+    - service: switch.turn_off
+      data:
+        entity_id: switch.nook_flux
+    - service: light.turn_on
+      data:
+        entity_id: light.entrance_wardrobes
+        brightness_pct: 10
+    - service: zwave.set_config_parameter
+      data_template: {
+        "node_id": 72,
+        "parameter": 72,
+        "value": 7,
+        "size": 1
+        } 
+
+halloween_off:
+  alias: Halloween off
+  sequence:
+    - service: automation.turn_on
+      data:
+        entity_id: automation.entrance_hallway_active
+    - service: automation.turn_on
+      data:
+        entity_id: automation.entrance_hallway_idle
+    - service: automation.turn_on
+      data:
+        entity_id: automation.entrance_hallway_off
+    - service: automation.turn_on
+      data:
+        entity_id: automation.kitchen_active
+    - service: automation.turn_on
+      data:
+        entity_id: automation.kitchen_idle
+    - service: automation.turn_on
+      data:
+        entity_id: automation.kitchen_off
+    - service: automation.turn_on
+      data:
+        entity_id: automation.laundry_active
+    - service: automation.turn_on
+      data:
+        entity_id: automation.laundry_off
+    - service: automation.turn_on
+      data:
+        entity_id: automation.kitchen_off
+    - service: switch.turn_on
+      data:
+        entity_id: switch.nook_flux

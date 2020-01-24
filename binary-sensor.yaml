@@ -41,8 +41,13 @@
 
     sleep_state:
       friendly_name: "Sleep State"
-      entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande, input_boolean.sleep_state_ingrid, input_boolean.sleep_state_guests, binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
-      value_template: "{{ (not is_state('device_tracker.google_maps_117621586906275495071', 'home') or is_state('input_boolean.sleep_state_tor', 'on')) and (not is_state('device_tracker.google_maps_106703534047375134126', 'home') or is_state('input_boolean.sleep_state_lande', 'on')) and (not is_state('device_tracker.ingrid_phone', 'home') or is_state('input_boolean.sleep_state_ingrid', 'on')) and (is_state('input_boolean.guests_present', 'on') == is_state('input_boolean.sleep_state_guests', 'on')) and (is_state('binary_sensor.night', 'on') or is_state('binary_sensor.evening', 'on')) }}"
+      entity_id: device_tracker.google_maps_117621586906275495071, device_tracker.google_maps_106703534047375134126, device_tracker.ingrid_phone, input_boolean.sleep_state_tor, input_boolean.sleep_state_lande, input_boolean.sleep_state_ingrid, input_boolean.sleep_state_guests, binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night, input_select.home_state
+      value_template: "{{ (not is_state('device_tracker.google_maps_117621586906275495071', 'home') or is_state('input_boolean.sleep_state_tor', 'on')) and 
+                          (not is_state('device_tracker.google_maps_106703534047375134126', 'home') or is_state('input_boolean.sleep_state_lande', 'on')) and 
+                          (not is_state('device_tracker.ingrid_phone', 'home') or is_state('input_boolean.sleep_state_ingrid', 'on')) and 
+                          (is_state('input_boolean.guests_present', 'on') == is_state('input_boolean.sleep_state_guests', 'on')) and 
+                          (is_state('input_select.home_state', 'Home')) and
+                          (is_state('binary_sensor.night', 'on') or is_state('binary_sensor.evening', 'on')) }}"
 
 - platform: trend
   sensors:
