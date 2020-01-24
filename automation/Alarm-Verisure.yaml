@@ -1,101 +1,153 @@
-- id: '16'
-  alias: 'Verisure armed_away to Home armed_away'
+- id: '6'
+  alias: 'Disarm Verisure Alarm home'
   trigger:
-    platform: numeric_state
-    entity_id: sensor.verisure_status_plug_power
-    above: 1.0
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
   condition:
-    condition: template
-    value_template: "{{not is_state('alarm_control_panel.home_alarm','armed_away')}}"
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
   action:
-    - service: alarm_control_panel.alarm_arm_away
-      entity_id: alarm_control_panel.home_alarm
-      data:
-        code: !secret alarm_control_panel_code
-
-- id: '17'
-  alias: 'Home armed_away to Verisure armed_away'
-  trigger:
-    platform: state
-    entity_id: alarm_control_panel.home_alarm
-    to: 'armed_away'
-  condition:
-    condition: template
-    value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','armed_away')}}"
-  action:
-    - service: alarm_control_panel.alarm_arm_away
+    - service: alarm_control_panel.alarm_disarm
       entity_id: alarm_control_panel.holmsens_vei_alarm
       data:
         code: !secret verisure_code
 
-- id: '18'
-  alias: 'Home armed_home to Verisure armed_home'
+- id: '7'
+  alias: 'Arm Verisure Alarm home'
   trigger:
-    platform: state
-    entity_id: alarm_control_panel.home_alarm
-    to: 'armed_home'
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
   condition:
-    - condition: template
-      value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','armed_home')}}"
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
   action:
     - service: alarm_control_panel.alarm_arm_home
       entity_id: alarm_control_panel.holmsens_vei_alarm
       data:
         code: !secret verisure_code
 
+- id: '8'
+  alias: 'Alarm status changed'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.holmsens_vei_alarm
+  action:
+    - service: notify.html5
+      data_template:
+        message: >
+          Alarm changed from {{ trigger.from_state.state }}
+          to {{ trigger.to_state.state }}
+          by {{ trigger.to_state.attributes.changed_by }}
+
+- id: '16'
+  alias: 'Verisure armed_away'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.verisure_status_plug_power
+      above: 1.0
+    - platform: state
+      entity_id: alarm_control_panel.holmsens_vei_alarm
+      to: 'armed_away'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.home_state
+        option: 'Away'
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.door_autolock
+    - service: switch.turn_on
+      data:
+        entity_id: switch.foscam_motion
+
+- id: '17'
+  alias: 'Verisure armed_home'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.holmsens_vei_alarm
+    to: 'armed_home'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.door_autolock
+    - service: switch.turn_on
+      data:
+        entity_id: switch.foscam_motion
+
 - id: '21'
-  alias: 'Verisure disarmed to Home disarmed'
+  alias: 'Verisure disarmed'
   trigger:
-    platform: numeric_state
-    entity_id: sensor.verisure_status_plug_power
-    below: 1.0
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{not is_state('alarm_control_panel.home_alarm','disarmed')}}"
-      - condition: template
-        value_template: "{{not is_state('alarm_control_panel.home_alarm','disarming')}}"
+    - platform: numeric_state
+      entity_id: sensor.verisure_status_plug_power
+      below: 1.0
+    - platform: state
+      entity_id: alarm_control_panel.holmsens_vei_alarm
+      to: 'disarmed'
   action:
-    - service: alarm_control_panel.alarm_disarm
-      entity_id: alarm_control_panel.home_alarm
+    - service: input_select.select_option 
+      data: 
+        entity_id: input_select.home_state 
+        option: 'Home' 
+    - service: switch.turn_off
       data:
-        code: !secret alarm_control_panel_code
+        entity_id: switch.foscam_motion
 
-- id: '22'
-  alias: 'Home disarmed from armed_away to Verisure disarmed'
+- id: '100'
+  alias: 'Red alert active'
   trigger:
     platform: state
-    entity_id: alarm_control_panel.home_alarm
-    from: 'armed_away'
-    to: 'disarmed'
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','disarmed')}}"
-      - condition: numeric_state
-        entity_id: sensor.verisure_status_plug_power
-        above: 1.0
+    entity_id: input_boolean.red_alert
+    to: 'on'
   action:
-    - service: alarm_control_panel.alarm_disarm
-      entity_id: alarm_control_panel.holmsens_vei_alarm
+    - service: light.turn_on
       data:
-        code: !secret verisure_code
+        entity_id: light.nook_table, light.bookshelf_2, light.cabinets, light.dining_room_rail_1_level, light.dining_room_rail_2_level
+        brightness_pct: 5
+    - service: switch.turn_off
+      data:
+        entity_id: switch.nook_flux, switch.tradfri_flux
+    - service: script.turn_on
+      data:
+        entity_id: script.red_alert_flash
 
-- id: '11'
-  alias: 'Home disarmed from armed_home to Verisure disarmed'
+- id: '101'
+  alias: 'Red alert off'
   trigger:
     platform: state
-    entity_id: alarm_control_panel.home_alarm
-    from: 'armed_home'
-    to: 'disarmed'
-  condition:
-    condition: template
-    value_template: "{{not is_state('alarm_control_panel.holmsens_vei_alarm','disarmed')}}"
+    entity_id: input_boolean.red_alert
+    to: 'off'
   action:
-    - service: alarm_control_panel.alarm_disarm
-      entity_id: alarm_control_panel.holmsens_vei_alarm
+    - service: script.turn_off
       data:
-        code: !secret verisure_code
+        entity_id: script.red_alert_flash, script.red_alert_loop
+    - service: automation.trigger
+      data_template:
+        entity_id: >
+          {% if is_state('binary_sensor.morning', 'on') %}
+            automation.dining_room_morning
+          {% elif is_state('binary_sensor.day', 'on') %}
+            automation.dining_room_day
+          {% elif is_state('binary_sensor.evening', 'on') %}
+            automation.dining_room_evening
+          {% elif is_state('binary_sensor.night', 'on') %}
+            automation.dining_room_night
+          {% endif %}
+    - service: switch.turn_on
+      data:
+        entity_id: switch.nook_flux, switch.tradfri_flux
 
+- id: '102'
+  alias: 'Guests on'
+  trigger:
+    platform: state
+    entity_id: input_boolean.guests_present
+    to: 'on'
+  action:
+    - service: notify.html5
+      data_template:
+        title: 'Guests enabled'
+        message: 'Guests enabled {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
