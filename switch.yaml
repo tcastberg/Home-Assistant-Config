@@ -10,8 +10,8 @@
 - platform: flux
   name: Tradfri flux
   lights:
-    - light.nook_2
-    - light.sofa_2
+    - light.nook
+    - light.sofa
     - light.serving_table
   start_time: '06:00'
   stop_time: '23:59'
@@ -65,7 +65,6 @@
   switches:
     dinner_time:
       friendly_name: Dinner time
-      entity_id: input_boolean.dinner_time
       value_template: "{{ is_state('input_boolean.dinner_time', 'on') }}"
       turn_on:
         service: input_boolean.turn_on
@@ -77,7 +76,6 @@
           entity_id: input_boolean.dinner_time
     fireplace:
       friendly_name: Fireplace
-      entity_id: input_boolean.fireplace
       value_template: "{{ is_state('input_boolean.fireplace', 'on') }}"
       icon_template: >-
           {% if is_state('input_boolean.fireplace', 'on') %}
@@ -95,7 +93,6 @@
           entity_id: input_boolean.fireplace
     red_alert:
       friendly_name: Red alert
-      entity_id: input_boolean.red_alert
       value_template: "{{ is_state('input_boolean.red_alert', 'on') }}"
       turn_on:
         service: input_boolean.turn_on

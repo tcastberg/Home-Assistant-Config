@@ -48,8 +48,8 @@
         state: 'off'
   action:
     - service: light.turn_on
-      entity_id: light.tv_area_level, light.sofa_area_level
       data_template:
+        entity_id: light.tv_area_level, light.sofa_area_level
         brightness_pct: >
           {%- if is_state('binary_sensor.morning', 'on') %}
             60
@@ -57,10 +57,12 @@
             80
           {%- elif is_state('binary_sensor.evening', 'on') %}
             40
+          {%- elif is_state('binary_sensor.night', 'on') %}
+            10
           {%- endif %}
     - service: light.turn_on
-      entity_id: light.hallway_area_level
       data_template:
+        entity_id: light.hallway_area_level
         brightness_pct: >
           {%- if is_state('binary_sensor.morning', 'on') %}
             80
@@ -68,6 +70,8 @@
             100
           {%- elif is_state('binary_sensor.evening', 'on') %}
             60
+          {%- elif is_state('binary_sensor.night', 'on') %}
+            10
           {%- endif %}
     - service: switch.turn_on
       entity_id: switch.tv_room_lamp_switch
@@ -96,8 +100,8 @@
         state: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.tv_area_level, light.sofa_area_level
       data_template:
+        entity_id: light.tv_area_level, light.sofa_area_level
         brightness_pct: >
           {%- if is_state('binary_sensor.morning', 'on') %}
             30
@@ -109,8 +113,8 @@
             10
           {%- endif %}
     - service: light.turn_on
-      entity_id: light.hallway_area_level
       data_template:
+        entity_id: light.hallway_area_level
         brightness_pct: >
           {%- if is_state('binary_sensor.morning', 'on') %}
             50
@@ -144,11 +148,14 @@
         seconds: 120
   action:
     - service: light.turn_off
-      entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level
+      data:
+        entity_id: light.tv_area_level, light.sofa_area_level, light.hallway_area_level
     - service: switch.turn_off
-      entity_id: switch.tv_room_lamp_switch
+      data:
+        entity_id: switch.tv_room_lamp_switch
     - service: switch.turn_off
-      entity_id: switch.fireplace
+      data:
+        entity_id: switch.fireplace
 
 
 
@@ -173,7 +180,8 @@
         state: 'Home'
   action:
     - service: switch.turn_on
-      entity_id: switch.tv_room_tv_switch
+      data:
+        entity_id: switch.tv_room_tv_switch
 
 - id: '92'    
   alias: 'TV switch off'
@@ -190,7 +198,8 @@
         seconds: 10
   action:
     - service: switch.turn_off
-      entity_id: switch.tv_room_tv_switch
+      data:
+        entity_id: switch.tv_room_tv_switch
 
 - id: '111'
   alias: 'Chromecast auto volume'

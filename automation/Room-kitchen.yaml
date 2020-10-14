@@ -10,7 +10,7 @@
       entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor, binary_sensor.kitchen_table_motion_sensor_sensor, binary_sensor.kitchen_island_motion_sensor_sensor
       to: 'off'
       for:
-        minutes: 10
+        minutes: 15
     - platform: state
       entity_id: input_boolean.dinner_time
       to: 'off'
@@ -19,18 +19,25 @@
       below: 250
       for:
         seconds: 120
+  mode: single
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: binary_sensor.dining_room_stairs_motion_sensor_sensor
         state: 'off'
+        for:
+          minutes: 14
       - condition: state
         entity_id: binary_sensor.kitchen_island_motion_sensor_sensor
         state: 'off'
+        for:
+          minutes: 14
       - condition: state
         entity_id: binary_sensor.kitchen_table_motion_sensor_sensor
         state: 'off'
+        for:
+          minutes: 14
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
@@ -45,13 +52,15 @@
         below: 300
   action:
     - service: light.turn_on
-      entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level
       data:
+        entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level
         brightness_pct: 5
     - service: light.turn_on
-      entity_id: light.kitchen_hallway_ceiling_lights_level
       data:
+        entity_id: light.kitchen_hallway_ceiling_lights_level
         brightness_pct: 30
+    - delay:
+        seconds: 10
 
 
 - id: '67'
@@ -63,6 +72,7 @@
     - platform: state
       entity_id: input_boolean.dinner_time
       to: 'on'
+  mode: single
   condition:
     condition: and
     conditions:
@@ -75,6 +85,8 @@
   action:
     - service: script.turn_on
       entity_id: script.kitchen_on
+    - delay:
+        seconds: 10
 
 - id: '68'    
   alias: 'Kitchen off'
@@ -94,9 +106,10 @@
       to: 'off'
     - platform: numeric_state
       entity_id: sensor.kitchen_table_motion_sensor_luminance
-      above: 300
+      above: 550
       for:
         seconds: 120
+  mode: single
   condition:
     condition: and
     conditions:
@@ -119,10 +132,12 @@
             state: 'Away'
           - condition: numeric_state
             entity_id: sensor.kitchen_table_motion_sensor_luminance
-            above: 250
+            above: 550
   action:
     - service: input_boolean.turn_off
       data:
         entity_id: input_boolean.dinner_time
     - service: light.turn_off
       entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level, light.kitchen_hallway_ceiling_lights_level
+    - delay:
+        seconds: 10

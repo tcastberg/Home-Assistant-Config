@@ -16,7 +16,6 @@ auth:
 system_health:
 
 frontend:
-  javascript_version: latest
   themes: !include_dir_merge_named themes/
 
 config:
@@ -30,7 +29,6 @@ http:
   ip_ban_enabled: true
   ssl_certificate: /config/ssl/fullchain.pem
   ssl_key: /config/ssl/privkey.pem
-  base_url: !secret http_base_url
 
 zwave:
   usb_path: /dev/ttyACM0
@@ -51,8 +49,8 @@ device_tracker:
 #    username: !secret unifi_username
 #    password: !secret unifi_password
 
-  - platform: google_maps
-    username: !secret google_maps_username
+#  - platform: google_maps
+#    username: !secret google_maps_username
 
 #  - platform: icloud
 #    username: !secret icloud_username
@@ -80,12 +78,12 @@ zone:
     latitude: !secret tor_magnus_work_latitude
     longitude: !secret tor_magnus_work_longitude
     radius: 120
-    icon: mdi:worker
+    icon: mdi:account-hard-hat
   - name: Lande Work
     latitude: !secret lande_work_latitude
     longitude: !secret lande_work_longitude
     radius: 120
-    icon: mdi:worker
+    icon: mdi:account-hard-hat
   - name: Cabin
     latitude: !secret cabin_latitude
     longitude: !secret cabin_longitude
@@ -96,50 +94,78 @@ proximity:
   vacation:
     zone: home
     devices: 
-      - device_tracker.google_maps_117621586906275495071
-      - device_tracker.google_maps_106703534047375134126
-      - device_tracker.ingrid_phone
+      - device_tracker.vog_l29
+      - device_tracker.lande_phone
+      - device_tracker.sm_g930f
     tolerance: 50000
     unit_of_measurement: m
   tmc_home:
     zone: home
     devices:
-      - device_tracker.google_maps_117621586906275495071
+      - device_tracker.vog_l29
     tolerance: 100
     unit_of_measurement: m
   lande_home:
     zone: home
     devices:
-      - device_tracker.google_maps_106703534047375134126
+      - device_tracker.lande_phone
     tolerance: 100
     unit_of_measurement: m
   ingrid_home:
     zone: home
     devices:
-      - device_tracker.ingrid_phone
+      - device_tracker.sm_g930f
     tolerance: 100
     unit_of_measurement: m
 
 remote:
+#  - platform: xiaomi_miio
+#    name: "Kitchen remote"
+#    host: !secret xiaomi_ir_2_ip
+#    token: !secret xiaomi_ir_2_token
+#    commands:
+#      power:
+#        command:
+#          - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
+#      hdmi1:
+#        command:
+#          - 'pronto:0000 006D 0000 0022 00AB 00AB 0015 003F 0015 003F 0015 003F 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003F 0015 003F 0015 003F 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003F 0015 0015 0015 0015 0015 003F 0015 0015 0015 003F 0015 003F 0015 003F 0015 0015 0015 003F 0015 003F 0015 0015 0015 003F 0015 0015 0015 0015 0015 0015 0015 071C'
+#      hdmi2:
+#        command:
+#          - 'pronto:0000 006D 0000 0022 00AC 00AB 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0689'
+#      hdmi3:
+#        command:
+#          - 'pronto:0000 006D 0000 0022 00AC 00AC 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0689'
+#      hdmi4:
+#        command:
+#          - 'pronto:0000 006D 0000 0022 00AC 00AB 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0016 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0689'
+#      volume_up:
+#        command:
+#          - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
+#      volume_down:
+#        command:
+#          - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
+#      mute:
+#        command:
+#          - 'pronto:0000 006c 0022 0003 00ab 00aa 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 003f 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0714 00ab 00aa 0015 0015 0015 0e91'
   - platform: xiaomi_miio
     name: "TV Room remote"
     host: !secret xiaomi_ir_ip
     token: !secret xiaomi_ir_token
-    hidden: true
     commands:
       power:
         command:
           - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
-      hdmi_1:
+      hdmi1:
         command:
           - 'pronto:0000 006D 0000 0022 00AB 00AB 0015 003F 0015 003F 0015 003F 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003F 0015 003F 0015 003F 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003F 0015 0015 0015 0015 0015 003F 0015 0015 0015 003F 0015 003F 0015 003F 0015 0015 0015 003F 0015 003F 0015 0015 0015 003F 0015 0015 0015 0015 0015 0015 0015 071C'
-      hdmi_2:
+      hdmi2:
         command:
           - 'pronto:0000 006D 0000 0022 00AC 00AB 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0689'
-      hdmi_3:
+      hdmi3:
         command:
           - 'pronto:0000 006D 0000 0022 00AC 00AC 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0689'
-      hdmi_4:
+      hdmi4:
         command:
           - 'pronto:0000 006D 0000 0022 00AC 00AB 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0016 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0689'
       volume_up:
@@ -154,61 +180,7 @@ remote:
 
 
 camera:
-  - platform: ffmpeg
-    name: Hallway Camera
-    input: !secret foscam_ffmpeg 
-  - platform: generic
-    name:  Hallway Camera generic
-    still_image_url: !secret foscam_rtsp
-    stream_source: !secret foscam_rtsp
-
-  - platform: ffmpeg
-    name: Side lawn
-    input: !secret nvr_front_south_ffmpeg
-  - platform: generic
-    name: Side lawn generic
-    still_image_url: !secret nvr_front_south_rtsp
-    stream_source: !secret nvr_front_south_rtsp
-
-  - platform: ffmpeg
-    name: Front door
-    input: !secret nvr_front_stairs_ffmpeg
-  - platform: generic
-    name: Front door generic
-    still_image_url: !secret nvr_front_stairs_rtsp
-    stream_source: !secret nvr_front_stairs_rtsp
-
-  - platform: ffmpeg
-    name: Front lawn
-    input: !secret nvr_front_east_ffmpeg
-  - platform: generic
-    name: Front lawn generic
-    still_image_url: !secret nvr_front_east_rtsp
-    stream_source: !secret nvr_front_east_rtsp
-
-  - platform: ffmpeg
-    name: Car parking
-    input: !secret nvr_front_north_ffmpeg
-  - platform: generic
-    name: Car parking generic
-    still_image_url: !secret nvr_front_north_rtsp
-    stream_source: !secret nvr_front_north_rtsp
-
-  - platform: ffmpeg
-    name: Tool shed
-    input: !secret nvr_rear_south_ffmpeg
-  - platform: generic
-    name: Tool shed generic
-    still_image_url: !secret nvr_rear_south_rtsp
-    stream_source: !secret nvr_rear_south_rtsp
-
-  - platform: ffmpeg
-    name: Back garden
-    input: !secret nvr_rear_north_ffmpeg
-  - platform: generic
-    name: Back garden generic
-    still_image_url: !secret nvr_rear_north_rtsp
-    stream_source: !secret nvr_rear_north_rtsp
+  - platform: zoneminder
 
 stream:
 
@@ -218,6 +190,7 @@ history:
 logger:
   default: warning
   logs:
+    homeassistant.util.yaml.loader: warning
     homeassistant.components.automation: info
     homeassistant.components.switch: warning
     homeassistant.components.light: info 
@@ -226,7 +199,7 @@ logger:
     homeassistant.components.python_script: info
     homeassistant.components.http.ban: warning
     homeassistant.components.prometheus: error
-    homeassistant.components.netatmo: error
+    homeassistant.components.netatmo: info
 
 # View all events in a logbook
 logbook:
@@ -240,18 +213,18 @@ sun:
 tibber:
   access_token: !secret tibber_token
 
-cast:
-  media_player:
-    # Google Home
-    - host: 192.168.0.123
-    - host: 192.168.0.124
-    - host: 192.168.0.125
-    - host: 192.168.0.126
-    # Google Chromecast
-    - host: 192.168.0.201
-    - host: 192.168.0.202
-    - host: 192.168.0.203
-    - host: 192.168.0.204
+#cast:
+#  media_player:
+#    # Google Home
+#    - host: 192.168.0.123
+#    - host: 192.168.0.124
+#    - host: 192.168.0.125
+#    - host: 192.168.0.126
+#    # Google Chromecast
+#    - host: 192.168.0.201
+#    - host: 192.168.0.202
+#    - host: 192.168.0.203
+#    - host: 192.168.0.204
 
 sonos:
   media_player:
@@ -260,22 +233,52 @@ sonos:
       - 192.168.0.212
 
 media_player:
-  - platform: spotify
-    name: Spotify
-    client_id: !secret spotify_client_id
-    client_secret: !secret spotify_secret
-    aliases:
-      c9eda3351755203eb884ee413f2552d58b115aa4: "TMC phone"
-
-climate:
-  - platform: mill
-    username: !secret mill_username
-    password: !secret mill_password
+  - platform: universal
+    name: TV Room TV
+    state_template: >
+      {% if states("sensor.tv_room_tv_power") | float > 10 %}
+        on
+      {% else %}
+        off
+      {% endif %}
+    attributes:
+      source: input_select.tv_input
+      source_list: input_select.tv_input|options
+    commands:
+      turn_on:
+        service: remote.send_command
+        data:
+          entity_id: remote.xiaomi_miio_192_168_0_161
+          command: 'power'
+      turn_off:
+        service: remote.send_command
+        data:
+          entity_id: remote.xiaomi_miio_192_168_0_161
+          command: power
+      volume_up:
+        service: remote.send_command
+        data:
+          entity_id: remote.xiaomi_miio_192_168_0_161
+          command: volume_up
+      volume_down:
+        service: remote.send_command
+        data:
+          entity_id: remote.xiaomi_miio_192_168_0_161
+          command: volume_down
+      volume_mute:
+        service: remote.send_command
+        data:
+          entity_id: remote.xiaomi_miio_192_168_0_161
+          command: mute
+      select_source:
+        service: script.change_input_source
+        data_template:
+          source: "{{ source }}"
 
 tesla:
   username: !secret tesla_username
   password: !secret tesla_password
-  scan_interval: 600
+  scan_interval: 660
 
 vacuum:
   - platform: xiaomi_miio
@@ -316,6 +319,12 @@ input_select:
       - table
       - hallway
 
+  tv_input:
+    name: TV input source
+    options:
+      - Chromecast
+      - Nintendo
+
 
 input_datetime:
   alarm_time_tor:
@@ -345,19 +354,21 @@ notify:
     vapid_pub_key: !secret vapid_pub_key
     vapid_prv_key: !secret vapid_prv_key
     vapid_email: !secret vapid_email
-  - name: hangouts
-    platform: hangouts
-    default_conversations:
-      - id: "UgyQRp0_hCwqYHGaPO54AaABAagBo4W8AQ"
 
 
 google_assistant:
   project_id: api-project-511361644410
-  api_key: !secret google_assistant_api_key
+  service_account: !include google_assistant.json
+  report_state: true
   exposed_domains:
     - light
     - climate
+    - cover
   entity_config:
+    media_player.tv_room_tv:
+      name: TV
+      expose: true
+      room: TV room
     input_boolean.sleep_state_tor:
       name: tor magnus sleeping
       expose: true
@@ -471,17 +482,15 @@ google_assistant:
       expose: false
     light.hallway_toilet_ceiling_dimmer_level_2:
       expose: false
-    light.entrance_hallway_ceiling_lights_level_2:
-      expose: false
     light.ingrid_bedroom_bed_light_blue_level:
       expose: false
     light.ingrid_bedroom_bed_light_green_level:
       expose: false
-    light.ingrid_bedroom_bed_light_level_2:
-      expose: false
     light.ingrid_bedroom_bed_light_red_level:
       expose: false
     light.ingrid_bedroom_bed_light_white_level:
+      expose: false
+    light.guest_bedroom_dimmer_level_2:
       expose: false
     light.nook_mood_blue_level:
       expose: false
@@ -493,13 +502,26 @@ google_assistant:
       expose: false
     light.nook_mood_white_level:
       expose: false    
+    light.kitchen:
+      expose: false
+    light.tv_lounge:
+      expose: false
+    light.entrance:
+      expose: false
+    light.dining_room:
+      expose: false
+    light.master_bedroom:
+      expose: false
+    climate.marvin_hvac_climate_system:
+      expose: false
+ 
+spotify:
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_client_secret
 
 netatmo:
-  api_key: !secret netatmo_api_key
-  secret_key: !secret netatmo_secret_key
-  username: !secret netatmo_username
-  password: !secret netatmo_password
-  discovery: true
+  client_id: !secret netatmo_client_id
+  client_secret: !secret netatmo_client_secret
 
 octoprint:
   host: !secret octoprint_host
@@ -525,17 +547,17 @@ utility_meter:
     tariffs:
       - fixed
   electricity_yearly:
-    source: sensor.electricity_meter_consumption
+    source: sensor.electricity_meter_accmulated_consumption
     cycle: yearly
     tariffs:
       - fixed
   electricity_monthly:
-    source: sensor.electricity_meter_consumption
+    source: sensor.electricity_meter_accmulated_consumption
     cycle: monthly
     tariffs:
       - fixed
   electricity_daily:
-    source: sensor.electricity_meter_consumption
+    source: sensor.electricity_meter_accmulated_consumption
     cycle: daily
     tariffs:
       - fixed
@@ -555,6 +577,13 @@ utility_meter:
     tariffs:
       - fixed
 
+zoneminder:
+  - host: !secret zm_host
+    ssl: true
+    username: !secret zm_username
+    password: !secret zm_password
+    path_zms: /zm/cgi-bin/nph-zms
+
 input_boolean: !include input_boolean.yaml
 switch: !include switch.yaml
 group: !include groups.yaml
@@ -563,7 +592,5 @@ sensor: !include sensor.yaml
 automation: !include_dir_merge_list automation/
 script: !include scripts.yaml
 #alert: !include alerts.yaml
-intent_script: !include intent_scripts.yaml
-hangouts: !include hangout_intents.yaml
 fan: !include fans.yaml
 light: !include light.yaml

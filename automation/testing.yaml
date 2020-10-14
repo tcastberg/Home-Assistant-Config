@@ -6,7 +6,7 @@
 #    event_data:
 #     action: 'blah'
 #  action:
-#    - service: notify.html5_tor_magnus_pixel_2
+#    - service: notify.mobile_app_tor_magnus_p30_pro
 #      data:
 #        message: 'Someone at door'
 #        data:
@@ -22,22 +22,21 @@
 #    event_data:
 #     action: open_door
 #  action:
-#    - service: notify.html5
+#    - service: notify.mobile_app_tor_magnus_p30_pro
 #      data:
 #        message: 'Door opened'
 #        data:
 #          tag: 'test-notification'
 
 
-#- id: '1000'
-#  alias: 'Casting camera'
-#  trigger:
-#    platform: state
-#    entity_id: binary_sensor.doorbell_switch
-#    to: 'on'
-#  action:
-#    - service: camera.play_stream
-#      data:
-#        entity_id: camera.front_door_generic
-#        media_player: media_player.tv_room
-
+- id: '1000'
+  alias: 'Casting camera'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.doorbell_switch
+    to: 'on'
+  action:
+    - service: camera.play_stream
+      data:
+        entity_id: camera.entrance
+        media_player: media_player.tv_room

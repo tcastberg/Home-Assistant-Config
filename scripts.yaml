@@ -106,7 +106,7 @@ red_alert_flash:
     - alias: Light On
       service: light.turn_on
       data:
-        entity_id: light.nook_2, light.serving_table, light.sofa_2, light.nook_mood_level
+        entity_id: light.nook, light.serving_table, light.sofa, light.nook_mood_level
         color_name: red
         brightness: 255
     - service: media_player.volume_set
@@ -116,7 +116,7 @@ red_alert_flash:
     - service:  media_player.play_media
       data:
         entity_id: media_player.dining_room
-        media_content_id: https://hass.continually-evolving.net:8123/local/tng_red_alert3.mp3
+        media_content_id: https://hass.continually-evolving.net:8124/tng_red_alert3.mp3
         media_content_type: audio/mp3
     - delay:
         # time for flash light on
@@ -124,7 +124,7 @@ red_alert_flash:
     - alias: Light Off
       service: light.turn_off
       data:
-        entity_id: light.nook_2, light.serving_table, light.sofa_2, light.nook_mood_level
+        entity_id: light.nook, light.serving_table, light.sofa, light.nook_mood_level
     - alias: loop
       service: script.turn_on
       data:
@@ -229,3 +229,20 @@ halloween_off:
     - service: switch.turn_on
       data:
         entity_id: switch.nook_flux
+
+
+change_input_source:
+  description: Change the input source of the TV room TV
+  sequence:
+    - service: input_select.select_option
+      data_template:
+        entity_id: input_select.tv_input
+        option: >
+         {{ source }}
+    - service: remote.send_command
+      data_template:
+        entity_id: remote.xiaomi_miio_192_168_0_161
+        command: >
+          {% set mapper = {'Chromecast':'hdmi2',
+                           'Nintendo':'hdmi3'} %}
+          {{ mapper[source] if source in mapper else 'hdmi2' }}

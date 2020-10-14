@@ -9,7 +9,7 @@
     entity_id: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
     state: 'home'
   action:
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
       data:
         title: 'Tesla charging'
         message: 'Power is cheap, started charging Marvin'
@@ -35,7 +35,7 @@
         entity_id: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
         state: 'home'
   action:
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
       data:
         title: 'Tesla charging'
         message: 'Power is expensive, stopped charging Marvin'
@@ -61,7 +61,7 @@
         entity_id: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
         state: 'home'
   action:
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
       data:
         title: 'Tesla charging'
         message: 'Power is expensive right now, stopped charging Marvin'
@@ -89,7 +89,7 @@
         entity_id: device_tracker.tesla_model_x_5yjxcce22jf095567_location_tracker
         state: 'home'
   action:
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
       data:
         title: 'Tesla charging'
         message: 'Stopped charging for some reason. Restarting.'

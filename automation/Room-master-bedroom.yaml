@@ -30,26 +30,30 @@
         state: 'off'
   action:
     - service: cover.open_cover
-      entity_id: cover.master_bedroom_blind
-    - service: switch.turn_on
-      entity_id: switch.tv_backlight_flux
-    - service: light.turn_on
-      entity_id: light.bedside_lamp_dimmer_level
       data:
+        entity_id: cover.master_bedroom_blind
+    - service: switch.turn_on
+      data:
+        entity_id: switch.tv_backlight_flux
+    - service: light.turn_on
+      data:
+        entity_id: light.bedside_lamp_dimmer_level
         brightness: 150
     - service: light.turn_on
-      entity_id: light.bedroom_tv_backlight_level
       data:
+        entity_id: light.bedroom_tv_backlight_level
         brightness: 255
         rgb_color: [211,221,247]
     - service: light.turn_on
-      entity_id: light.dressing_table
       data:
+        entity_id: light.dressing_table
         brightness: 254
     - service: switch.turn_on
-      entity_id: switch.dressing_room_wardrobes_switch
+      data:
+        entity_id: switch.dressing_room_wardrobes_switch
     - service: light.turn_on
-      entity_id: light.changing_room_ceiling_light_level
+      data:
+        entity_id: light.changing_room_ceiling_light_level
 
 - id: '41'    
   alias: 'Master bedroom day'
@@ -71,15 +75,20 @@
         state: 'on'
   action:
     - service: cover.open_cover
-      entity_id: cover.master_bedroom_blind
+      data:
+        entity_id: cover.master_bedroom_blind
     - service: switch.turn_off
-      entity_id: switch.tv_backlight_flux
+      data:
+        entity_id: switch.tv_backlight_flux
     - service: light.turn_off
-      entity_id: light.bedside_lamp_dimmer_level
+      data:
+        entity_id: light.bedside_lamp_dimmer_level
     - service: light.turn_off
-      entity_id: light.bedroom_tv_backlight_level
+      data:
+        entity_id: light.bedroom_tv_backlight_level
     - service: light.turn_off
-      entity_id: light.dressing_table
+      data:
+        entity_id: light.dressing_table
 
 - id: '42'    
   alias: 'Master bedroom evening'
@@ -109,24 +118,27 @@
         state: 'off'
   action:
     - service: cover.close_cover
-      entity_id: cover.master_bedroom_blind
-    - service: switch.turn_on
-      entity_id: switch.tv_backlight_flux
-    - service: light.turn_on
-      entity_id: light.bedside_lamp_dimmer_level
       data:
+        entity_id: cover.master_bedroom_blind
+    - service: switch.turn_on
+      data:
+        entity_id: switch.tv_backlight_flux
+    - service: light.turn_on
+      data:
+        entity_id: light.bedside_lamp_dimmer_level
         brightness: 150
     - service: light.turn_on
-      entity_id: light.bedroom_tv_backlight_level
       data:
+        entity_id: light.bedroom_tv_backlight_level
         brightness: 255
         rgb_color: [255,165,0]
     - service: light.turn_on
-      entity_id: light.dressing_table
       data:
+        entity_id: light.dressing_table
         brightness: 150
     - service: switch.turn_on
-      entity_id: switch.dressing_room_wardrobes_switch
+      data:
+        entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '43'    
   alias: 'Master bedroom off'
@@ -142,19 +154,26 @@
       to: 'on'
   action:
     - service: cover.close_cover
-      entity_id: cover.master_bedroom_blind
+      data:
+        entity_id: cover.master_bedroom_blind
     - service: switch.turn_off
-      entity_id: switch.tv_backlight_flux
+      data:
+        entity_id: switch.tv_backlight_flux
     - service: light.turn_off
-      entity_id: light.bedside_lamp_dimmer_level
+      data:
+        entity_id: light.bedside_lamp_dimmer_level
     - service: light.turn_off
-      entity_id: light.bedroom_tv_backlight_level
+      data:
+        entity_id: light.bedroom_tv_backlight_level
     - service: light.turn_off
-      entity_id: light.dressing_table
+      data:
+        entity_id: light.dressing_table
     - service: switch.turn_off
-      entity_id: switch.dressing_room_wardrobes_switch
+      data:
+        entity_id: switch.dressing_room_wardrobes_switch
     - service: light.turn_off
-      entity_id: light.changing_room_ceiling_light_level
+      data:
+        entity_id: light.changing_room_ceiling_light_level
 
 - id: '115'    
   alias: 'TV master bedroom switch on'
@@ -172,7 +191,8 @@
         state: 'Home'
   action:
     - service: switch.turn_on
-      entity_id: switch.master_bedroom_tv_switch
+      data:
+        entity_id: switch.master_bedroom_tv_switch
 
 - id: '116'    
   alias: 'TV master switch off'
@@ -184,13 +204,14 @@
         seconds: 10
   action:
     - service: switch.turn_off
-      entity_id: switch.master_bedroom_tv_switch
+      data:
+        entity_id: switch.master_bedroom_tv_switch
 
 - id: '69'    
   alias: 'Dressing room lights active'
   trigger:
     - platform: state
-      entity_id: binary_sensor.dressingroom_motion_sensor_sensor
+      entity_id: binary_sensor.dressing_room_motion_sensor_sensor
       to: 'on'
   condition:
     condition: state
@@ -198,15 +219,17 @@
     state: 'off'
   action:
     - service: light.turn_on
-      entity_id: light.changing_room_ceiling_light_level
+      data:
+        entity_id: light.changing_room_ceiling_light_level
     - service: switch.turn_on
-      entity_id: switch.dressing_room_wardrobes_switch
+      data:
+        entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '70'    
   alias: 'Dressing room ceiling off'
   trigger:
     - platform: state
-      entity_id: binary_sensor.dressingroom_motion_sensor_sensor
+      entity_id: binary_sensor.dressing_room_motion_sensor_sensor
       to: 'off'
       for:
         minutes: 7
@@ -216,29 +239,32 @@
     state: 'off'
   action:
     - service: light.turn_off
-      entity_id: light.changing_room_ceiling_light_level
+      data:
+        entity_id: light.changing_room_ceiling_light_level
     - service: switch.turn_off
-      entity_id: switch.dressing_room_wardrobes_switch
+      data:
+        entity_id: switch.dressing_room_wardrobes_switch
 
-- id: '80'    
-  alias: 'Dressing room light active night'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.dressingroom_motion_sensor_sensor
-      to: 'on'
-  condition:
-    condition: state
-    entity_id: binary_sensor.sleep_state
-    state: 'on'
-  action:
-    - service: switch.turn_on
-      entity_id: switch.dressing_room_wardrobes_switch
+#- id: '80'    
+#  alias: 'Dressing room light active night'
+#  trigger:
+#    - platform: state
+#      entity_id: binary_sensor.dressing_room_motion_sensor_sensor
+#      to: 'on'
+#  condition:
+#    condition: state
+#    entity_id: binary_sensor.sleep_state
+#    state: 'on'
+#  action:
+#    - service: switch.turn_on
+#      data:
+#        entity_id: switch.dressing_room_wardrobes_switch
 
 - id: '81'    
   alias: 'Dressing room light off night'
   trigger:
     - platform: state
-      entity_id: binary_sensor.dressingroom_motion_sensor_sensor
+      entity_id: binary_sensor.dressing_room_motion_sensor_sensor
       to: 'off'
   condition:
     condition: state
@@ -246,7 +272,8 @@
     state: 'on'
   action:
     - service: switch.turn_off
-      entity_id: switch.dressing_room_wardrobes_switch
+      data:
+        entity_id: switch.dressing_room_wardrobes_switch
 
 
 

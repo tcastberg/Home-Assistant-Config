@@ -133,6 +133,7 @@ sensor.balcony_door_sensor_temperature:
   friendly_name: Balcony door temperature
 light.bedroom_tv_backlight_level:
   friendly_name: TV backlight
+  icon: mdi:led-strip-variant
 light.bedroom_tv_backlight_level_2:
   friendly_name: RGBW Light - Main
 light.bedroom_tv_backlight_level_3:
@@ -225,3 +226,89 @@ cover.office_blind:
   device_class: blind
 cover.master_bedroom_blind:
   device_class: blind
+light.dining_room_rail_1_level:
+  icon: mdi:track-light
+light.dining_room_rail_2_level:
+  icon: mdi:track-light
+light.dining_room_stairs_level:
+  icon: mdi:track-light
+light.sofa_2:
+  icon: mdi:floor-lamp
+light.nook_2:
+  icon: mdi:floor-lamp
+light.nook_mood_level:
+  icon: mdi:led-strip-variant
+light.kitchen_table_ceiling_lamp_level:
+  icon: mdi:ceiling-light
+light.downstairs_hallway_pendant_level:
+  icon: mdi:ceiling-light
+light.ingrid_bedroom_bed_light_level:
+  icon: mdi:led-strip-variant
+light.lamp:
+  icon: mdi:lamp
+light.bedside_lamp_dimmer_level:
+  icon: mdi:lamp
+light.tv_room_table_lamp:
+  icon: mdi:floor-lamp
+light.dressing_table:
+  icon: mdi:lava-lamp
+light.nook_table:
+  icon: mdi:lamp
+light.serving_table:
+  icon: mdi:lamp
+light.entrance_hallway_ceiling_lights_level:
+  icon: mdi:wall-sconce-flat
+light.hallway_toilet_ceiling_dimmer_level:
+  icon: mdi:wall-sconce-flat
+light.laundry_dimmer_level:
+  icon: mdi:wall-sconce-flat
+light.kitchen_bench_ceiling_lights_level:
+  icon: mdi:wall-sconce-flat
+light.kitchen_hallway_ceiling_lights_level:
+  icon: mdi:wall-sconce-flat
+light.tv_area_level:
+  icon: mdi:wall-sconce-flat
+light.sofa_area_level:
+  icon: mdi:wall-sconce-flat
+light.hallway_area_level:
+  icon: mdi:wall-sconce-flat
+light.family_bathroom_dimmer_level:
+  icon: mdi:wall-sconce-flat
+light.ceiling_2:
+  icon: mdi:wall-sconce-flat
+light.changing_room_ceiling_light_level:
+  icon: mdi:vanity-light
+light.guest_bedroom_dimmer_level:
+  icon: mdi:ceiling-light
+light.ingrid_bedroom_ceiling_light_level:
+  icon: mdi:ceiling-light
+light.wardrobes:
+  icon: mdi:wardrobe
+light.entrance_wardrobes:
+  icon: mdi:wardrobe
+light.balcony:
+  icon: mdi:coach-lamp
+light.terrace:
+  icon: mdi:coach-lamp
+light.entrance: {}
+light.porch:
+  icon: mdi:coach-lamp
+person.lande:
+  entity_picture: /local/lande.jpg
+person.ingrid_sofia:
+  entity_picture: /local/ingrid.jpg
+person.tor_magnus:
+  entity_picture: /local/tor_magnus.jpg
+light.balcony_outside_light_level:
+  icon: mdi:coach-lamp
+sensor.ingrid_bedroom_motion_sensor_luminance:
+  device_class: illuminance
+binary_sensor.ingrid_bedroom_motion_sensor_sensor:
+  device_class: motion
+binary_sensor.dressing_room_motion_sensor_sensor:
+  device_class: motion
+cover.balcony_awning_level:
+  device_class: awning
+  icon: mdi:storefront-outline
+light.ceiling:
+  icon: mdi:wall-sconce-flat

@@ -46,7 +46,6 @@
 
 - id: '99'
   alias: Start Cleaning Area
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.vacuum_area

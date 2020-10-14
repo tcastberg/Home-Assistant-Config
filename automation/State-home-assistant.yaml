@@ -1,0 +1,9 @@
+- alias: 'Set default theme'
+  initial_state: 'on'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: frontend.set_theme
+      data:
+        name: 'Dark - Cyan'

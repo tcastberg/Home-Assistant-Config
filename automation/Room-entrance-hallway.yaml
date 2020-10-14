@@ -17,11 +17,11 @@
           what: 'The front door is open.'
     - service: camera.snapshot
       data:
-        entity_id: camera.hallway_camera
+        entity_id: camera.hallway
         filename: /config/www/hallway.jpg
     - delay:
         seconds: 3
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
       data_template:
         title: 'Door opened'
         message: 'The front door was opened'
@@ -40,7 +40,7 @@
   action:
     - service: zwave.set_config_parameter
       data:
-        node_id: 47
+        node_id: 102
         parameter: 1
         value: 'Disable Away, Auto Lock'
 
@@ -53,7 +53,7 @@
   action:
     - service: zwave.set_config_parameter
       data:
-        node_id: 47
+        node_id: 102
         parameter: 1
         value: 'Disable Away, Manual Lock'
 
@@ -187,25 +187,36 @@
     entity_id: input_select.home_state
     state: 'Home'
   action:
+    - service: camera.snapshot
+      data:
+        entity_id: camera.entrance
+        filename: /config/www/doorbell.jpg
     - service: sonos.snapshot
       data:
         entity_id: media_player.dining_room, media_player.changing_room
+    - service: sonos.join
+      data:
+        master: media_player.dining_room
+        entity_id: media_player.changing_room
     - service: media_player.volume_set
       data:
-        entity_id: media_player.dining_room, media_player.changing_room, media_player.lounge_speaker, media_player.kitchen_speaker, media_player.master_bedroom_speaker
+        entity_id: media_player.dining_room
         volume_level: 0.70
     - service:  media_player.play_media
       data:
-        entity_id: media_player.dining_room, media_player.changing_room, media_player.lounge_speaker, media_player.kitchen_speaker, media_player.master_bedroom_speaker
-        media_content_id: https://192.168.0.8:8123/local/doorbell-6.mp3
+        entity_id: media_player.dining_room, media_player.changing_room
+        media_content_id: https://hass.continually-evolving.net:8124/doorbell-6.mp3
         media_content_type: music
-    - service: camera.snapshot
-      data:
-        entity_id: camera.front_door
-        filename: /config/www/doorbell.jpg
     - delay:
-        seconds: 3
-    - service: notify.html5
+        seconds: 5
+    - service: sonos.unjoin
+      data: 
+        entity_id: media_player.changing_room
+    - service: sonos.restore
+      data:
+        entity_id: media_player.dining_room, media_player.changing_room
+
+    - service: notify.mobile_app_tor_magnus_p30_pro
       data_template:
         title: 'Doorbell'
         message: 'Somebody rang the doorbell'
@@ -214,14 +225,3 @@
           renotify: 1
           tag: 'doorbell-notification'
           url: !secret doorbell_snapshot
-    - service: sonos.restore
-      data:
-        entity_id: media_player.dining_room, media_player.changing_room
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.lounge_speaker, media_player.kitchen_speaker
-        volume_level: 0.50
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.master_bedroom_speaker
-        volume_level: 0.10

@@ -35,7 +35,13 @@
         variables:
           where: 'dining_room'
           what: 'The washing machine has finished'
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Washing machine'
+        message: 'Washing machine has finished'
+        data:
+          tag: 'washing-machine'
+    - service: notify.mobile_app_sm_g973f
       data:
         title: 'Washing machine'
         message: 'Washing machine has finished'
@@ -79,7 +85,13 @@
         variables:
           where: 'dining_room'
           what: 'The dryer has finished'
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Dryer'
+        message: 'Dryer has finished'
+        data:
+          tag: 'dryer'
+    - service: notify.mobile_app_sm_g973f
       data:
         title: 'Dryer'
         message: 'Dryer has finished'
@@ -104,7 +116,13 @@
         variables:
           where: 'dining_room'
           what: 'The dishwasher has finished'
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Dishwasher'
+        message: 'Dishwasher has finished'
+        data:
+          tag: 'dishwasher'
+    - service: notify.mobile_app_sm_g973f
       data:
         title: 'Dishwasher'
         message: 'Dishwasher has finished'

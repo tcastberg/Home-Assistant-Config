@@ -6,7 +6,7 @@
     to: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.ceiling_2
+      entity_id: light.ceiling
       data_template:
         brightness_pct: >
           {%- if is_state('binary_sensor.sleep_state', 'on') %}
@@ -25,4 +25,4 @@
       minutes: 5
   action:
     - service: light.turn_off
-      entity_id: light.ceiling_2
+      entity_id: light.ceiling

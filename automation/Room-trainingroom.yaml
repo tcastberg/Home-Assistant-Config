@@ -6,7 +6,11 @@
       to: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.lamp
+      data:
+        entity_id: light.lamp
+        brightness_pct: 100
+    - service: light.turn_on
+      entity_id: light.training_room_ceiling
     - service: switch.turn_on
       entity_id: switch.training_room_tv_switch
 
@@ -17,10 +21,12 @@
       platform: state
       to: 'off'
       for:
-        minutes: 10
+        minutes: 60
   action:
     - service: light.turn_off
       entity_id: light.lamp
+    - service: light.turn_off
+      entity_id: light.training_room_ceiling
 
 - id: '114'    
   alias: 'TV training room switch off'

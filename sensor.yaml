@@ -1,22 +1,10 @@
-- platform: yr
-  name: Weather 
+- platform: zoneminder
   monitored_conditions:
-    - temperature
-    - symbol
-    - precipitation
-    - windSpeed
-    - humidity
-    - cloudiness
-- platform: yr
-  name: Weather forecast
-  forecast: 2
-  monitored_conditions:
-    - temperature
-    - symbol
-    - precipitation
-    - windSpeed
-    - humidity
-    - cloudiness
+    - all
+    - month
+    - week
+    - day
+    - hour
 
 #- platform: netatmo
 #  station: Home
@@ -43,15 +31,6 @@
     - 'time'
     - 'date'
 
-- platform: fitbit
-  clock_format: 24H
-  unit_system: metric
-  monitored_resources:
-    - "activities/steps"
-    - "activities/heart"
-    - "body/weight"
-    - "sleep/minutesAsleep"
-
 - platform: min_max
   type: mean
   name: "Water heater"
@@ -64,13 +43,12 @@
   sensors:
     average_humidity:
       friendly_name: "Average house humidity"
-      entity_id: sensor.family_bathroom_multisensor_relative_humidity, sensor.master_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
       unit_of_measurement: "%"
       icon_template: mdi:water-percent
       value_template: >
         {% if states.sensor %}
-          {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|rejectattr("state", "equalto", "unavailable")|rejectattr("name", "equalto", "Netatmo Innesensor Humidity")|rejectattr("name", "equalto", "Netatmo Utesensor Humidity")|rejectattr("name", "equalto", "Netatmo Outdoor Humidity")|map(attribute='state')|map('float')|sum %}
-          {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|rejectattr("state", "equalto", "unavailable")|rejectattr("name", "equalto", "Netatmo Innesensor Humidity")|rejectattr("name", "equalto", "Netatmo Utesensor Humidity")|rejectattr("name", "equalto", "Netatmo Outdoor Humidity")|list|count %}
+          {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|rejectattr("state", "equalto", "unavailable")|rejectattr("name", "equalto", "Average house humidity")|rejectattr("name", "equalto", "Netatmo Værstasjon33 Innesensor Humidity")|rejectattr("name", "equalto", "Netatmo Værstasjon33 Utesensor Humidity")|rejectattr("name", "equalto", "Netatmo Home Outdoor Humidity")|map(attribute='state')|map('float')|sum %}
+          {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|rejectattr("state", "equalto", "unavailable")|rejectattr("name", "equalto", "Average house humidity")|rejectattr("name", "equalto", "Netatmo Værstasjon33 Innesensor Humidity")|rejectattr("name", "equalto", "Netatmo Værstasjon33 Utesensor Humidity")|rejectattr("name", "equalto", "Netatmo Home Outdoor Humidity")|list|count %}
           {% if totalcount > 0 %}
             {% set totalaverage = totalvalue / totalcount %}
           {% else %}
@@ -83,15 +61,14 @@
 
     divergence_humidity:
       friendly_name: "Divergence from average house humidity"
-      entity_id: sensor.netatmo_indoor_humidity, sensor.family_bathroom_multisensor_relative_humidity, sensor.master_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
       unit_of_measurement: "%"
       icon_template: mdi:water-percent
       value_template: >
-          {% if states.sensor.netatmo_indoor_humidity.state and states.sensor.family_bathroom_multisensor_relative_humidity.state and states.sensor.master_bathroom_multisensor_relative_humidity.state and states.sensor.laundry_multisensor_relative_humidity.state %}
-            {% set average =  states('sensor.netatmo_indoor_humidity') | float %}
-            {% set family  =  states('sensor.family_bathroom_multisensor_relative_humidity') | float - average %}
-            {% set master  =  states('sensor.master_bathroom_multisensor_relative_humidity') | float - average %}
-            {% set laundry = (states('sensor.laundry_multisensor_relative_humidity') | float - average) - 4 %}
+          {% if states.sensor.netatmo_home_indoor_humidity.state and states.sensor.family_bathroom_multisensor_relative_humidity.state and states.sensor.master_bathroom_multisensor_relative_humidity.state and states.sensor.laundry_multisensor_relative_humidity.state %}
+            {% set average =  states('sensor.netatmo_home_indoor_humidity') | float %}
+            {% set family  = (states('sensor.family_bathroom_multisensor_relative_humidity') | float - average) - 2 %}
+            {% set master  = (states('sensor.master_bathroom_multisensor_relative_humidity') | float - average) - 3 %}
+            {% set laundry = (states('sensor.laundry_multisensor_relative_humidity') | float - average) - 2 %}
             {{[family,master,laundry]|max|round(1)}}
           {% else %}
             0
@@ -99,7 +76,6 @@
 
 #    divergence_humidity:
 #      friendly_name: "Divergence from average house humidity"
-#      entity_id: sensor.average_humidity, sensor.family_bathroom_multisensor_relative_humidity, sensor.master_bathroom_multisensor_relative_humidity, sensor.laundry_multisensor_relative_humidity
 #      unit_of_measurement: "% div"
 #      icon_template: mdi:water-percent
 #      value_template: >
@@ -115,7 +91,6 @@
 
     average_temperature:
       friendly_name: "Average house temperature"
-      entity_id: sensor.entrance_hallway_motion_sensor_temperature, sensor.hallway_toilet_motion_sensor_temperature, sensor.laundry_multisensor_temperature, sensor.kitchen_table_motion_sensor_temperature, sensor.kitchen_island_motion_sensor_temperature, sensor.dining_room_stairs_motion_sensor_temperature, sensor.balcony_door_sensor_temperature, sensor.tv_area_motion_sensor_temperature, sensor.family_bathroom_multisensor_temperature, sensor.dressingroom_motion_sensor_temperature, sensor.master_bathroom_multisensor_temperature, sensor.training_room_motion_sensor_temperature
       unit_of_measurement: "°C"
       icon_template: mdi:water-percent
       value_template: >
@@ -134,34 +109,15 @@
 
     sunrise:
       friendly_name: "Sunrise at"
-      entity_id: sun.sun
       icon_template: mdi:weather-sunset-up
       value_template: "{{ as_timestamp(state_attr('sun.sun', 'next_rising')) | timestamp_custom('%H:%M') }}"
     sunset:
       friendly_name: "Sunset at"
-      entity_id: sun.sun
       icon_template: mdi:weather-sunset-down
       value_template: "{{ as_timestamp(state_attr('sun.sun', 'next_setting')) | timestamp_custom('%H:%M') }}"
-    fitbit_steps:
-      friendly_name: 'Steps'
-      value_template: >
-        {{ states('sensor.steps') | replace(',','') }}
-      unit_of_measurement: 'steps'
-    fitbit_calories:
-      friendly_name: 'Calories'
-      value_template: >
-        {{ states('sensor.calories') | replace(',','') }}
-      unit_of_measurement: 'calories'
-    weight_loss:
-      friendly_name: 'Weight Loss'
-      value_template: "{{ '%.1f' | format(82.0 - (states('sensor.weight') | float)) }}"
-      unit_of_measurement: 'kg'
-
 
     vacuum_status:
       friendly_name: Status
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: 'Status: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.status }}'
       icon_template: >
         {% set val =  states.vacuum.xiaomi_vacuum_cleaner.attributes.status  %}
@@ -180,62 +136,44 @@
         {% endif %}
     vacuum_fan_speed:
       friendly_name: Fan Speed
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: 'Mode: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.fan_speed }}'
       icon_template: 'mdi:speedometer'
     vacuum_battery:
       friendly_name: Vacuum Battery
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: 'Battery: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.battery_level }}'
       unit_of_measurement: '%'
       icon_template: '{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.battery_icon }}'
     vacuum_cleaning_time:
       friendly_name: Time of Last Cycle
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: '{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.cleaning_time }}'
       icon_template: 'mdi:timer'
     vacuum_cleaned_area:
       friendly_name: Area of Last Cycle
       unit_of_measurement: 'm²'
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: '{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.cleaned_area }}'
       icon_template: 'mdi:ruler'
     vacuum_cleanmainbrush:
       friendly_name: Replace main brush
       unit_of_measurement: 'h'
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: 'Main Brush: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.main_brush_left }}'
       icon_template: 'mdi:screwdriver'
     vacuum_cleansidebrush:
       friendly_name: Replace side brush
       unit_of_measurement: 'h'
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: 'Side brush: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.side_brush_left }}'
       icon_template: 'mdi:screwdriver'
     vacuum_cleanfilter:
       friendly_name: Replace filter
       unit_of_measurement: 'h'
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: 'Filter: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.filter_left }}'
       icon_template: 'mdi:screwdriver'
     vacuum_sensordirtyleft:
       friendly_name: Replace filter
       unit_of_measurement: 'h'
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: 'Sensor: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.sensor_dirty_left }}'
       icon_template: 'mdi:screwdriver'
     vacuum_do_not_disturb:
       friendly_name: Do Not Disturb
-      entity_id:
-        - vacuum.xiaomi_vacuum_cleaner
       value_template: '{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.do_not_disturb }}'
       icon_template: >
         {% set val =  states.vacuum.xiaomi_vacuum_cleaner.attributes.do_not_disturb  %}
@@ -258,28 +196,28 @@
         value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'accumulatedCost') }}"
         unit_of_measurement: "NOK"
     electricity_meter_phase1_current:
-        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentPhase1') }}"
+        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentL1') }}"
         unit_of_measurement: "A"
     electricity_meter_phase2_current:
-        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentPhase2') }}"
+        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentL2') }}"
         unit_of_measurement: "A"
     electricity_meter_phase3_current:
-        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentPhase3') }}"
+        value_template: "{{ state_attr('sensor.real_time_consumption_holmsens_vei_29b', 'currentL3') }}"
         unit_of_measurement: "A"
 
 - platform: mqtt
   name: water_consumption_volume
   unit_of_measurement: "m³"
-  state_topic: "homeassistant/sensor/MyMeter/58079516/state"
+  state_topic: "wmbusmeters/58079516"
   value_template: "{{value_json.total_m3}}"
 - platform: mqtt
   name: water_internal_temperature
   unit_of_measurement: "°C"
-  state_topic: "homeassistant/sensor/MyMeter/58079516/state"
+  state_topic: "wmbusmeters/58079516"
   value_template: "{{value_json.flow_temperature}}"
 - platform: mqtt
   name: water_external_temperature
   unit_of_measurement: "°C"
-  state_topic: "homeassistant/sensor/MyMeter/58079516/state"
+  state_topic: "wmbusmeters/58079516"
   value_template: "{{value_json.external_temperature}}"
 

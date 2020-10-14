@@ -7,7 +7,7 @@
       entity_id: input_select.home_state
       to: 'Home'
     - platform: numeric_state
-      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+      entity_id: sensor.ingrid_bedroom_motion_sensor_luminance
       below: 180
       for:
         seconds: 120
@@ -27,7 +27,7 @@
         entity_id: binary_sensor.sleep_state
         state: 'off'
       - condition: numeric_state
-        entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+        entity_id: sensor.ingrid_bedroom_motion_sensor_luminance
         below: 200
   action:
     - service: switch.turn_on
@@ -46,6 +46,23 @@
             20
           {%- endif %}
 
+- id: '58'    
+  alias: 'Ingrids bedroom sleeping'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.sleep_state_ingrid
+      to: 'on'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.ingrid_flux
+    - service: light.turn_off
+      entity_id: light.ingrid_bedroom_ceiling_light_level 
+    - service: light.turn_on
+      entity_id: light.ingrid_bedroom_bed_light_level
+      data:
+        brightness: 35
+        rgb_color: [255, 64, 0]
+
 - id: '63'    
   alias: 'Ingrids bedroom off'
   trigger:
@@ -56,13 +73,10 @@
       entity_id: input_select.home_state
       to: 'Away'
     - platform: numeric_state
-      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+      entity_id: sensor.ingrid_bedroom_motion_sensor_luminance
       above: 200
       for:
         seconds: 120
-    - platform: state
-      entity_id: input_boolean.sleep_state_ingrid
-      to: 'on'
   action:
     - service: switch.turn_off
       entity_id: switch.ingrid_flux

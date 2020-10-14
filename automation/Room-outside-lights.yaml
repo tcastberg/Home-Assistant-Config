@@ -19,8 +19,8 @@
   action:
     - service: switch.turn_on
       entity_id: switch.entrance_outside_light_switch
-    - service: switch.turn_on
-      entity_id: switch.balcony_outside_light_switch
+    - service: light.turn_on
+      entity_id: light.balcony_outside_light_level
     - service: switch.turn_on
       entity_id: switch.terrace_outside_light_switch
 
@@ -36,8 +36,8 @@
   action:
     - service: switch.turn_off
       entity_id: switch.terrace_outside_light_switch
-    - service: switch.turn_off
-      entity_id: switch.balcony_outside_light_switch
+    - service: light.turn_off
+      entity_id: light.balcony_outside_light_level
     - service: switch.turn_off
       entity_id: switch.entrance_outside_light_switch
 

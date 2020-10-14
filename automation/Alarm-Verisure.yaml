@@ -35,13 +35,83 @@
   trigger:
     - platform: state
       entity_id: alarm_control_panel.holmsens_vei_alarm
+      from: 'disarmed'
+    - platform: state
+      entity_id: alarm_control_panel.holmsens_vei_alarm
+      from: 'armed_away'
+    - platform: state
+      entity_id: alarm_control_panel.holmsens_vei_alarm
+      from: 'armed_home'
   action:
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
       data_template:
         message: >
           Alarm changed from {{ trigger.from_state.state }}
           to {{ trigger.to_state.state }}
           by {{ trigger.to_state.attributes.changed_by }}
+
+- id: '9'
+  alias: 'Door or window open when alarm armed'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.holmsens_vei_alarm
+      from: 'armed_away'
+    - platform: state
+      entity_id: alarm_control_panel.holmsens_vei_alarm
+      from: 'armed_home'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.backhall_garden_door_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.balcony_door_sensor_2
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.bedroom_garden_door_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.kitchen_window_3_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.ingrid_bedroom_window_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.guest_bedroom_window_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.nook_window_sensor
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.laundry_window_sensor
+        state: 'on'
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro 
+      data_template:
+        title: 'Open door or window'
+        message: >
+          {% if is_state('binary_sensor.backhall_garden_door_sensor', 'on') %}Downstairs garden door{%endif%}
+          {% if is_state('binary_sensor.balcony_door_sensor_2', 'on') %}Balcony door{%endif%}
+          {% if is_state('binary_sensor.bedroom_garden_door_sensor', 'on') %}Bedroom garden door{%endif%}
+          {% if is_state('binary_sensor.kitchen_window_3_sensor', 'on') %}Kitchen window{%endif%}
+          {% if is_state('binary_sensor.ingrid_bedroom_window_sensor', 'on') %}Ingrid bedroom window{%endif%}
+          {% if is_state('binary_sensor.guest_bedroom_window_sensor', 'on') %}Guest bedroom window{%endif%}
+          {% if is_state('binary_sensor.nook_window_sensor', 'on') %}Nook window{%endif%}
+          {% if is_state('binary_sensor.laundry_window_sensor', 'on') %}Laundry window{%endif%}
+    - service: notify.mobile_app_sm_g973f
+      data_template:
+        title: 'Open door or window'
+        message: >
+          test
+          {% if is_state('binary_sensor.backhall_garden_door_sensor', 'on') %}Downstairs garden door{%endif%}
+          {% if is_state('binary_sensor.balcony_door_sensor_2', 'on') %}Balcony door{%endif%}
+          {% if is_state('binary_sensor.bedroom_garden_door_sensor', 'on') %}Bedroom garden door{%endif%}
+          {% if is_state('binary_sensor.kitchen_window_3_sensor', 'on') %}Kitchen window{%endif%}
+          {% if is_state('binary_sensor.ingrid_bedroom_window_sensor', 'on') %}Ingrid bedroom window{%endif%}
+          {% if is_state('binary_sensor.guest_bedroom_window_sensor', 'on') %}Guest bedroom window{%endif%}
+          {% if is_state('binary_sensor.nook_window_sensor', 'on') %}Nook window{%endif%}
+          {% if is_state('binary_sensor.laundry_window_sensor', 'on') %}Laundry window{%endif%}
 
 - id: '16'
   alias: 'Verisure armed_away'
@@ -112,7 +182,7 @@
   action:
     - service: light.turn_on
       data:
-        entity_id: light.nook_table, light.bookshelf_2, light.cabinets, light.dining_room_rail_1_level, light.dining_room_rail_2_level
+        entity_id: light.nook_table, light.bookshelf, light.cabinets, light.dining_room_rail_1_level, light.dining_room_rail_2_level
         brightness_pct: 5
     - service: switch.turn_off
       data:
@@ -154,7 +224,7 @@
     entity_id: input_boolean.guests_present
     to: 'on'
   action:
-    - service: notify.html5
+    - service: notify.mobile_app_tor_magnus_p30_pro
       data_template:
         title: 'Guests enabled'
         message: 'Guests enabled {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
