@@ -13,10 +13,10 @@
       above: 160
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      above: 18
+      below: 18
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      above: 22
+      below: 22
   condition:
     condition: and
     conditions: 
@@ -60,10 +60,10 @@
       above: 190
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      above: 18
+      below: 18
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      above: 22
+      below: 22
   condition:
     condition: and
     conditions: 
@@ -107,10 +107,10 @@
       above: 210
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      above: 18
+      below: 18
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      above: 22
+      below: 22
   condition:
     condition: and
     conditions: 
@@ -153,4 +153,3 @@
     - service: cover.close_cover
       data:
         entity_id: cover.balcony_awning_level
-
