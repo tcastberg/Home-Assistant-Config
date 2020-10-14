@@ -1,5 +1,5 @@
 - id: '49'    
-  alias: 'Dining room morning'
+  alias: 'Dining room on'
   trigger:
     - platform: state
       entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
