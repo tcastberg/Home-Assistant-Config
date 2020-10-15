@@ -13,10 +13,10 @@
       above: 160
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      below: 18
+      below: 20
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      below: 22
+      below: 25
   condition:
     condition: and
     conditions: 
@@ -60,19 +60,19 @@
       above: 190
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      below: 18
+      below: 20
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      below: 22
+      below: 25
   condition:
     condition: and
     conditions: 
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-        below: 20
+        below: 25
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-        below: 25
+        below: 30
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
@@ -104,22 +104,22 @@
     - platform: numeric_state
       entity_id: sun.sun
       attribute: azimuth
-      above: 210
+      above: 220
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      below: 18
+      below: 20
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      below: 22
+      below: 25
   condition:
     condition: and
     conditions: 
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-        below: 20
+        below: 25
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-        below: 25
+        below: 30
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
@@ -130,7 +130,7 @@
         entity_id: weather.home
         state: 'sunny'
       - condition: template
-        value_template: "{{ state_attr('sun.sun', 'azimuth') >= 210  }}"
+        value_template: "{{ state_attr('sun.sun', 'azimuth') >= 220  }}"
   action:
     - service: cover.set_cover_position
       data:
@@ -142,13 +142,13 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      above: 20
+      above: 25
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      above: 25
-    - platform: state
-      entity_id: sun.sun
-      to: 'below_horizon'
+      above: 30
+    - platform: sun
+      event: sunset
+      offset: "-01:00:00"
   action:
     - service: cover.close_cover
       data:
