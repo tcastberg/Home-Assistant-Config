@@ -200,6 +200,7 @@ logger:
     homeassistant.components.http.ban: warning
     homeassistant.components.prometheus: error
     homeassistant.components.netatmo: info
+    homeassistant.components.automation.webhook_test: debug
 
 # View all events in a logbook
 logbook:
