@@ -177,3 +177,71 @@
     - service: cover.open_cover
       entity_id: cover.ingrid_bedroom_blind
 
+- id: '122'
+  alias: 'Ingrids bedroom heating high'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      from: 'Vacation'
+    - platform: time
+      at: "05:00:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.thermofloor_as_heatit_thermostat_tf_058_mode
+        temperature: 21
+
+- id: '122'
+  alias: 'Ingrids bedroom heating medium'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: "05:00:00"
+        before: "18:00:00"
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.thermofloor_as_heatit_thermostat_tf_058_mode
+        temperature: 19
+
+- id: '123'
+  alias: 'Ingrids bedroom heating low'
+  trigger:
+    - platform: time
+      at: "18:00:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 
+          - Home
+          - Away
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.thermofloor_as_heatit_thermostat_tf_058_mode
+        temperature: 16
+
+- id: '124'
+  alias: 'Ingrids bedroom heating vacation'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.thermofloor_as_heatit_thermostat_tf_058_mode
+        temperature: 10
