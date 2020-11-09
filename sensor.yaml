@@ -46,9 +46,9 @@
       unit_of_measurement: "%"
       icon_template: mdi:water-percent
       value_template: >
-        {% if states.sensor %}
-          {% set totalvalue = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|rejectattr("state", "equalto", "unavailable")|rejectattr("name", "equalto", "Average house humidity")|rejectattr("name", "equalto", "Netatmo Værstasjon33 Innesensor Humidity")|rejectattr("name", "equalto", "Netatmo Værstasjon33 Utesensor Humidity")|rejectattr("name", "equalto", "Netatmo Home Outdoor Humidity")|map(attribute='state')|map('float')|sum %}
-          {% set totalcount = states.sensor | selectattr("attributes.unit_of_measurement","equalto","%")|selectattr("attributes.icon","equalto","mdi:water-percent")|rejectattr("state", "equalto", "unavailable")|rejectattr("name", "equalto", "Average house humidity")|rejectattr("name", "equalto", "Netatmo Værstasjon33 Innesensor Humidity")|rejectattr("name", "equalto", "Netatmo Værstasjon33 Utesensor Humidity")|rejectattr("name", "equalto", "Netatmo Home Outdoor Humidity")|list|count %}
+        {% if states.sensor.netatmo_home_indoor_humidity.state and states.sensor.family_bathroom_multisensor_relative_humidity.state and states.sensor.master_bathroom_multisensor_relative_humidity.state and states.sensor.laundry_multisensor_relative_humidity.state %}
+          {% set totalvalue = states('sensor.netatmo_home_indoor_humidity')|float + states('sensor.family_bathroom_multisensor_relative_humidity')|float + states('sensor.master_bathroom_multisensor_relative_humidity')|float +states('sensor.laundry_multisensor_relative_humidity')|float %}
+          {% set totalcount = 4 %}
           {% if totalcount > 0 %}
             {% set totalaverage = totalvalue / totalcount %}
           {% else %}
@@ -64,15 +64,15 @@
       unit_of_measurement: "%"
       icon_template: mdi:water-percent
       value_template: >
-          {% if states.sensor.netatmo_home_indoor_humidity.state and states.sensor.family_bathroom_multisensor_relative_humidity.state and states.sensor.master_bathroom_multisensor_relative_humidity.state and states.sensor.laundry_multisensor_relative_humidity.state %}
-            {% set average =  states('sensor.netatmo_home_indoor_humidity') | float %}
-            {% set family  = (states('sensor.family_bathroom_multisensor_relative_humidity') | float - average) - 2 %}
-            {% set master  = (states('sensor.master_bathroom_multisensor_relative_humidity') | float - average) - 3 %}
-            {% set laundry = (states('sensor.laundry_multisensor_relative_humidity') | float - average) - 2 %}
-            {{[family,master,laundry]|max|round(1)}}
-          {% else %}
-            0
-          {% endif %}
+        {% if states.sensor.netatmo_home_indoor_humidity.state and states.sensor.family_bathroom_multisensor_relative_humidity.state and states.sensor.master_bathroom_multisensor_relative_humidity.state and states.sensor.laundry_multisensor_relative_humidity.state %}
+          {% set average =  states('sensor.netatmo_home_indoor_humidity') | float %}
+          {% set family  = (states('sensor.family_bathroom_multisensor_relative_humidity') | float - average) - 2 %}
+          {% set master  = (states('sensor.master_bathroom_multisensor_relative_humidity') | float - average) - 3 %}
+          {% set laundry = (states('sensor.laundry_multisensor_relative_humidity') | float - average) - 2 %}
+          {{[family,master,laundry]|max|round(1)}}
+        {% else %}
+          0
+        {% endif %}
 
 #    divergence_humidity:
 #      friendly_name: "Divergence from average house humidity"
