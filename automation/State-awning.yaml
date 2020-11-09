@@ -13,19 +13,19 @@
       above: 160
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      below: 20
+      below: 15
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      below: 25
+      below: 20
   condition:
     condition: and
     conditions: 
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-        below: 20
+        below: 15
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-        below: 25
+        below: 20
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
@@ -60,19 +60,19 @@
       above: 190
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      below: 20
+      below: 15
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      below: 25
+      below: 20
   condition:
     condition: and
     conditions: 
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-        below: 25
+        below: 15
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-        below: 30
+        below: 20
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
@@ -107,19 +107,19 @@
       above: 220
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      below: 20
+      below: 15
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      below: 25
+      below: 20
   condition:
     condition: and
     conditions: 
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-        below: 25
+        below: 15
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-        below: 30
+        below: 20
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
@@ -142,10 +142,10 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      above: 25
+      above: 15
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      above: 30
+      above: 20
     - platform: sun
       event: sunset
       offset: "-01:00:00"
