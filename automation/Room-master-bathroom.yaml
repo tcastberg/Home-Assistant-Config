@@ -1,28 +1,68 @@
 - id: '28'    
   alias: 'Master bathroom active'
   trigger:
-  - entity_id: binary_sensor.master_bathroom_multisensor_sensor
-    platform: state
-    to: 'on'
+    - entity_id: binary_sensor.master_bathroom_multisensor_home_security_motion_detection
+      platform: state
+      to: 'on'
   action:
-    - service: light.turn_on
-      entity_id: light.ceiling
-      data_template:
-        brightness_pct: >
-          {%- if is_state('binary_sensor.sleep_state', 'on') %}
-            10
-          {%- else %}
-            100
-          {%- endif %}
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.sleep_state
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 5
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.morning
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 40
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.day
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 80
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.evening
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 60
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.night
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 20
+    - service: switch.turn_on
+      entity_id: switch.mirror_cabinet_lights
 
 - id: '29'    
   alias: 'Master bathroom off'
   trigger:
-  - entity_id: binary_sensor.master_bathroom_multisensor_sensor
-    platform: state
-    to: 'off'
-    for:
-      minutes: 5
+    - entity_id: binary_sensor.master_bathroom_multisensor_home_security_motion_detection
+      platform: state
+      to: 'off'
+      for: "00:10:00"
   action:
     - service: light.turn_off
-      entity_id: light.ceiling
+      entity_id: light.master_bathroom_ceiling_lights
+    - service: switch.turn_off
+      entity_id: switch.mirror_cabinet_lights

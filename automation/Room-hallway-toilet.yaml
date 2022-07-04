@@ -1,21 +1,20 @@
 - id: '77'    
   alias: 'Hallway toilet active'
   trigger:
-  - entity_id: binary_sensor.hallway_toilet_motion_sensor_sensor
+  - entity_id: binary_sensor.hallway_toilet_motion_sensor_home_security_motion_detection
     platform: state
     to: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.hallway_toilet_ceiling_dimmer_level
+      entity_id: light.entrance_toilet_ceiling_dimmer
 
 - id: '78'    
   alias: 'Hallway toilet off'
   trigger:
-  - entity_id: binary_sensor.hallway_toilet_motion_sensor_sensor
+  - entity_id: binary_sensor.hallway_toilet_motion_sensor_home_security_motion_detection
     platform: state
     to: 'off'
-    for:
-      minutes: 10
+    for: "00:05:00"
   action:
     - service: light.turn_off
-      entity_id: light.hallway_toilet_ceiling_dimmer_level
+      entity_id: light.entrance_toilet_ceiling_dimmer

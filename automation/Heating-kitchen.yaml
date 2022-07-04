@@ -1,0 +1,78 @@
+- id: 'KMCbuT6NSFKtFgmztYRVv'
+  alias: 'Kitchen heating high'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.kitchen_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.kitchen_floor_heating
+        temperature: 21
+
+- id: 'LWQ7P2amQKnwB9Mv3mJ62'
+  alias: 'Kitchen heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      from: 'Vacation'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 
+          - Home
+          - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.kitchen_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.kitchen_floor_heating
+        temperature: 19
+
+- id: 'WDFfKT49FowW9BCfZP3D4'
+  alias: 'Kitchen heating vacation'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.kitchen_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.kitchen_floor_heating
+        temperature: 8
+
+- id: '6XPcj7mbrdresSv9RaXBc'
+  alias: 'Kitchen heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_window_3_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.kitchen_floor_heating
+
+- id: 'jHjymESd5UyZYHFX3zvWN'
+  alias: 'Kitchen heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_window_3_any
+      to: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.kitchen_floor_heating

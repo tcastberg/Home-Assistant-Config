@@ -3,11 +3,6 @@
 
 - platform: template
   sensors:
-    balcony_door_sensor_2:
-      device_class: opening
-      friendly_name: "Balcony door"
-      value_template: "{{ states('sensor.balcony_door_sensor_access_control') | int == 22 }}"
-  
     washing_machine_activity:
       friendly_name: "Washing machine running state"
       delay_on:
@@ -32,7 +27,7 @@
         seconds: 10
       delay_off:
         seconds: 10
-      value_template: "{{ states('sensor.dishwasher_power') | float > 3 }}"
+      value_template: "{{ states('sensor.dishwasher_power') | float > 2 }}"
       icon_template: mdi:dishwasher
     
     low_priced_electricity:
@@ -78,4 +73,8 @@
   after: '01:00'
   before: '06:00'
   
-
+- platform: ping
+  name: "Cabin router"
+  host: 192.168.1.1
+  count: 2
+  scan_interval: 30

@@ -1,0 +1,86 @@
+- id: 'rP7CeLZgeiUTFM'
+  alias: 'TV lounge heating high'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.tv_lounge_floor_heating
+        temperature: 21
+
+- id: 'iCwCunqA63b66t'
+  alias: 'TV lounge heating medium'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: not
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.tv_lounge_floor_heating
+        temperature: 19
+
+- id: 'G8N4CnnM9csgDm'
+  alias: 'TV lounge heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.tv_lounge_floor_heating
+        temperature: 8
+
+- id: 'Yf6jkPSVie3TjL'
+  alias: 'TV lounge heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.nook_window_any
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.nook_window_any
+        state: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.tv_lounge_floor_heating
+
+- id: 'XZPm96n63dhxLf'
+  alias: 'TV lounge heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.nook_window_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.tv_lounge_floor_heating

@@ -4,7 +4,7 @@
 kitchen_on:
   sequence:
     - service: light.turn_on
-      entity_id: light.kitchen_table_ceiling_lamp_level, light.kitchen_bench_ceiling_lights_level, light.kitchen_hallway_ceiling_lights_level
+      entity_id: light.kitchen_table_ceiling_lamp_current_value, light.kitchen_bench_ceiling_lights_current_value, light.kitchen_hallway_ceiling_lights_current_value
       data_template:
         brightness_pct: >
           {%- if is_state('binary_sensor.morning', 'on') %}
@@ -17,9 +17,84 @@ kitchen_on:
             20
           {%- endif %}
 
+notify_on_open_door:
+  alias: "Notify when front door is open"
+  sequence:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Door opened'
+        message: 'The front door was opened'
+        data:
+          renotify: 1
+          tag: 'door-open-notification'
+          #url: /api/camera_proxy/camera.hallway
+          image: !secret hallway_snapshot
+          clickAction: /lovelace/0
+    - service: notify.mobile_app_sm_g973f
+      data:
+        title: 'Door opened'
+        message: 'The front door was opened'
+        data:
+          renotify: 1
+          tag: 'door-open-notification'
+          #url: /api/camera_proxy/camera.hallway
+          image: !secret hallway_snapshot
+          clickAction: /lovelace/0
 
+notify_on_doorbell:
+  alias: "Notify when doorbell rings"
+  sequence:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Doorbell'
+        message: 'Somebody rang the doorbell'
+        data:
+          image: !secret doorbell_snapshot
+          renotify: 1
+          tag: 'doorbell-notification'
+          clickAction: /lovelace/0
+    - service: notify.mobile_app_sm_g973f
+      data:
+        title: 'Doorbell'
+        message: 'Somebody rang the doorbell'
+        data:
+          image: !secret doorbell_snapshot
+          renotify: 1
+          tag: 'doorbell-notification'
+          clickAction: /lovelace/0
+    - service: notify.mobile_app_ingrids_phone
+      data:
+        title: 'Doorbell'
+        message: 'Somebody rang the doorbell'
+        data:
+          image: !secret doorbell_snapshot
+          renotify: 1
+          tag: 'doorbell-notification'
+          clickAction: /lovelace/0
 
+disarm_alarm_home:
+  alias: "Disarm the home alarm"
+  sequence:
+    - service: alarm_control_panel.alarm_disarm
+      data:
+        entity_id: alarm_control_panel.home_alarm
+        code: !secret alarm_control_panel_code
 
+disarm_alarm_verisure:
+  alias: "Disarm the Verisure alarm"
+  sequence:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.verisure_alarm
+      data:
+        code: !secret verisure_code
+
+arm_home_alarm_verisure:
+  alias: "Arm home the Verisure alarm"
+  sequence:
+    - service: alarm_control_panel.alarm_arm_home
+      entity_id: alarm_control_panel.verisure_alarm
+      data:
+        code: !secret verisure_code
 #
 # Sonos
 #
@@ -106,7 +181,7 @@ red_alert_flash:
     - alias: Light On
       service: light.turn_on
       data:
-        entity_id: light.nook, light.serving_table, light.sofa, light.nook_mood_level
+        entity_id: light.nook, light.serving_table, light.sofa, light.nook_mood_current_value
         color_name: red
         brightness: 255
     - service: media_player.volume_set
@@ -124,7 +199,7 @@ red_alert_flash:
     - alias: Light Off
       service: light.turn_off
       data:
-        entity_id: light.nook, light.serving_table, light.sofa, light.nook_mood_level
+        entity_id: light.nook, light.serving_table, light.sofa, light.nook_mood_current_value
     - alias: loop
       service: script.turn_on
       data:
@@ -188,13 +263,6 @@ halloween_on:
       data:
         entity_id: light.entrance_wardrobes
         brightness_pct: 10
-    - service: zwave.set_config_parameter
-      data_template: {
-        "node_id": 72,
-        "parameter": 72,
-        "value": 7,
-        "size": 1
-        } 
 
 halloween_off:
   alias: Halloween off

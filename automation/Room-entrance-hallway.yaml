@@ -2,8 +2,8 @@
   alias: 'Picture on open front door'
   trigger:
     platform: state
-    entity_id: lock.front_door_lock_locked
-    to: unlocked
+    entity_id: binary_sensor.front_door_lock_the_current_status_of_the_door
+    to: 'on'
   action:
     - service: media_player.volume_set
       data:
@@ -21,15 +21,8 @@
         filename: /config/www/hallway.jpg
     - delay:
         seconds: 3
-    - service: notify.mobile_app_tor_magnus_p30_pro
-      data_template:
-        title: 'Door opened'
-        message: 'The front door was opened'
-        data:
-          image: !secret hallway_snapshot
-          renotify: 1
-          tag: 'door-open-notification'
-          url: !secret hallway_snapshot
+    - service: script.turn_on
+      entity_id: script.notify_on_open_door
 
 - id: '86'
   alias: 'Enable autolock'
@@ -38,11 +31,12 @@
     entity_id: input_boolean.door_autolock
     to: 'on'
   action:
-    - service: zwave.set_config_parameter
+    - service: zwave_js.set_config_parameter
+      target:
+        entity_id: lock.front_door_lock_current_lock_mode
       data:
-        node_id: 102
         parameter: 1
-        value: 'Disable Away, Auto Lock'
+        value: 1
 
 - id: '87'
   alias: 'Disable autolock'
@@ -51,11 +45,12 @@
     entity_id: input_boolean.door_autolock
     to: 'off'
   action:
-    - service: zwave.set_config_parameter
+    - service: zwave_js.set_config_parameter
+      target:
+        entity_id: lock.front_door_lock_current_lock_mode
       data:
-        node_id: 102
         parameter: 1
-        value: 'Disable Away, Manual Lock'
+        value: 0
 
 - id: '88'
   alias: 'Set evening autolock'
@@ -76,7 +71,7 @@
       entity_id: input_select.home_state
       to: 'Home'
     - platform: state
-      entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
       to: 'off'
       for:
         minutes: 3
@@ -95,23 +90,21 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: state
-        entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
+        entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
         state: 'off'
   action:
     - service: light.turn_on
-      entity_id: light.entrance_hallway_ceiling_lights_level
+      entity_id: light.entrance_hallway_ceiling_lights_current_value
       data:
         brightness_pct: 5
-    - service: light.turn_on
+    - service: light.turn_off
       entity_id: light.entrance_wardrobes
-      data:
-        brightness_pct: 25
  
 - id: '60'
   alias: 'Entrance hallway active'
   trigger:
     - platform: state
-      entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
       to: 'on'
     - platform: state
       entity_id: binary_sensor.doorbell_switch
@@ -122,7 +115,7 @@
     state: 'off'
   action:
     - service: light.turn_on
-      entity_id: light.entrance_hallway_ceiling_lights_level
+      entity_id: light.entrance_hallway_ceiling_lights_current_value
       data_template:
         brightness_pct: >
           {%- if is_state('binary_sensor.morning', 'on') %}
@@ -149,20 +142,18 @@
       entity_id: input_select.home_state
       to: 'Away'
     - platform: state
-      entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
       to: 'off'
-      for:
-        minutes: 3
+      for: "00:05:00"
     - platform: state
       entity_id: binary_sensor.doorbell_switch
       to: 'off'
-      for:
-        minutes: 3
+      for: "00:03:00"
   condition:
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.entrance_hallway_motion_sensor_sensor
+        entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
         state: 'off'
       - condition: or
         conditions:
@@ -174,7 +165,7 @@
             state: 'Away'
   action:
     - service: light.turn_off
-      entity_id: light.entrance_hallway_ceiling_lights_level, light.entrance_wardrobes
+      entity_id: light.entrance_hallway_ceiling_lights_current_value, light.entrance_wardrobes
 
 - id: '98'
   alias: 'Doorbell'
@@ -191,37 +182,29 @@
       data:
         entity_id: camera.entrance
         filename: /config/www/doorbell.jpg
-    - service: sonos.snapshot
-      data:
-        entity_id: media_player.dining_room, media_player.changing_room
-    - service: sonos.join
-      data:
-        master: media_player.dining_room
-        entity_id: media_player.changing_room
+        #    - service: sonos.snapshot
+        #data:
+        #entity_id: media_player.dining_room, media_player.changing_room
+        #- service: sonos.join
+        #data:
+        #master: media_player.dining_room
+        #entity_id: media_player.changing_room
     - service: media_player.volume_set
       data:
         entity_id: media_player.dining_room
         volume_level: 0.70
     - service:  media_player.play_media
       data:
-        entity_id: media_player.dining_room, media_player.changing_room
+        entity_id: media_player.dining_room
         media_content_id: https://hass.continually-evolving.net:8124/doorbell-6.mp3
         media_content_type: music
-    - delay:
-        seconds: 5
-    - service: sonos.unjoin
-      data: 
-        entity_id: media_player.changing_room
-    - service: sonos.restore
-      data:
-        entity_id: media_player.dining_room, media_player.changing_room
-
-    - service: notify.mobile_app_tor_magnus_p30_pro
-      data_template:
-        title: 'Doorbell'
-        message: 'Somebody rang the doorbell'
-        data:
-          image: !secret doorbell_snapshot
-          renotify: 1
-          tag: 'doorbell-notification'
-          url: !secret doorbell_snapshot
+        #- delay:
+        #seconds: 5
+        #- service: sonos.unjoin
+        #data: 
+        #entity_id: media_player.changing_room
+        #- service: sonos.restore
+        #data:
+        #entity_id: media_player.dining_room, media_player.changing_room
+    - service: script.turn_on
+      entity_id: script.notify_on_doorbell

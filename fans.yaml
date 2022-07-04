@@ -2,38 +2,17 @@
   fans:
     humidity_fan:
       friendly_name: "Humidity extraction fan"
-      value_template: "{{ states('light.house_ventilation_dimmer_level') }}"
-      speed_template: >-
-        {% if states('light.house_ventilation_dimmer_level') == 'on' -%}
-          {%- if state_attr('light.house_ventilation_dimmer_level', 'brightness') >= 1  and state_attr('light.house_ventilation_dimmer_level', 'brightness') < 86 -%}
-            1
-          {%- elif state_attr('light.house_ventilation_dimmer_level', 'brightness') >= 86  and state_attr('light.house_ventilation_dimmer_level', 'brightness') < 171 -%}
-            2
-          {%- elif state_attr('light.house_ventilation_dimmer_level', 'brightness') >= 171  and state_attr('light.house_ventilation_dimmer_level', 'brightness') < 256 -%}
-            3
-          {%- endif -%}
-        {%- else -%}
-          1
-        {%- endif %}
+      value_template: "{{ states('light.house_ventilation_dimmer_current_value') }}"
+      percentage_template: "{{ (state_attr('light.house_ventilation_dimmer_current_value','brightness') |int /255*100) |int }}"
       turn_on:
         service: light.turn_on
-        entity_id: light.house_ventilation_dimmer_level
+        entity_id: light.house_ventilation_dimmer_current_value
       turn_off:
         service: light.turn_off
-        entity_id: light.house_ventilation_dimmer_level
-      set_speed:
+        entity_id: light.house_ventilation_dimmer_current_value
+      set_percentage:
         service: light.turn_on
-        entity_id: light.house_ventilation_dimmer_level
-        data_template:
-          brightness: >- 
-            {% if speed == '1' -%}
-              85
-            {%- elif speed == '2' -%}
-              170
-            {%- elif speed == '3' -%}
-              255
-            {%- endif %}
-      speeds:
-        - '1'
-        - '2'
-        - '3'
+        entity_id: light.house_ventilation_dimmer_current_value
+        data:
+          brightness_pct: "{{ percentage }}"
+      speed_count: 255

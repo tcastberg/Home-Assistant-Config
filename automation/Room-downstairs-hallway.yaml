@@ -9,7 +9,7 @@
       for:
         seconds: 7
     - platform: numeric_state
-      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
       below: 180
       for:
         seconds: 120
@@ -23,12 +23,12 @@
         entity_id: binary_sensor.sleep_state
         state: 'off'
       - condition: numeric_state
-        entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+        entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
         below: 200
   action:
     - service: light.turn_on
       data_template:
-        entity_id: light.downstairs_hallway_pendant_level
+        entity_id: light.downstairs_hallway_pendant_current_value
         brightness_pct: >
           {%- if is_state('binary_sensor.morning', 'on') %}
             55
@@ -51,7 +51,7 @@
   action:
     - service: light.turn_on
       data:
-        entity_id: light.downstairs_hallway_pendant_level
+        entity_id: light.downstairs_hallway_pendant_current_value
         brightness_pct: 1
 
 - id: '51'    
@@ -68,11 +68,11 @@
       for:
         seconds: 7
     - platform: numeric_state
-      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
       above: 200
       for:
         seconds: 120
   action:
     - service: light.turn_off
       data:
-        entity_id: light.downstairs_hallway_pendant_level
+        entity_id: light.downstairs_hallway_pendant_current_value

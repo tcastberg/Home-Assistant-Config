@@ -1,155 +1,132 @@
-- id: '118'
-  alias: 'Entend awning a third'
+- id: '100001'
+  alias: 'Extend nook awning'
   trigger:
     - platform: state
-      entity_id: weather.home
-      to: 'sunny'
-    - platform: state
-      entity_id: sun.sun
-      to: 'above_horizon'
-    - platform: numeric_state
       entity_id: sun.sun
       attribute: azimuth
-      above: 160
-    - platform: numeric_state
-      entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      below: 15
-    - platform: numeric_state
-      entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      below: 20
   condition:
     condition: and
     conditions: 
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-        below: 15
+        below: 13
       - condition: numeric_state
         entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-        below: 20
+        below: 18
       - condition: state
         entity_id: input_select.home_state
         state: 'Home'
-      - condition: state
+      - condition: numeric_state
         entity_id: sun.sun
-        state: 'above_horizon'
+        attribute: elevation
+        above: 3
       - condition: state
         entity_id: weather.home
-        state: 'sunny'
-      - condition: template
-        value_template: "{{ state_attr('sun.sun', 'azimuth') >= 160  }}"
-      - condition: template
-        value_template: "{{ state_attr('sun.sun', 'azimuth') < 190  }}"
-  action:
-    - service: cover.set_cover_position
-      data:
-        entity_id: cover.balcony_awning_level
-        position: 31
-
-- id: '119'
-  alias: 'Entend awning two thirds'
-  trigger:
-    - platform: state
-      entity_id: weather.home
-      to: 'sunny'
-    - platform: state
-      entity_id: sun.sun
-      to: 'above_horizon'
-    - platform: numeric_state
-      entity_id: sun.sun
-      attribute: azimuth
-      above: 190
-    - platform: numeric_state
-      entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      below: 15
-    - platform: numeric_state
-      entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      below: 20
-  condition:
-    condition: and
-    conditions: 
+        state: 
+          - 'sunny'
+          - 'partlycloudy'
+          - 'cloudy'
       - condition: numeric_state
-        entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-        below: 15
-      - condition: numeric_state
-        entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-        below: 20
-      - condition: state
-        entity_id: input_select.home_state
-        state: 'Home'
-      - condition: state
         entity_id: sun.sun
-        state: 'above_horizon'
-      - condition: state
-        entity_id: weather.home
-        state: 'sunny'
-      - condition: template
-        value_template: "{{ state_attr('sun.sun', 'azimuth') >= 190  }}"
-      - condition: template
-        value_template: "{{ state_attr('sun.sun', 'azimuth') < 210  }}"
+        attribute: azimuth
+        above: 169
+      - condition: numeric_state
+        entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+        above: 400
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_rain_gauge_rain
+        below: 0.01
   action:
     - service: cover.set_cover_position
-      data:
-        entity_id: cover.balcony_awning_level
-        position: 63
+      data_template:
+        entity_id: cover.nook_awning
+        position: "{{ 100 - (( 100 / 87 ) * ( state_attr( 'sun.sun' , 'elevation' ) - 3 )) | round() | int }}"
 
-- id: '120'
-  alias: 'Entend awning completely'
-  trigger:
-    - platform: state
-      entity_id: weather.home
-      to: 'sunny'
-    - platform: state
-      entity_id: sun.sun
-      to: 'above_horizon'
-    - platform: numeric_state
-      entity_id: sun.sun
-      attribute: azimuth
-      above: 220
-    - platform: numeric_state
-      entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      below: 15
-    - platform: numeric_state
-      entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      below: 20
-  condition:
-    condition: and
-    conditions: 
-      - condition: numeric_state
-        entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-        below: 15
-      - condition: numeric_state
-        entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-        below: 20
-      - condition: state
-        entity_id: input_select.home_state
-        state: 'Home'
-      - condition: state
-        entity_id: sun.sun
-        state: 'above_horizon'
-      - condition: state
-        entity_id: weather.home
-        state: 'sunny'
-      - condition: template
-        value_template: "{{ state_attr('sun.sun', 'azimuth') >= 220  }}"
-  action:
-    - service: cover.set_cover_position
-      data:
-        entity_id: cover.balcony_awning_level
-        position: 100
-
-- id: '121'
-  alias: 'Close awning'
+- id: 'pG6tHYyJEdgkV8'
+  alias: 'Close nook awning'
   trigger:
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_wind_strength
-      above: 15
+      above: 13
     - platform: numeric_state
       entity_id: sensor.netatmo_home_wind_gauge_gust_strength
-      above: 20
-    - platform: sun
-      event: sunset
-      offset: "-01:00:00"
+      above: 18
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: 3
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_rain_gauge_rain
+      above: 0
   action:
     - service: cover.close_cover
       data:
-        entity_id: cover.balcony_awning_level
+        entity_id: cover.nook_awning
+
+
+- id: 'Y7F6LpAYT2VBFR'
+  alias: 'Extend balcony awning'
+  trigger:
+    - platform: state
+      entity_id: sun.sun
+      attribute: azimuth
+  condition:
+    condition: and
+    conditions: 
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_wind_gauge_wind_strength
+        below: 10
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_wind_gauge_gust_strength
+        below: 15
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        above: 3
+      - condition: state
+        entity_id: weather.home
+        state: 
+          - 'sunny'
+          - 'partlycloudy'
+          - 'cloudy'
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: azimuth
+        above: 169
+      - condition: numeric_state
+        entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+        above: 400
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_rain_gauge_rain
+        below: 0.01
+      - condition: template
+        value_template: "{{ (state_attr('cover.balcony_awning_current_value', 'current_position')|int)  < (100 - (( 100 / 87 ) * ( state_attr( 'sun.sun' , 'elevation' ) - 3 )) | round()) }}"
+  action:
+    - service: cover.set_cover_position
+      data:
+        entity_id: cover.balcony_awning_current_value
+        position: "{{ 100 - (( 100 / 87 ) * ( state_attr( 'sun.sun' , 'elevation' ) - 3 )) | round() }}"
+
+- id: 'oYyLd6CTbrgTGG'
+  alias: 'Close balcony awning'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_wind_gauge_wind_strength
+      above: 10
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_wind_gauge_gust_strength
+      above: 18
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: 3
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_rain_gauge_rain
+      above: 0
+  action:
+    - service: cover.close_cover
+      data:
+        entity_id: cover.balcony_awning_current_value

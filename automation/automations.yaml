@@ -1,0 +1,3676 @@
+- id: '6'
+  alias: 'Disarm Verisure Alarm home'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: script.turn_on
+      target:
+        entity_id: script.disarm_alarm_verisure
+
+- id: '7'
+  alias: 'Arm Verisure Alarm home'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: script.turn_on
+      target:
+        entity_id: script.arm_home_alarm_verisure
+
+- id: '8'
+  alias: 'Alarm status changed'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.verisure_alarm
+      from: 'disarmed'
+    - platform: state
+      entity_id: alarm_control_panel.verisure_alarm
+      from: 'armed_away'
+    - platform: state
+      entity_id: alarm_control_panel.verisure_alarm
+      from: 'armed_home'
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data_template:
+        message: >
+          Alarm changed from {{ trigger.from_state.state }}
+          to {{ trigger.to_state.state }}
+          by {{ trigger.to_state.attributes.changed_by }}
+
+#  binary_sensor.dining_room_stairs_motion_sensor_home_security_motion_detection
+#  binary_sensor.dressing_room_motion_sensor_home_security_motion_detection
+#  binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
+#  binary_sensor.family_bathroom_multisensor_any
+#  binary_sensor.hallway_toilet_motion_sensor_home_security_motion_detection
+#  binary_sensor.ingrid_bedroom_motion_sensor_home_security_motion_detection
+#  binary_sensor.kitchen_island_motion_sensor_home_security_motion_detection
+#  binary_sensor.kitchen_table_motion_sensor_home_security_motion_detection
+#  binary_sensor.master_bathroom_multisensor_home_security_motion_detection
+#  binary_sensor.master_bathroom_multisensor_home_security_motion_detection
+#  binary_sensor.training_room_motion_sensor_home_security_motion_detection
+#  binary_sensor.tv_lounge_motion_sensor_home_security_motion_detection
+
+- id: '9'
+  alias: 'Door or window open when alarm armed'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.verisure_alarm
+      to: 'armed_away'
+    - platform: state
+      entity_id: alarm_control_panel.verisure_alarm
+      to: 'armed_home'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.backhall_garden_door_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.bedroom_garden_door_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.kitchen_window_3_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.ingrid_bedroom_window_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.guest_bedroom_window_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.nook_window_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.laundry_window_any
+        state: 'on'
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro 
+      data_template:
+        title: 'Open door or window'
+        message: >
+          {% if is_state('binary_sensor.backhall_garden_door_any', 'on') %}Downstairs garden door{%endif%}
+          {% if is_state('binary_sensor.balcony_door_sensor_access_control_window_door_is_open', 'on') %}Balcony door{%endif%}
+          {% if is_state('binary_sensor.bedroom_garden_door_any', 'on') %}Bedroom garden door{%endif%}
+          {% if is_state('binary_sensor.kitchen_window_3_any', 'on') %}Kitchen window{%endif%}
+          {% if is_state('binary_sensor.ingrid_bedroom_window_any', 'on') %}Ingrid bedroom window{%endif%}
+          {% if is_state('binary_sensor.guest_bedroom_window_any', 'on') %}Guest bedroom window{%endif%}
+          {% if is_state('binary_sensor.nook_window_any', 'on') %}Nook window{%endif%}
+          {% if is_state('binary_sensor.laundry_window_any', 'on') %}Laundry window{%endif%}
+    - service: notify.mobile_app_sm_g973f
+      data_template:
+        title: 'Open door or window'
+        message: >
+          {% if is_state('binary_sensor.backhall_garden_door_any', 'on') %}Downstairs garden door{%endif%}
+          {% if is_state('binary_sensor.balcony_door_sensor_access_control_window_door_is_open', 'on') %}Balcony door{%endif%}
+          {% if is_state('binary_sensor.bedroom_garden_door_any', 'on') %}Bedroom garden door{%endif%}
+          {% if is_state('binary_sensor.kitchen_window_3_any', 'on') %}Kitchen window{%endif%}
+          {% if is_state('binary_sensor.ingrid_bedroom_window_any', 'on') %}Ingrid bedroom window{%endif%}
+          {% if is_state('binary_sensor.guest_bedroom_window_any', 'on') %}Guest bedroom window{%endif%}
+          {% if is_state('binary_sensor.nook_window_any', 'on') %}Nook window{%endif%}
+          {% if is_state('binary_sensor.laundry_window_any', 'on') %}Laundry window{%endif%}
+
+- id: '16'
+  alias: 'Verisure armed_away'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.verisure_status_plug_power
+      above: 1.0
+    - platform: state
+      entity_id: alarm_control_panel.verisure_alarm
+      from: 'disarmed'
+      to: 'armed_away'
+  condition:
+    condition: not
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Vacation'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.home_state
+        option: 'Away'
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.door_autolock
+    - service: switch.turn_on
+      data:
+        entity_id: switch.foscam_motion
+
+- id: '17'
+  alias: 'Verisure armed_home'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.verisure_alarm
+    from: 'disarmed'
+    to: 'armed_home'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.door_autolock
+    - service: switch.turn_on
+      data:
+        entity_id: switch.foscam_motion
+
+- id: '21'
+  alias: 'Verisure disarmed'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.verisure_status_plug_power
+      below: 1.0
+    - platform: state
+      entity_id: alarm_control_panel.verisure_alarm
+      from: 'armed_away'
+      to: 'disarmed'
+    - platform: state
+      entity_id: alarm_control_panel.verisure_alarm
+      from: 'armed_home'
+      to: 'disarmed'
+  action:
+    - service: input_select.select_option 
+      data: 
+        entity_id: input_select.home_state 
+        option: 'Home' 
+    - service: switch.turn_off
+      data:
+        entity_id: switch.foscam_motion
+
+- id: '100'
+  alias: 'Red alert active'
+  trigger:
+    platform: state
+    entity_id: input_boolean.red_alert
+    to: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.nook_table, light.bookshelf, light.cabinets, light.dining_room_rail_1, light.dining_room_rail_2
+        brightness_pct: 5
+    - service: switch.turn_off
+      data:
+        entity_id: switch.nook_flux, switch.tradfri_flux
+    - service: script.turn_on
+      data:
+        entity_id: script.red_alert_flash
+
+- id: '101'
+  alias: 'Red alert off'
+  trigger:
+    platform: state
+    entity_id: input_boolean.red_alert
+    to: 'off'
+  action:
+    - service: script.turn_off
+      data:
+        entity_id: script.red_alert_flash, script.red_alert_loop
+    - service: automation.trigger
+      data_template:
+        entity_id: >
+          {% if is_state('binary_sensor.morning', 'on') %}
+            automation.dining_room_morning
+          {% elif is_state('binary_sensor.day', 'on') %}
+            automation.dining_room_day
+          {% elif is_state('binary_sensor.evening', 'on') %}
+            automation.dining_room_evening
+          {% elif is_state('binary_sensor.night', 'on') %}
+            automation.dining_room_night
+          {% endif %}
+    - service: switch.turn_on
+      data:
+        entity_id: switch.nook_flux, switch.tradfri_flux
+
+- id: '102'
+  alias: 'Guests on'
+  trigger:
+    platform: state
+    entity_id: input_boolean.guests_present
+    to: 'on'
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data_template:
+        title: 'Guests enabled'
+        message: 'Guests enabled {{now().strftime("%Y-%m-%d %H:%M:%S")}}'
+- id: "alarm_disarm_on_tag"
+  alias: "Alarm - Disarm on tag"
+  mode: single
+  max_exceeded: silent
+  variables:
+    scanners:
+      b8771ac318956e76: "Tor Magnus"
+      e03bddc54696a6fc: "Lande"
+      b8771ac318956e78: "Ingrid Sofia"
+  trigger:
+    platform: event
+    event_type: tag_scanned
+    event_data:
+      tag_id: "5d35ac1d-0c30-473e-aecc-3f45cb2b9012"
+  condition:
+    - "{{ trigger.event.data.device_id in scanners }}"
+  action:
+    - variables:
+        person: "{{ scanners[trigger.event.data.device_id] }}"
+    - service: script.turn_on
+      target:
+        entity_id: script.disarm_alarm_home
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm disarmed'
+        message: '{{ person }} disarmed the alarm'
+        data:
+          tag: 'alarm-alert'
+    - delay: 10
+
+- id: "alarm_arm_on_tag"
+  alias: "Alarm - Arm on tag"
+  mode: single
+  max_exceeded: silent
+  variables:
+    scanners:
+      b8771ac318956e76: "Tor Magnus"
+      e03bddc54696a6fc: "Lande"
+      b8771ac318956e78: "Ingrid Sofia"
+  trigger:
+    platform: event
+    event_type: tag_scanned
+    event_data:
+      tag_id: "bf1155a3-833c-477a-8f83-9e84150fad03"
+  condition:
+    - "{{ trigger.event.data.device_id in scanners }}"
+  action:
+    - variables:
+        person: "{{ scanners[trigger.event.data.device_id] }}"
+    - service: alarm_control_panel.alarm_arm_away
+      data:
+        entity_id: alarm_control_panel.home_alarm
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm armed'
+        message: '{{ person }} armed the alarm'
+        data:
+          tag: 'alarm-alert'
+    - delay: 10
+
+- id: 'alarm_door_or_window_open'
+  alias: 'Alarm - Door or window open when home alarm pending'
+  mode: single
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: 'arming'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.backhall_garden_door_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.bedroom_garden_door_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.kitchen_window_3_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.ingrid_bedroom_window_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.guest_bedroom_window_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.nook_window_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.laundry_window_any
+        state: 'on'
+  action:
+    - service: script.turn_on
+      target:
+        entity_id: script.disarm_alarm_home
+    - service: notify.mobile_app_tor_magnus_p30_pro 
+      data_template:
+        title: "Alarm FAILED"
+        message: >
+          'The following doors or windows are open:'
+          {% if is_state('binary_sensor.backhall_garden_door_any', 'on') %}Downstairs garden door{%endif%}
+          {% if is_state('binary_sensor.balcony_door_sensor_access_control_window_door_is_open', 'on') %}Balcony door{%endif%}
+          {% if is_state('binary_sensor.bedroom_garden_door_any', 'on') %}Bedroom garden door{%endif%}
+          {% if is_state('binary_sensor.kitchen_window_3_any', 'on') %}Kitchen window{%endif%}
+          {% if is_state('binary_sensor.ingrid_bedroom_window_any', 'on') %}Ingrid bedroom window{%endif%}
+          {% if is_state('binary_sensor.guest_bedroom_window_any', 'on') %}Guest bedroom window{%endif%}
+          {% if is_state('binary_sensor.nook_window_any', 'on') %}Nook window{%endif%}
+          {% if is_state('binary_sensor.laundry_window_any', 'on') %}Laundry window{%endif%}
+        data:
+          tag: 'alarm-alert'
+
+- id: 'alarm_trigger_armed_away'
+  alias: 'Alarm - Trigger armed away'
+  mode: single
+  max_exceeded: silent
+  variables:
+    sensors:
+      binary_sensor.dining_room_stairs_motion_sensor_home_security_motion_detection: "Dining room motion sensor"
+      binary_sensor.dressing_room_motion_sensor_home_security_motion_detection: "Dressing room motion sensor"
+      binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection: "Entrance hallway motion sensor"
+      binary_sensor.family_bathroom_multisensor_any: "Family bathroom motion sensor"
+      binary_sensor.hallway_toilet_motion_sensor_home_security_motion_detection: "Hallway toilet motion sensor"
+      binary_sensor.ingrid_bedroom_motion_sensor_home_security_motion_detection: "Ingrid bedroom motion sensor"
+      binary_sensor.kitchen_island_motion_sensor_home_security_motion_detection: "Kitchen island motion sensor"
+      binary_sensor.kitchen_table_motion_sensor_home_security_motion_detection: "Kitchen table motion sensor"
+      binary_sensor.master_bathroom_multisensor_home_security_motion_detection: "Master bathroom motion sensor"
+      binary_sensor.training_room_motion_sensor_home_security_motion_detection: "Training room motion sensor"
+      binary_sensor.tv_lounge_motion_sensor_home_security_motion_detection: "TV lounge motion sensor"
+      binary_sensor.backhall_garden_door_any: "Downstairs hallway garden door"
+      binary_sensor.balcony_door_sensor_access_control_window_door_is_open: "Balcony door"
+      binary_sensor.bedroom_garden_door_any: "Master bedroom garden door"
+      binary_sensor.front_door_lock_the_current_status_of_the_door: "Front door"
+      binary_sensor.kitchen_window_3_any: "Kitchen window"
+      binary_sensor.ingrid_bedroom_window_any: "Ingrid bedroom window"
+      binary_sensor.guest_bedroom_window_any: "Guest bedroom window"
+      binary_sensor.nook_window_any: "Nook window"
+      laundry_window_any: "Laundry window"
+  trigger:
+    platform: event
+    event_type: state_changed
+  condition:
+    condition: and
+    conditions:
+      - "{{ trigger.event.data.entity_id in sensors }}"
+      - "{{ trigger.event.data.new_state.state == 'on' }}"
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: 'armed_away'
+  action:
+    - service: alarm_control_panel.alarm_trigger
+      entity_id: alarm_control_panel.home_alarm
+    - variables:
+        device: "{{ sensors[trigger.event.data.entity_id] }}"
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm triggered'
+        message: '{{ device }} triggered the alarm'
+        data:
+          tag: 'alarm-alert'
+
+- id: 'alarm_trigger_armed_home'
+  alias: 'Alarm - Trigger armed home'
+  mode: single
+  max_exceeded: silent
+  variables:
+    sensors:
+      binary_sensor.backhall_garden_door_any: "Downstairs hallway garden door"
+      binary_sensor.balcony_door_sensor_access_control_window_door_is_open: "Balcony door"
+      binary_sensor.bedroom_garden_door_any: "Master bedroom garden door"
+      binary_sensor.front_door_lock_the_current_status_of_the_door: "Front door"
+      binary_sensor.kitchen_window_3_any: "Kitchen window"
+      binary_sensor.ingrid_bedroom_window_any: "Ingrid bedroom window"
+      binary_sensor.guest_bedroom_window_any: "Guest bedroom window"
+      binary_sensor.nook_window_any: "Nook window"
+      laundry_window_any: "Laundry window"
+  trigger:
+    platform: event
+    event_type: state_changed
+  condition:
+    condition: and
+    conditions:
+      - "{{ trigger.event.data.entity_id in sensors }}"
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: 'armed_home'
+  action:
+    - service: alarm_control_panel.alarm_trigger
+      entity_id: alarm_control_panel.home_alarm
+    - variables:
+        device: "{{ sensors[trigger.event.data.entity_id] }}"
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: '{{ device }} triggered the alarm'
+        data:
+          tag: 'alarm-alert'
+
+- id: "alarm_pending"
+  alias: "Alarm - Pending"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      from: "armed_away" # No need for armed_home, there's no pending delay there.
+      to: "pending"
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'Please disarm the alarm'
+        data:
+          tag: 'alarm-state'
+    #- service: script.turn_on
+    #  entity_id: script.say_sonos
+    #  data:
+    #    variables:
+    #      where: 'dining_room'
+    #      what: 'Please disarm the alarm'
+    # Start a timer to repeat the warning
+    - service: timer.start
+      entity_id: timer.alarm_pending
+
+- id: "alarm_pending_repeat"
+  alias: "Alarm - Pending Repeat"
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.alarm_pending
+  condition:
+    condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: pending
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'Disarm the alarm now!'
+        data:
+          tag: 'alarm-state'
+    #- service: script.turn_on
+    #  entity_id: script.say_sonos
+    #  data:
+    #    variables:
+    #      where: 'dining_room'
+    #      what: "Disarm the alarm now!"
+    # Restart the timer
+    - service: timer.start
+      entity_id: timer.alarm_pending
+
+- id: "alarm_armed_home"
+  alias: "Alarm - Armed Home"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: "armed_home"
+      from: "disarmed"
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'The alarm transitioned to Armed Home'
+        data:
+          tag: 'alarm-state'
+
+- id: "alarm_armed_away"
+  alias: "Alarm - Armed Away"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: "armed_away"
+      from: "arming"
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'The alarm transitioned to Armed Away'
+        data:
+          tag: 'alarm-state'
+
+- id: "alarm_disarmed"
+  alias: "Alarm - Disarmed"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: "disarmed"
+      from:
+        - "armed_away"
+        - "armed_home"
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'The alarm has been disarmed'
+        data:
+          tag: 'alarm-state'
+
+#- id: "alarm_triggered"
+#  alias: "Alarm - not Triggered"
+#  trigger:
+#    - platform: state
+#      entity_id: alarm_control_panel.home_alarm
+#      to: "triggered"
+#  action:
+#    - service: switch.turn_on
+#      entity_id: switch.siren_current_value
+#
+#- id: "alarm_not_triggered"
+#  alias: "Alarm - not Triggered"
+#  trigger:
+#    - platform: state
+#      entity_id: alarm_control_panel.home_alarm
+#      from: "triggered"
+#  action:
+#    - service: switch.turn_off
+#      entity_id: switch.siren_current_value
+- id: 'f5o4LjaD4MJt7cYwASK99'
+  alias: 'Bjørkebu notifications'
+  trigger:
+    platform: webhook
+    webhook_id: 'e93c769ef573c96636b5cfc9c6126c2e'
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Bjørkebu Alert'
+        message: '{{ trigger.json.state }}: {{ trigger.json.tags.name }} is {{ trigger.json.tags.value }}'
+        data:
+          ttl: 0
+          priority: high
+          channel: alarm_stream
+          tag: 'notification-temperature'
+- id: '94'
+  alias: 'Dining room heating high'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south
+        temperature: 21
+
+- id: '95'
+  alias: 'Dining room heating medium'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: not
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south
+        temperature: 18
+
+- id: '96'
+  alias: 'Dining room heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south
+        temperature: 8
+
+- id: '8G6K5StaeGJLAKyQBGtA'
+  alias: 'Dining room heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.nook_window_any
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.nook_window_any
+        state: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south
+
+- id: '9rMWBmaYc6M6mSfjjUhd'
+  alias: 'Dining room heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.nook_window_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south
+- id: 'm5tJPnVpvyMcw3'
+  alias: 'Entrance hallway heating high'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.entrance_hallway_floor_heating
+        temperature: 20
+
+- id: '7zxnjyri7sD2rK'
+  alias: 'Entrance hallway heating medium'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: not
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.entrance_hallway_floor_heating
+        temperature: 17
+
+- id: 'tQDH668uPAakXc'
+  alias: 'Entrance hallway heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.entrance_hallway_floor_heating
+        temperature: 8
+
+- id: 'a5XigEKmzRnZUR'
+  alias: 'Entrance hallway heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.front_door_lock_the_current_status_of_the_door
+      to: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.entrance_hallway_floor_heating
+
+- id: 'ZPpVxoVwDw5P6Y'
+  alias: 'Entrance hallway heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.front_door_lock_the_current_status_of_the_door
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.entrance_hallway_floor_heating
+- id: C99K46Dykz4XLvkd3JHH
+  alias: 'Family bathroom heating high'
+  trigger:
+    - platform: time
+      at: "4:00:00"
+    - platform: time
+      at: "19:00:00"
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    - condition: state
+      entity_id: input_select.home_state
+      state: 
+        - Home
+        - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.family_bathroom_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.family_bathroom_floor_heating
+        temperature: 29
+
+- id: zBbXv9Vo9uX6kwmd7eK7
+  alias: 'Family bathroom heating low'
+  trigger:
+    - platform: time
+      at: "22:00:00"
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_select.home_state
+      state: 
+        - Home
+        - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.family_bathroom_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.family_bathroom_floor_heating
+        temperature: 22
+
+- id: 2kHZbjpcN8rvidsPYqXn
+  alias: 'Family bathroom heating off'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.family_bathroom_floor_heating
+- id: 'SL8fw2PbHYSV7UY2u7Rd'
+  alias: 'Guest bedroom heating high'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.workday_sensor
+            state: 'true'
+          - condition: state
+            entity_id: input_boolean.guests_present
+            state: 'true'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.guest_bedroom_floor_heating
+        temperature: 20
+
+- id: 'muiCNNYnLTskJHBR725p'
+  alias: 'Guest bedroom heating medium'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.workday_sensor
+            state: 'true'
+          - condition: state
+            entity_id: input_boolean.guests_present
+            state: 'true'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.guest_bedroom_floor_heating
+        temperature: 17
+
+- id: 'BRLkmdpLYum6kan9QGqx'
+  alias: 'Guest bedroom heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+  condition:
+    - condition: state
+      entity_id: input_boolean.guests_present
+      state: 'true'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.guest_bedroom_floor_heating
+        temperature: 15
+
+- id: 'BkZuJEKvaR6KyVwH3FWm'
+  alias: 'Guest bedroom heating vacation'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 
+        - 'Vacation'
+        - 'Away'
+  condition:
+    - condition: state
+      entity_id: input_boolean.guests_present
+      state: 'false'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.guest_bedroom_floor_heating
+        temperature: 12
+
+- id: 'DpCzFtzmuw4d8hs8Q9Ti'
+  alias: 'Guest bedroom heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.guest_bedroom_window_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.guest_bedroom_floor_heating
+
+- id: 'zVT7HXsWMqY3H3uS9RcS'
+  alias: 'Guest bedroom heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.guest_bedroom_window_any
+      to: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.guest_bedroom_floor_heating
+- id: '122'
+  alias: 'Ingrids bedroom heating high'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      from: 'Vacation'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+        temperature: 21
+
+- id: '124'
+  alias: 'Ingrids bedroom heating low'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+    - platform: time
+      at: "19:00:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 
+          - Home
+          - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+        temperature: 17
+
+- id: '125'
+  alias: 'Ingrids bedroom heating vacation'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+        temperature: 12
+
+- id: 'KXHJDwMLg5waWEf7vNiA'
+  alias: 'Ingrids bedroom heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.ingrid_bedroom_window_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+
+- id: '65r8ko3LNwsKG4zG9cxv'
+  alias: 'Ingrids bedroom heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.ingrid_bedroom_window_any
+      to: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+- id: 'KMCbuT6NSFKtFgmztYRVv'
+  alias: 'Kitchen heating high'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.kitchen_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.kitchen_floor_heating
+        temperature: 21
+
+- id: 'LWQ7P2amQKnwB9Mv3mJ62'
+  alias: 'Kitchen heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      from: 'Vacation'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 
+          - Home
+          - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.kitchen_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.kitchen_floor_heating
+        temperature: 19
+
+- id: 'WDFfKT49FowW9BCfZP3D4'
+  alias: 'Kitchen heating vacation'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.kitchen_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.kitchen_floor_heating
+        temperature: 8
+
+- id: '6XPcj7mbrdresSv9RaXBc'
+  alias: 'Kitchen heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_window_3_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.kitchen_floor_heating
+
+- id: 'jHjymESd5UyZYHFX3zvWN'
+  alias: 'Kitchen heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_window_3_any
+      to: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.kitchen_floor_heating
+- id: PyNiq863JK4dxnbYDGeS
+  alias: 'Master bathroom heating high'
+  trigger:
+    - platform: time
+      at: "4:00:00"
+    - platform: time
+      at: "19:00:00"
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 
+        - 'Home'
+  condition:
+    - condition: state
+      entity_id: input_select.home_state
+      state: 
+        - Home
+        - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.master_bathroom_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.master_bathroom_floor_heating
+        temperature: 29
+
+- id: 9yCz6wHhcY5BVyyLiVzx
+  alias: 'Master bathroom heating low'
+  trigger:
+    - platform: time
+      at: "22:00:00"
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_select.home_state
+      state: 
+        - Home
+        - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.master_bathroom_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.master_bathroom_floor_heating
+        temperature: 22
+
+- id: 2kHZbjpcN8rvidsPYqXn
+  alias: 'Master bathroom heating off'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.master_bathroom_floor_heating
+- id: 'rP7CeLZgeiUTFM'
+  alias: 'TV lounge heating high'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.tv_lounge_floor_heating
+        temperature: 21
+
+- id: 'iCwCunqA63b66t'
+  alias: 'TV lounge heating medium'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: not
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.tv_lounge_floor_heating
+        temperature: 19
+
+- id: 'G8N4CnnM9csgDm'
+  alias: 'TV lounge heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.tv_lounge_floor_heating
+        temperature: 8
+
+- id: 'Yf6jkPSVie3TjL'
+  alias: 'TV lounge heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.nook_window_any
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.nook_window_any
+        state: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.tv_lounge_floor_heating
+
+- id: 'XZPm96n63dhxLf'
+  alias: 'TV lounge heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.nook_window_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.tv_lounge_floor_heating
+- id: '89'
+  alias: 'Tor Magnus approaches home'
+  trigger:
+    - platform: numeric_state
+      entity_id: proximity.tmc_home
+      below: 2000
+      above: 500
+  condition:
+    - condition: template
+      value_template: '{{ states.proximity.tmc_home.attributes.dir_of_travel == "towards" }}'
+  action:
+    - service: automation.trigger
+      entity_id: automation.entrance_hallway_on
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'Tor Magnus is almost home.'
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Arrival'
+        message: 'Tor Magnus is almost home'
+        data:
+          tag: 'arrival'
+
+- id: '90'
+  alias: 'Lande approaches home'
+  trigger:
+    - platform: numeric_state
+      entity_id: proximity.lande_home
+      below: 2000
+      above: 500
+  condition:
+    - condition: template
+      value_template: '{{ states.proximity.lande_home.attributes.dir_of_travel == "towards" }}'
+  action:
+    - service: automation.trigger
+      entity_id: automation.entrance_hallway_on
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'Lande is almost home.'
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Arrival'
+        message: 'Lande is almost home'
+        data:
+          tag: 'arrival'
+
+- id: '112'
+  alias: 'Ingrid Sofia approaches home'
+  trigger:
+    - platform: numeric_state
+      entity_id: proximity.tmc_home
+      below: 1000
+      above: 500
+  condition:
+    - condition: template
+      value_template: '{{ states.proximity.ingrid_home.attributes.dir_of_travel == "towards" }}'
+  action:
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'Ingrid Sofia is almost home.'
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Arrival'
+        message: 'Ingrid Sofia is almost home'
+        data:
+          tag: 'arrival'
+- id: '49'    
+  alias: 'Dining room on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+      for:
+        seconds: 20
+    - platform: numeric_state
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+      below: 150
+      for:
+        seconds: 120
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: numeric_state
+        entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+        below: 150
+  action:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.morning
+              state: 'on'
+          sequence:
+            - service: switch.turn_on
+              entity_id: switch.tradfri_flux, switch.nook_flux
+            - service: light.turn_on
+              data:
+                entity_id: light.bookshelf, light.sofa, light.cabinets, light.nook_table, light.nook, light.nook_mood
+                brightness_pct: 90
+            - service: light.turn_on
+              data:
+                entity_id: light.dining_room_rail_1, light.dining_room_rail_2
+                brightness_pct: 40
+            - service: light.turn_on
+              data:
+                entity_id: light.dining_room_rail_3
+                brightness_pct: 20
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.day
+              state: 'on'
+          sequence:
+            - service: switch.turn_on
+              data:
+                entity_id: switch.tradfri_flux, switch.nook_flux
+            - service: light.turn_on
+              data:
+                entity_id: light.bookshelf, light.sofa, light.cabinets, light.nook_table, light.nook, light.nook_mood
+                brightness_pct: 100
+            - service: light.turn_on
+              data:
+                entity_id: light.dining_room_rail_1, light.dining_room_rail_2
+                brightness_pct: 50
+            - service: light.turn_on
+              data:
+                entity_id: light.dining_room_rail_3
+                brightness_pct: 30
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.evening
+              state: 'on'
+          sequence:
+            - service: switch.turn_on
+              data:
+                entity_id: switch.tradfri_flux, switch.nook_flux
+            - service: light.turn_on
+              data:
+                entity_id: light.bookshelf, light.sofa, light.cabinets, light.nook_table, light.nook, light.nook_mood
+                brightness_pct: 85
+            - service: light.turn_on
+              data:
+                entity_id: light.dining_room_rail_1, light.dining_room_rail_2
+                brightness_pct: 10
+            - service: light.turn_on
+              data:
+                entity_id: light.dining_room_rail_3
+                brightness_pct: 5
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.night
+              state: 'on'
+          sequence:
+            - service: switch.turn_on
+              data:
+                entity_id: switch.tradfri_flux, switch.nook_flux
+            - service: light.turn_on
+              data:
+                entity_id: light.bookshelf, light.sofa, light.cabinets, light.nook_table, light.nook, light.nook_mood
+                brightness_pct: 25
+            - service: light.turn_on
+              data:
+                entity_id: light.dining_room_rail_1, light.dining_room_rail_2
+                brightness_pct: 3
+            - service: light.turn_on
+              data:
+                entity_id: light.dining_room_rail_3
+                brightness_pct: 1
+
+
+- id: '54'    
+  alias: 'Dining room off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+      for:
+        seconds: 20
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 20
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+      for:
+        seconds: 20
+    - platform: numeric_state
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+      above: 200
+      for:
+        seconds: 120
+  action:
+    - service: switch.turn_off
+      data:
+        entity_id: switch.tradfri_flux, switch.nook_flux
+    - service: light.turn_off
+      data:
+        entity_id: light.sofa, light.cabinets, light.nook_table, light.nook, light.bookshelf, light.dining_room_rail_1, light.dining_room_rail_2, light.dining_room_rail_3, light.nook_mood
+
+- id: '72'    
+  alias: 'Dining room blinds close'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+      above: 400
+      for:
+        minutes: 2
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+      for:
+        seconds: 120
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 120
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+      for:
+        seconds: 120
+  action:
+    - service: cover.close_cover
+      entity_id: cover.office_blind
+    - delay:
+        seconds: 2
+    - service: cover.close_cover
+      entity_id: cover.left_nook_blind
+    - delay:
+        seconds: 2
+    - choose:
+        - conditions:
+              - condition: state
+                entity_id: binary_sensor.nook_window_any
+                state: "off"
+          sequence:
+              - service: cover.close_cover
+                entity_id: cover.middle_nook_blind
+    - delay:
+        seconds: 2
+    - service: cover.close_cover
+      entity_id: cover.right_nook_blind
+
+- id: '73'    
+  alias: 'Dining room blinds open'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+      below: 200
+      for:
+        minutes: 4
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
+      for:
+        seconds: 120
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+      for:
+        seconds: 120
+  condition:
+    - condition: state
+      entity_id: input_select.home_state
+      state: 'Home'
+      for:
+        seconds: 120
+  action:
+    - service: cover.open_cover
+      entity_id: cover.right_nook_blind
+    - delay:
+        seconds: 2
+    - service: cover.open_cover
+      entity_id: cover.middle_nook_blind
+    - delay:
+        seconds: 2
+    - service: cover.open_cover
+      entity_id: cover.left_nook_blind
+    - delay:
+        seconds: 2
+    - service: cover.open_cover
+      entity_id: cover.office_blind
+- id: '48'
+  alias: 'Downstairs hallway active'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+      for:
+        seconds: 7
+    - platform: numeric_state
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+      below: 180
+      for:
+        seconds: 120
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+        below: 200
+  action:
+    - service: light.turn_on
+      data_template:
+        entity_id: light.downstairs_hallway_pendant_current_value
+        brightness_pct: >
+          {%- if is_state('binary_sensor.morning', 'on') %}
+            55
+          {%- elif is_state('binary_sensor.day', 'on') %}
+            75
+          {%- elif is_state('binary_sensor.evening', 'on') %}
+            5
+          {%- else %}
+            1
+          {%- endif %}
+
+- id: '37'    
+  alias: 'Downstairs hallway low'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state_ingrid
+      to: 'on'
+      for:
+        seconds: 7
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.downstairs_hallway_pendant_current_value
+        brightness_pct: 1
+
+- id: '51'    
+  alias: 'Downstairs hallway off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+      for:
+        seconds: 7
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 7
+    - platform: numeric_state
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+      above: 200
+      for:
+        seconds: 120
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.downstairs_hallway_pendant_current_value
+- id: '2'
+  alias: 'Picture on open front door'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.front_door_lock_the_current_status_of_the_door
+    to: 'on'
+  action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.dining_room
+        volume_level: 0.55
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'The front door is open.'
+    - service: camera.snapshot
+      data:
+        entity_id: camera.hallway
+        filename: /config/www/hallway.jpg
+    - delay:
+        seconds: 3
+    - service: script.turn_on
+      entity_id: script.notify_on_open_door
+
+- id: '86'
+  alias: 'Enable autolock'
+  trigger:
+    platform: state
+    entity_id: input_boolean.door_autolock
+    to: 'on'
+  action:
+    - service: zwave_js.set_config_parameter
+      target:
+        entity_id: lock.front_door_lock_current_lock_mode
+      data:
+        parameter: 1
+        value: 1
+
+- id: '87'
+  alias: 'Disable autolock'
+  trigger:
+    platform: state
+    entity_id: input_boolean.door_autolock
+    to: 'off'
+  action:
+    - service: zwave_js.set_config_parameter
+      target:
+        entity_id: lock.front_door_lock_current_lock_mode
+      data:
+        parameter: 1
+        value: 0
+
+- id: '88'
+  alias: 'Set evening autolock'
+  trigger:
+    platform: time
+    at: '19:45:00'
+  action:
+    service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.door_autolock
+
+- id: '59'    
+  alias: 'Entrance hallway idle'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
+      to: 'off'
+      for:
+        minutes: 3
+    - platform: state
+      entity_id: binary_sensor.doorbell_switch
+      to: 'off'
+      for:
+        minutes: 3
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
+        state: 'off'
+  action:
+    - service: light.turn_on
+      entity_id: light.entrance_hallway_ceiling_lights_current_value
+      data:
+        brightness_pct: 5
+    - service: light.turn_off
+      entity_id: light.entrance_wardrobes
+ 
+- id: '60'
+  alias: 'Entrance hallway active'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.doorbell_switch
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: binary_sensor.sleep_state
+    state: 'off'
+  action:
+    - service: light.turn_on
+      entity_id: light.entrance_hallway_ceiling_lights_current_value
+      data_template:
+        brightness_pct: >
+          {%- if is_state('binary_sensor.morning', 'on') %}
+            65
+          {%- elif is_state('binary_sensor.day', 'on') %}
+            99
+          {%- elif is_state('binary_sensor.evening', 'on') %}
+            50
+          {%- elif is_state('binary_sensor.night', 'on') %}
+            40
+          {%- endif %}
+    - service: light.turn_on
+      entity_id: light.entrance_wardrobes
+      data:
+        brightness_pct: 100
+
+- id: '61'    
+  alias: 'Entrance hallway off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: state
+      entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
+      to: 'off'
+      for: "00:05:00"
+    - platform: state
+      entity_id: binary_sensor.doorbell_switch
+      to: 'off'
+      for: "00:03:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.sleep_state
+            state: 'on'
+          - condition: state
+            entity_id: input_select.home_state
+            state: 'Away'
+  action:
+    - service: light.turn_off
+      entity_id: light.entrance_hallway_ceiling_lights_current_value, light.entrance_wardrobes
+
+- id: '98'
+  alias: 'Doorbell'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.doorbell_switch
+    to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: camera.snapshot
+      data:
+        entity_id: camera.entrance
+        filename: /config/www/doorbell.jpg
+        #    - service: sonos.snapshot
+        #data:
+        #entity_id: media_player.dining_room, media_player.changing_room
+        #- service: sonos.join
+        #data:
+        #master: media_player.dining_room
+        #entity_id: media_player.changing_room
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.dining_room
+        volume_level: 0.70
+    - service:  media_player.play_media
+      data:
+        entity_id: media_player.dining_room
+        media_content_id: https://hass.continually-evolving.net:8124/doorbell-6.mp3
+        media_content_type: music
+        #- delay:
+        #seconds: 5
+        #- service: sonos.unjoin
+        #data: 
+        #entity_id: media_player.changing_room
+        #- service: sonos.restore
+        #data:
+        #entity_id: media_player.dining_room, media_player.changing_room
+    - service: script.turn_on
+      entity_id: script.notify_on_doorbell
+- id: zspuRL76f9CpZDNhrHP5
+  alias: 'Family bathroom active'
+  trigger:
+  - entity_id: binary_sensor.family_bathroom_multisensor_any
+    platform: state
+    to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.family_bathroom_dimmer_current_value
+      data_template:
+        brightness: >
+          {%- if is_state('binary_sensor.morning', 'on') %}
+            175
+          {%- elif is_state('binary_sensor.day', 'on') %}
+            255
+          {%- elif is_state('binary_sensor.evening', 'on') %}
+            200
+          {%- else %}
+            125
+          {%- endif %}
+
+- id: umaMCs9TCdnrZtEKVjoc
+  alias: 'Family bathroom off'
+  trigger:
+  - entity_id: binary_sensor.family_bathroom_multisensor_any
+    platform: state
+    to: 'off'
+    for: "00:10:00"
+  action:
+    - service: light.turn_off
+      entity_id: light.family_bathroom_dimmer_current_value
+- id: '79'
+  alias: 'Guests awake'
+  trigger:
+    platform: event
+    event_type: zwave_js_value_notification
+    event_data:
+      node_id: 94
+      command_class: 43
+      value: 10
+  condition:
+    condition: state
+    entity_id: input_boolean.guests_present
+    state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.sleep_state_guests
+
+- id: '117'
+  alias: 'Guests sleeping'
+  trigger:
+    platform: event
+    event_type: zwave_js_value_notification
+    event_data:
+      node_id: 94
+      command_class: 43
+      value: 11
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '19:00:00'
+      - condition: state
+        entity_id: input_boolean.guests_present
+        state: 'on'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.sleep_state_guests
+
+- id: 'MFNQAWR8PF8QVK'
+  alias: 'Light off'
+  trigger:
+    platform: event
+    event_type: zwave_js_value_notification
+    event_data:
+      node_id: 94
+      command_class: 43
+      value: 11
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.doorframe, light.ceiling
+
+- id: '7MXNCE7MMQDD6J'
+  alias: 'Light on'
+  trigger:
+    platform: event
+    event_type: zwave_js_value_notification
+    event_data:
+      node_id: 94
+      command_class: 43
+      value: 10
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.doorframe, light.ceiling
+- id: '77'    
+  alias: 'Hallway toilet active'
+  trigger:
+  - entity_id: binary_sensor.hallway_toilet_motion_sensor_home_security_motion_detection
+    platform: state
+    to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.entrance_toilet_ceiling_dimmer
+
+- id: '78'    
+  alias: 'Hallway toilet off'
+  trigger:
+  - entity_id: binary_sensor.hallway_toilet_motion_sensor_home_security_motion_detection
+    platform: state
+    to: 'off'
+    for: "00:05:00"
+  action:
+    - service: light.turn_off
+      entity_id: light.entrance_toilet_ceiling_dimmer
+- id: '62'
+  alias: 'Ingrids bedroom active'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.ingrid_bedroom_motion_sensor_illuminance
+      below: 180
+      for: "00:02:00"
+    - platform: state
+      entity_id: binary_sensor.ingrid_bedroom_motion_sensor_home_security_motion_detection
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.sleep_state_ingrid
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_boolean.sleep_state_ingrid
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.ingrid_bedroom_motion_sensor_illuminance
+        below: 200
+  action:
+    - service: light.turn_on
+      entity_id: light.ingrid_bedroom_ceiling_light_current_value, light.ingrid_bedroom_bed_light, light.bedroom_tv_backlight
+      data_template:
+        transition: 10
+        brightness_pct: >
+          {%- if is_state('binary_sensor.morning', 'on') %}
+            75
+          {%- elif is_state('binary_sensor.day', 'on') %}
+            100
+          {%- elif is_state('binary_sensor.evening', 'on') %}
+            35
+          {%- else %}
+            20
+          {%- endif %}
+
+- id: '58'    
+  alias: 'Ingrids bedroom sleeping'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.sleep_state_ingrid
+      to: 'on'
+  action:
+    - service: light.turn_off
+      entity_id: light.ingrid_bedroom_ceiling_light_current_value 
+      data:
+        transition: 15
+    - delay:
+        seconds: 30
+    - service: light.turn_off
+      entity_id: light.bedroom_tv_backlight
+      data:
+        transition: 15
+    - delay:
+        seconds: 30
+    - service: light.turn_off
+      entity_id: light.ingrid_bedroom_bed_light
+      data:
+        transition: 15
+
+- id: '63'    
+  alias: 'Ingrids bedroom off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: numeric_state
+      entity_id: sensor.ingrid_bedroom_motion_sensor_illuminance
+      above: 200
+      for: "00:02:00"
+    - platform: state
+      entity_id: binary_sensor.ingrid_bedroom_motion_sensor_home_security_motion_detection
+      to: 'off'
+      for: "00:45:00"
+  condition:
+    condition: state
+    entity_id: input_boolean.sleep_state_ingrid
+    state: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.ingrid_bedroom_ceiling_light_current_value, light.ingrid_bedroom_bed_light, light.bedroom_tv_backlight
+      data:
+        transition: 10
+
+
+- id: '82'
+  alias: 'Wakeup alarm Ingrid'
+  trigger:
+    platform: state
+    entity_id: sensor.time
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_boolean.sleep_state_ingrid
+        state: 'on'
+      - condition: template
+        value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_ingrid.attributes.hour | int, states.input_datetime.alarm_time_ingrid.attributes.minute | int)}}'
+      - condition: template
+        value_template: '{{(is_state("input_boolean.alarm_workday_ingrid", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_ingrid","off")}}'
+      - condition: state
+        entity_id: input_boolean.alarm_override_ingrid
+        state: 'off'
+  action:
+    - service: automation.trigger
+      data:
+        entity_id: automation.ingrid_awake
+
+- id: '64'
+  alias: 'Ingrid sleeping'
+  trigger:
+    platform: event
+    event_type: zwave_js_value_notification
+    event_data:
+      node_id: 50
+      command_class: 43
+      value: 11
+  condition:
+    condition: time
+    after: '19:00:00'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.sleep_state_ingrid
+    - service: cover.close_cover
+      entity_id: cover.ingrid_bedroom_blind
+
+- id: '65'
+  alias: 'Ingrid awake'
+  trigger:
+    platform: event
+    event_type: zwave_js_value_notification
+    event_data:
+      node_id: 50
+      command_class: 43
+      value: 10
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '05:00:00'
+      - condition: time
+        before: '19:00:00'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.sleep_state_ingrid
+    - service: cover.open_cover
+      entity_id: cover.ingrid_bedroom_blind
+
+- id: 'PQmqPGfZobeT6vRxjWkk'
+  alias: Button off press
+  description: ''
+  trigger:
+    - platform: event
+      event_type: zwave_js_value_notification
+      event_data:
+        node_id: 50
+        command_class: 43
+        value: 11
+  action:
+    - delay:
+        seconds: 10
+    - service: light.turn_off
+      entity_id: light.bedroom_tv_backlight
+      data:
+        transition: 15
+    - delay:
+        seconds: 10
+    - service: light.turn_off
+      entity_id: light.ingrid_bedroom_bed_light
+      data:
+        transition: 15
+  mode: single
+
+- id: 'fYoXuQeW45tghJnPJGnk'
+  alias: Button on press
+  description: ''
+  trigger:
+    - platform: event
+      event_type: zwave_js_value_notification
+      event_data:
+        node_id: 50
+        command_class: 43
+        value: 10
+  action:
+    - delay:
+        seconds: 10
+    - service: light.turn_on
+      entity_id: light.bedroom_tv_backlight
+      data:
+        transition: 15
+    - delay:
+        seconds: 10
+    - service: light.turn_on
+      entity_id: light.ingrid_bedroom_bed_light
+      data:
+        transition: 15
+  mode: single
+- id: '66'    
+  alias: 'Kitchen idle'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.dining_room_stairs_motion_sensor_home_security_motion_detection, binary_sensor.kitchen_table_motion_sensor_home_security_motion_detection, binary_sensor.kitchen_island_motion_sensor_home_security_motion_detection
+      to: 'off'
+      for: "00:15:00"
+    - platform: state
+      entity_id: input_boolean.dinner_time
+      to: 'off'
+    - platform: numeric_state
+      entity_id: sensor.kitchen_table_motion_sensor_illuminance
+      below: 250
+      for: "00:02:00"
+  mode: single
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.dining_room_stairs_motion_sensor_home_security_motion_detection
+        state: 'off'
+        for: "00:14:00"
+      - condition: state
+        entity_id: binary_sensor.kitchen_island_motion_sensor_home_security_motion_detection
+        state: 'off'
+        for: "00:14:00"
+      - condition: state
+        entity_id: binary_sensor.kitchen_table_motion_sensor_home_security_motion_detection
+        state: 'off'
+        for: "00:14:00"
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_boolean.dinner_time
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.kitchen_table_motion_sensor_illuminance
+        below: 300
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.kitchen_bench_ceiling_lights_current_value, light.kitchen_hallway_ceiling_lights_current_value
+    - service: light.turn_on
+      data:
+        entity_id: light.kitchen_table_ceiling_lamp_current_value
+        brightness_pct: 15
+
+
+- id: '67'
+  alias: 'Kitchen active'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dining_room_stairs_motion_sensor_home_security_motion_detection, binary_sensor.kitchen_table_motion_sensor_home_security_motion_detection, binary_sensor.kitchen_island_motion_sensor_home_security_motion_detection
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.dinner_time
+      to: 'on'
+  mode: single
+  condition:
+    condition: and
+    conditions:
+      - condition: numeric_state
+        entity_id: sensor.kitchen_table_motion_sensor_illuminance
+        below: 300
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: script.turn_on
+      entity_id: script.kitchen_on
+    - delay:
+        seconds: 10
+
+- id: '68'    
+  alias: 'Kitchen off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+      for:
+        seconds: 3
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 3
+    - platform: state
+      entity_id: binary_sensor.dining_room_stairs_motion_sensor_home_security_motion_detection, binary_sensor.kitchen_table_motion_sensor_home_security_motion_detection, binary_sensor.kitchen_island_motion_sensor_home_security_motion_detection
+      to: 'off'
+    - platform: numeric_state
+      entity_id: sensor.kitchen_table_motion_sensor_illuminance
+      above: 550
+      for: "00:02:00"
+  mode: single
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.dining_room_stairs_motion_sensor_home_security_motion_detection
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.kitchen_table_motion_sensor_home_security_motion_detection
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.kitchen_island_motion_sensor_home_security_motion_detection
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.sleep_state
+            state: 'on'
+          - condition: state
+            entity_id: input_select.home_state
+            state: 
+              - 'Away'
+              - 'Vacation'
+          - condition: numeric_state
+            entity_id: sensor.kitchen_table_motion_sensor_illuminance
+            above: 550
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.dinner_time
+    - service: light.turn_off
+      entity_id: light.kitchen_table_ceiling_lamp_current_value, light.kitchen_bench_ceiling_lights_current_value, light.kitchen_hallway_ceiling_lights_current_value
+    - delay:
+        seconds: 10
+- id: '25'    
+  alias: 'Laundry active'
+  trigger:
+  - entity_id: binary_sensor.laundry_multisensor_home_security_motion_detection
+    platform: state
+    to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.laundry_dimmer_current_value, light.laundry_bench_light
+      data:
+        brightness_pct: 100
+
+- id: '26'    
+  alias: 'Laundry off'
+  trigger:
+  - entity_id: binary_sensor.laundry_multisensor_home_security_motion_detection
+    platform: state
+    to: 'off'
+    for: "00:05:00"
+  action:
+    - service: light.turn_off
+      entity_id: light.laundry_dimmer_current_value, light.laundry_bench_light
+- id: '28'    
+  alias: 'Master bathroom active'
+  trigger:
+    - entity_id: binary_sensor.master_bathroom_multisensor_home_security_motion_detection
+      platform: state
+      to: 'on'
+  action:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.sleep_state
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 5
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.morning
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 40
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.day
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 80
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.evening
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 60
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.night
+              state: "on"
+          sequence:
+            - service: light.turn_on
+              entity_id: light.master_bathroom_ceiling_lights 
+              data:
+                 brightness_pct: 20
+    - service: switch.turn_on
+      entity_id: switch.mirror_cabinet_lights
+
+- id: '29'    
+  alias: 'Master bathroom off'
+  trigger:
+    - entity_id: binary_sensor.master_bathroom_multisensor_home_security_motion_detection
+      platform: state
+      to: 'off'
+      for: "00:10:00"
+  action:
+    - service: light.turn_off
+      entity_id: light.master_bathroom_ceiling_lights
+    - service: switch.turn_off
+      entity_id: switch.mirror_cabinet_lights
+- id: '40'    
+  alias: 'Master bedroom morning'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.morning
+      to: 'on'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: input_boolean.sleep_state_tor
+      to: 'off'
+    - platform: state
+      entity_id: input_boolean.sleep_state_lande
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: binary_sensor.morning
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_tor
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.sleep_state_lande
+        state: 'off'
+  action:
+    - service: cover.open_cover
+      data:
+        entity_id: cover.master_bedroom_blind
+    - service: light.turn_on
+      data:
+        entity_id: light.bedside_lamp_dimmer_current_value
+        brightness: 100
+    - service: light.turn_on
+      data:
+        entity_id: light.dressing_table
+        brightness: 254
+    - service: switch.turn_on
+      data:
+        entity_id: switch.dressing_room_wardrobes_current_value
+    - service: light.turn_on
+      data:
+        entity_id: light.changing_room_ceiling_light_current_value
+
+- id: '41'    
+  alias: 'Master bedroom day'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.day
+      to: 'on'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: binary_sensor.day
+        state: 'on'
+  action:
+    - service: cover.open_cover
+      data:
+        entity_id: cover.master_bedroom_blind
+    - service: light.turn_off
+      data:
+        entity_id: light.bedside_lamp_dimmer_current_value
+    - service: light.turn_off
+      data:
+        entity_id: light.dressing_table
+    - service: switch.turn_off
+      data:
+        entity_id: switch.dressing_room_wardrobes_current_value
+
+- id: '42'    
+  alias: 'Master bedroom evening'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.evening
+      to: 'on'
+      for:
+        hours: 2
+        minutes: 30
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: binary_sensor.evening
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_tor
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.sleep_state_lande
+        state: 'off'
+  action:
+    - service: cover.close_cover
+      data:
+        entity_id: cover.master_bedroom_blind
+    - service: light.turn_on
+      data:
+        entity_id: light.bedside_lamp_dimmer_current_value
+        brightness: 75
+    - service: light.turn_on
+      data:
+        entity_id: light.dressing_table
+        brightness: 150
+    - service: switch.turn_on
+      data:
+        entity_id: switch.dressing_room_wardrobes_current_value
+
+- id: '43'    
+  alias: 'Master bedroom off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+    - platform: state
+      entity_id: input_select.home_state
+      from: 'Home'
+    - platform: state
+      entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande
+      to: 'on'
+  action:
+    - service: cover.close_cover
+      data:
+        entity_id: cover.master_bedroom_blind
+    - service: light.turn_off
+      data:
+        entity_id: light.bedside_lamp_dimmer_current_value
+    - service: light.turn_off
+      data:
+        entity_id: light.dressing_table
+    - service: switch.turn_off
+      data:
+        entity_id: switch.dressing_room_wardrobes_current_value
+    - service: light.turn_off
+      data:
+        entity_id: light.changing_room_ceiling_light_current_value
+
+- id: '115'    
+  alias: 'TV master bedroom switch on'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+      for:
+        seconds: 10
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: switch.turn_on
+      data:
+        entity_id: switch.master_bedroom_tv_current_value
+
+- id: '116'    
+  alias: 'TV master switch off'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 10
+  action:
+    - service: switch.turn_off
+      data:
+        entity_id: switch.master_bedroom_tv_current_value
+
+- id: '69'    
+  alias: 'Dressing room lights active'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dressing_room_motion_sensor_home_security_motion_detection
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: binary_sensor.sleep_state
+    state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.changing_room_ceiling_light_current_value
+
+- id: '70'    
+  alias: 'Dressing room ceiling off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dressing_room_motion_sensor_home_security_motion_detection
+      to: 'off'
+      for: "00:03:00"
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.changing_room_ceiling_light_current_value
+
+
+#- id: '34'
+#  alias: 'Pre-wakeup alarm tmc'
+#  trigger:
+#    platform: state
+#    entity_id: sensor.time
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: state
+#        entity_id: input_select.home_state
+#        state: 'Home'
+#      - condition: state
+#        entity_id: input_boolean.sleep_state_tor
+#        state: 'on'
+#      - condition: template
+#        value_template: '{{(now().strftime("%s") | int +900) | timestamp_custom("%H:%M")  == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_tor.attributes.hour | int, states.input_datetime.alarm_time_tor.attributes.minute | int)}}'
+#      - condition: template
+#        value_template: '{{(is_state("input_boolean.alarm_workday_tor", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_tor","off")}}'
+#      - condition: state
+#        entity_id: input_boolean.alarm_override_tor
+#        state: 'off'
+#  action:
+#    - service: python_script.transition_light
+#      data:
+#        entity_id: light.bedside_lamp_dimmer_current_value
+#        transition: 1800
+#        brightness: 255
+
+- id: '83'
+  alias: 'Wakeup alarm tmc'
+  trigger:
+    platform: state
+    entity_id: sensor.time
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_boolean.sleep_state_tor
+        state: 'on'
+      - condition: template
+        value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_tor.attributes.hour | int, states.input_datetime.alarm_time_tor.attributes.minute | int)}}'
+      - condition: template
+        value_template: '{{(is_state("input_boolean.alarm_workday_tor", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_tor","off")}}'
+      - condition: state
+        entity_id: input_boolean.alarm_override_tor
+        state: 'off'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.sleep_state_tor
+
+- id: '84'
+  alias: 'Wakeup alarm lande'
+  trigger:
+    platform: state
+    entity_id: sensor.time
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_boolean.sleep_state_lande
+        state: 'on'
+      - condition: template
+        value_template: '{{states.sensor.time.state == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_lande.attributes.hour | int, states.input_datetime.alarm_time_lande.attributes.minute | int)}}'
+      - condition: template
+        value_template: '{{(is_state("input_boolean.alarm_workday_lande", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_lande","off")}}'
+      - condition: state
+        entity_id: input_boolean.alarm_override_lande
+        state: 'off'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.sleep_state_lande
+
+#- id: '12'
+#  alias: 'Wakeup alarm 2'
+#  trigger:
+#    platform: state
+#    entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande
+#    to: 'off'
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: state
+#        entity_id: binary_sensor.workday_sensor
+#        state: 'on'
+#      - condition: state
+#        entity_id: input_select.home_state
+#        state: 'Home'
+#      - condition: state
+#        entity_id: input_boolean.sleep_state_tor
+#        state: 'off'
+#      - condition: state
+#        entity_id: input_boolean.sleep_state_tor
+#        state: 'off'
+#  action:
+#    - service: media_player.volume_set
+#      data:
+#        entity_id: media_player.changing_room
+#        volume_level: 0.25
+#    - service: media_player.select_source
+#      data:
+#        entity_id: media_player.changing_room
+#        source: 'BBC World Service News'
+- id: '30'    
+  alias: 'Outside lights active'
+  trigger:
+    - entity_id: sun.sun
+      platform: state
+      to: 'below_horizon'
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: 'below_horizon'
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.entrance_outside_light_current_value
+    - service: light.turn_on
+      entity_id: light.balcony_outside_light_current_value
+    - service: switch.turn_on
+      entity_id: switch.terrace_outside_light_current_value
+
+- id: '31'    
+  alias: 'Outside lights off'
+  trigger:
+    - entity_id: sun.sun
+      platform: state
+      to: 'above_horizon'
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.terrace_outside_light_current_value
+    - service: light.turn_off
+      entity_id: light.balcony_outside_light_current_value
+    - service: switch.turn_off
+      entity_id: switch.entrance_outside_light_current_value
+
+- id: '93'    
+  alias: 'Downstairs outside lights off'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.sleep_state_ingrid
+      to: 'on'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.terrace_outside_light_current_value
+- id: '105'
+  alias: 'Training room active'
+  trigger:
+    - entity_id: binary_sensor.training_room_motion_sensor_home_security_motion_detection
+      platform: state
+      to: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.lamp
+        brightness_pct: 100
+    - service: light.turn_on
+      entity_id: light.training_room_ceiling
+    - service: switch.turn_on
+      entity_id: switch.training_room_tv_current_value
+
+- id: '106'
+  alias: 'Training room off'
+  trigger:
+    - entity_id: binary_sensor.training_room_motion_sensor_home_security_motion_detection
+      platform: state
+      to: 'off'
+      for:
+        minutes: 45
+  action:
+    - service: light.turn_off
+      entity_id: light.lamp
+    - service: light.turn_off
+      entity_id: light.training_room_ceiling
+
+- id: '114'    
+  alias: 'TV training room switch off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+      for:
+        seconds: 10
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 10
+  action:
+    - service: switch.turn_off
+      entity_id: switch.training_room_tv_current_value
+
+- id: 'RsNZ6nnD8DXN8j7dwukD'    
+  alias: 'Auto turn off fireplace'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+  mode: single
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.fireplace
+
+- id: '55'    
+  alias: 'TV lounge active'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.tv_lounge_motion_sensor_home_security_motion_detection
+      to: 'on'
+    - platform: state
+      entity_id: media_player.tv_room
+      to: 
+        - 'idle'
+        - 'off'
+      for:
+        seconds: 5
+    - platform: state
+      entity_id: media_player.tv_room_tv
+      to: 'off'
+    - platform: state
+      entity_id: input_binary.fireplace
+      to: 'off'
+  mode: single
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: state
+        entity_id: binary_sensor.sleep_state
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.tv_lounge_motion_sensor_illuminance
+        below: 200
+      - condition: template
+        value_template: "{{not is_state('media_player.tv_room','playing')}}"
+      - condition: state
+        entity_id: media_player.tv_room_tv
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.fireplace
+        state: 'off'
+  action:
+    - service: light.turn_on
+      data_template:
+        entity_id: light.tv_area_current_value, light.sofa_area_current_value
+        brightness_pct: >
+          {%- if is_state('binary_sensor.morning', 'on') %}
+            60
+          {%- elif is_state('binary_sensor.day', 'on') %}
+            80
+          {%- elif is_state('binary_sensor.evening', 'on') %}
+            40
+          {%- elif is_state('binary_sensor.night', 'on') %}
+            10
+          {%- endif %}
+    - service: light.turn_on
+      data_template:
+        entity_id: light.hallway_area_current_value
+        brightness_pct: >
+          {%- if is_state('binary_sensor.morning', 'on') %}
+            80
+          {%- elif is_state('binary_sensor.day', 'on') %}
+            100
+          {%- elif is_state('binary_sensor.evening', 'on') %}
+            60
+          {%- elif is_state('binary_sensor.night', 'on') %}
+            10
+          {%- endif %}
+    - service: light.turn_on
+      entity_id: light.tv_room_table_lamp
+ 
+- id: '57'
+  alias: 'TV lounge chromecast playing'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
+    - platform: state
+      entity_id: media_player.tv_room
+      to: 'playing'
+      for:
+        seconds: 5
+    - platform: state
+      entity_id: media_player.tv_room_tv
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.fireplace
+      to: 'on'
+  mode: single
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: media_player.tv_room
+            state: 'playing'
+          - condition: state
+            entity_id: media_player.tv_room_tv
+            state: 'on'
+          - condition: state
+            entity_id: input_boolean.fireplace
+            state: 'on'
+  action:
+    - service: light.turn_on
+      data_template:
+        entity_id: light.tv_area_current_value, light.sofa_area_current_value
+        brightness_pct: >
+          {%- if is_state('binary_sensor.morning', 'on') %}
+            30
+          {%- elif is_state('binary_sensor.day', 'on') %}
+            35
+          {%- elif is_state('binary_sensor.evening', 'on') %}
+            15
+          {%- elif is_state('binary_sensor.night', 'on') %}
+            10
+          {%- endif %}
+    - service: light.turn_on
+      data_template:
+        entity_id: light.hallway_area_current_value
+        brightness_pct: >
+          {%- if is_state('binary_sensor.morning', 'on') %}
+            50
+          {%- elif is_state('binary_sensor.day', 'on') %}
+            50
+          {%- elif is_state('binary_sensor.evening', 'on') %}
+            30
+          {%- elif is_state('binary_sensor.night', 'on') %}
+            10
+          {%- endif %}
+    - service: light.turn_on
+      entity_id: light.tv_room_table_lamp
+
+- id: '56'    
+  alias: 'TV lounge off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.tv_lounge_motion_sensor_home_security_motion_detection
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+      for:
+        seconds: 5
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 5
+    - platform: numeric_state
+      entity_id: sensor.tv_lounge_motion_sensor_illuminance
+      above: 250
+      for:
+        seconds: 120
+    - platform: state
+      entity_id: media_player.tv_room
+      to: 
+        - 'idle'
+        - 'off'
+      for:
+        seconds: 5
+    - platform: state
+      entity_id: media_player.tv_room_tv
+      to: 'off'
+      for:
+        seconds: 5
+  mode: single
+  condition:
+    condition: not
+    conditions:
+      - condition: state
+        entity_id: media_player.tv_room
+        state: 'playing'
+      - condition: state
+        entity_id: media_player.tv_room_tv
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.fireplace
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.tv_lounge_motion_sensor_home_security_motion_detection
+        state: 'on'
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.tv_area_current_value, light.sofa_area_current_value
+    - service: light.turn_on
+      data:
+        entity_id: light.hallway_area_current_value
+        brightness_pct: 10
+    - service: light.turn_off
+      data:
+        entity_id: light.tv_room_table_lamp
+    - condition: state
+      entity_id: binary_sensor.sleep_state
+      state: 'on'
+    - service: light.turn_off
+      data:
+        entity_id: light.hallway_area_current_value
+
+
+
+- id: '91'    
+  alias: 'TV switch on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'off'
+      for:
+        seconds: 10
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+      for:
+        seconds: 10
+  mode: single
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: switch.turn_on
+      data:
+        entity_id: switch.tv_room_tv_current_value
+
+- id: '92'    
+  alias: 'TV switch off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sleep_state
+      to: 'on'
+      for:
+        seconds: 10
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+      for:
+        seconds: 10
+  mode: single
+  action:
+    - service: switch.turn_off
+      data:
+        entity_id: switch.tv_room_tv_current_value
+
+- id: '111'
+  alias: 'Chromecast auto volume'
+  trigger:
+  - entity_id: media_player.tv_room
+    from: 'off'
+    platform: state
+    to: idle
+  - entity_id: media_player.tv_room
+    from: 'off'
+    platform: state
+    to: playing
+  - entity_id: media_player.tv_room
+    from: 'off'
+    platform: state
+    to: paused
+  mode: single
+  action:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.tv_room
+      volume_level: 0.6
+- id: '100001'
+  alias: 'Extend nook awning'
+  trigger:
+    - platform: state
+      entity_id: sun.sun
+      attribute: azimuth
+  condition:
+    condition: and
+    conditions: 
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_wind_gauge_wind_strength
+        below: 13
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_wind_gauge_gust_strength
+        below: 18
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        above: 3
+      - condition: state
+        entity_id: weather.home
+        state: 
+          - 'sunny'
+          - 'partlycloudy'
+          - 'cloudy'
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: azimuth
+        above: 169
+      - condition: numeric_state
+        entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+        above: 400
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_rain_gauge_rain
+        below: 0.01
+  action:
+    - service: cover.set_cover_position
+      data_template:
+        entity_id: cover.nook_awning
+        position: "{{ 100 - (( 100 / 87 ) * ( state_attr( 'sun.sun' , 'elevation' ) - 3 )) | round() | int }}"
+
+- id: 'pG6tHYyJEdgkV8'
+  alias: 'Close nook awning'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_wind_gauge_wind_strength
+      above: 13
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_wind_gauge_gust_strength
+      above: 18
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: 3
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_rain_gauge_rain
+      above: 0
+  action:
+    - service: cover.close_cover
+      data:
+        entity_id: cover.nook_awning
+
+
+- id: 'Y7F6LpAYT2VBFR'
+  alias: 'Extend balcony awning'
+  trigger:
+    - platform: state
+      entity_id: sun.sun
+      attribute: azimuth
+  condition:
+    condition: and
+    conditions: 
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_wind_gauge_wind_strength
+        below: 10
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_wind_gauge_gust_strength
+        below: 15
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        above: 3
+      - condition: state
+        entity_id: weather.home
+        state: 
+          - 'sunny'
+          - 'partlycloudy'
+          - 'cloudy'
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: azimuth
+        above: 169
+      - condition: numeric_state
+        entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+        above: 400
+      - condition: numeric_state
+        entity_id: sensor.netatmo_home_rain_gauge_rain
+        below: 0.01
+      - condition: template
+        value_template: "{{ (state_attr('cover.balcony_awning_current_value', 'current_position')|int)  < (100 - (( 100 / 87 ) * ( state_attr( 'sun.sun' , 'elevation' ) - 3 )) | round()) }}"
+  action:
+    - service: cover.set_cover_position
+      data:
+        entity_id: cover.balcony_awning_current_value
+        position: "{{ 100 - (( 100 / 87 ) * ( state_attr( 'sun.sun' , 'elevation' ) - 3 )) | round() }}"
+
+- id: 'oYyLd6CTbrgTGG'
+  alias: 'Close balcony awning'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_wind_gauge_wind_strength
+      above: 10
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_wind_gauge_gust_strength
+      above: 18
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: 3
+    - platform: numeric_state
+      entity_id: sensor.netatmo_home_rain_gauge_rain
+      above: 0
+  action:
+    - service: cover.close_cover
+      data:
+        entity_id: cover.balcony_awning_current_value
+#- id: "1001"
+#  alias: "Testlight"
+#    - platform: numeric_state
+#      entity_id: sensor.cube_sensor_01_temperature
+#  action:
+#    - service: light.turn_on
+#      data:
+#        entity_id: light.cube_sensor_01_light
+- id: 'opTM8EhbouJQfDSY9SQAW'    
+  alias: 'Electricity price indicator'
+  trigger:
+    - platform: state
+      entity_id: sensor.price_level
+  action:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'VERY_CHEAP'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                brightness_pct: 100
+                color_name: 'green'
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'CHEAP'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                brightness_pct: 100
+                color_name: 'greenyellow'
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'NORMAL'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                rgb_color: [255, 185, 127]
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'EXPENSIVE'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                brightness_pct: 100
+                color_name: 'red'
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'VERY_EXPENSIVE'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                brightness_pct: 100
+                color_name: 'darkred'
+
+#- id: '107'
+#  alias: 'Start ventilating greenhouse'
+#  trigger:
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_temperature
+#      above: 30
+#      for:
+#        minutes: 5
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_humidity
+#      above: 90
+#      for:
+#        minutes: 5
+#  condition:
+#    condition: state
+#    entity_id: cover.greenhouse_windows
+#    state: 'closed'
+#  action:
+#    - service: cover.set_cover_position
+#      data:
+#        entity_id: cover.greenhouse_windows
+#        position: 10
+#
+#- id: '108'
+#  alias: 'Stop ventilating greenhouse'
+#  trigger:
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_temperature
+#      below: 28
+#      for:
+#        minutes: 5
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_humidity
+#      below: 60
+#      for:
+#        minutes: 5
+#  condition:
+#    condition: state
+#    entity_id: cover.greenhouse_windows
+#    state: 'open'
+#  action:
+#    - service: cover.close_cover
+#      data:
+#        entity_id: cover.greenhouse_windows
+#
+#- id: '109'
+#  alias: 'Water greenhouse'
+#  trigger:
+#    - platform: numeric_state
+#      entity_id: sensor.greenhouse_soil_humidity
+#      below: 500
+#      for:
+#        minutes: 30
+#  condition:
+#    condition: state
+#    entity_id: switch.greenhouse_water_relay_1
+#    state: 'off'
+#  action:
+#    - service: switch.turn_on
+#      data:
+#        entity_id: switch.greenhouse_water_relay_1
+#    - delay:
+#        minutes: 3
+#    - service: switch.turn_off
+#      data:
+#        entity_id: switch.greenhouse_water_relay_1
+#
+#- id: '110'
+#  alias: 'Water greenhouse'
+#  trigger:
+#    - platform: state
+#      entity_id: switch.greenhouse_water_relay_1
+#      to: 'on'
+#      for:
+#        minutes: 3
+#  condition:
+#    condition: state
+#    entity_id: switch.greenhouse_water_relay_1
+#    state: 'on'
+#  action:
+#    - service: switch.turn_off
+#      data:
+#        entity_id: switch.greenhouse_water_relay_1
+#
+- alias: 'Set default theme'
+  id: 'E9Bj7FERwJEHcjpDPGKAD'
+  initial_state: 'on'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: frontend.set_theme
+      data:
+        name: 'ios-dark-mode-blue-red'
+
+- id: '1649232905127'
+  alias: Reload Tibber when frozen
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ as_timestamp( utcnow() ) | int > as_timestamp(states.sensor.power_holmsens_vei_29b.last_changed)
+      | int +60}}'
+  condition: []
+  action:
+  - service: homeassistant.reload_config_entry
+    data:
+      entry_id: "e4dd1a61ff6e11ea8ac905fdc7c903f8"
+  mode: single
+- id: 'QQ8hZxXTCHLw8pwYuuSn'
+  alias: 'Water heater on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+      for:
+        minutes: 3
+  action:
+    - service: switch.turn_on
+      entity_id: switch.hot_water_tank
+  mode: single
+
+- id: 'b4Ec5N7LLi4Awst8hBst'
+  alias: 'Water heater off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+      for:
+        minutes: 3
+  action:
+    - service: switch.turn_off
+      entity_id: switch.hot_water_tank
+  mode: single
+
+- id: '27'
+  alias: 'Ventilation low'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.divergence_humidity
+    above: 4
+    below: 9
+  condition:
+    condition: or
+    conditions:
+      - condition: numeric_state
+        entity_id: fan.humidity_fan
+        attribute: percentage
+        above: 60
+      - condition: numeric_state
+        entity_id: fan.humidity_fan
+        attribute: percentage
+        below: 40
+      - condition: state
+        entity_id: fan.humidity_fan
+        state: 'off'
+  action:
+    - service: fan.turn_on
+      entity_id: fan.humidity_fan
+      data:
+        percentage: 50
+
+- id: '32'
+  alias: 'Ventilation high'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.divergence_humidity
+    above: 10
+  condition:
+    condition: numeric_state
+    entity_id: fan.humidity_fan
+    attribute: percentage
+    below: 90
+  action:
+    - service: fan.turn_on
+      entity_id: fan.humidity_fan
+      data:
+        percentage: 100
+
+- id: '33'
+  alias: 'Ventilation off'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.divergence_humidity
+    below: 3
+  condition:
+    condition: state
+    entity_id: fan.humidity_fan
+    state: 'on'
+  action:
+    - service: fan.turn_off
+      entity_id: fan.humidity_fan
+###
+# Control Sleep States
+###
+- id: '15'
+  alias: 'Wake up people'
+  trigger:
+  - platform: time
+    at: '10:00:00'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_boolean.sleep_state_tor
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_lande
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_ingrid
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.sleep_state_guests
+        state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.sleep_state_guests, input_boolean.sleep_state_ingrid, input_boolean.sleep_state_lande, input_boolean.sleep_state_tor
+#- id: '35'
+#  alias: 'Washing machine started'
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.washing_machine_activity
+#    from: "off"
+#    to: "on"
+#  action:
+#    - service: media_player.volume_set
+#      data:
+#        entity_id: media_player.dining_room
+#        volume_level: 0.55
+#    - service: script.turn_on
+#      entity_id: script.say_sonos
+#      data:
+#        variables:
+#          where: 'dining_room'
+#          what: 'The washing machine has started'
+
+- id: '36'
+  alias: 'Washing machine stopped'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.washing_machine_activity
+    from: "on"
+    to: "off"
+  action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.dining_room
+        volume_level: 0.55
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'The washing machine has finished'
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Washing machine'
+        message: 'Washing machine has finished'
+        data:
+          tag: 'washing-machine'
+    - service: notify.mobile_app_sm_g973f
+      data:
+        title: 'Washing machine'
+        message: 'Washing machine has finished'
+        data:
+          tag: 'washing-machine'
+
+#- id: '37'
+#  alias: 'Dryer started'
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.dryer_activity
+#    from: "off"
+#    to: "on"
+#  action:
+#    - service: media_player.volume_set
+#      data:
+#        entity_id: media_player.dining_room
+#        volume_level: 0.55
+#    - service: script.turn_on
+#      entity_id: script.say_sonos
+#      data:
+#        variables:
+#          where: 'dining_room'
+#          what: 'The dryer has started'
+
+- id: '38'
+  alias: 'Dryer stopped'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.dryer_activity
+    from: "on"
+    to: "off"
+  action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.dining_room
+        volume_level: 0.55
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'The dryer has finished'
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Dryer'
+        message: 'Dryer has finished'
+        data:
+          tag: 'dryer'
+    - service: notify.mobile_app_sm_g973f
+      data:
+        title: 'Dryer'
+        message: 'Dryer has finished'
+        data:
+          tag: 'dryer'
+
+- id: '39'
+  alias: 'Dishwasher stopped'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.dishwasher_activity
+    from: "on"
+    to: "off"
+  action:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.dining_room
+        volume_level: 0.55
+    - service: script.turn_on
+      entity_id: script.say_sonos
+      data:
+        variables:
+          where: 'dining_room'
+          what: 'The dishwasher has finished'
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Dishwasher'
+        message: 'Dishwasher has finished'
+        data:
+          tag: 'dishwasher'
+    - service: notify.mobile_app_sm_g973f
+      data:
+        title: 'Dishwasher'
+        message: 'Dishwasher has finished'
+        data:
+          tag: 'dishwasher'
+
+#- id: '85'
+#  alias: 'Heal Z-wave at 03:30'
+#  trigger:
+#    platform: time
+#    at: '03:30:00'
+#  action:
+#    service: zwave.heal_network
+#- id: '1'
+#  alias: 'message'
+#  trigger:
+#    platform: event
+#    event_type: html5_notification.clicked
+#    event_data:
+#     action: 'blah'
+#  action:
+#    - service: notify.mobile_app_tor_magnus_p30_pro
+#      data:
+#        message: 'Someone at door'
+#        data:
+#          actions:
+#            - action: 'open_door'
+#              title: 'Open door'
+#
+#- id: '58'
+#  alias: 'HTML5 push notification action button clicked'
+#  trigger:
+#    platform: event
+#    event_type: html5_notification.clicked
+#    event_data:
+#     action: open_door
+#  action:
+#    - service: notify.mobile_app_tor_magnus_p30_pro
+#      data:
+#        message: 'Door opened'
+#        data:
+#          tag: 'test-notification'
+
+
+#- id: '1000'
+#  alias: 'Casting camera'
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.doorbell_switch
+#    to: 'on'
+#  action:
+#    - service: camera.play_stream
+#      data:
+#        entity_id: camera.entrance
+#        media_player: media_player.tv_room
+
+#- id: '1001'
+#  alias: 'Temperature warning'
+#  trigger:
+#    platform: webhook
+#    webhook_id: 'e93c769ef573c96636b5cfc9c6126c2e'
+#  action:
+#    - service: notify.mobile_app_tor_magnus_p30_pro
+#      data:
+#        title: 'Bjørkebu Alert'
+#        message: '{{ trigger.json.state }}: {{ trigger.json.tags.name }} at {{ trigger.json.tags.value }}'
+#        data:
+#          ttl: 0
+#          priority: high
+#          channel: alarm_stream
+#          tag: 'notification-temperature'

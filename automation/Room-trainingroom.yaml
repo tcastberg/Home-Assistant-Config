@@ -1,7 +1,7 @@
 - id: '105'
   alias: 'Training room active'
   trigger:
-    - entity_id: binary_sensor.training_room_motion_sensor_sensor
+    - entity_id: binary_sensor.training_room_motion_sensor_home_security_motion_detection
       platform: state
       to: 'on'
   action:
@@ -12,16 +12,16 @@
     - service: light.turn_on
       entity_id: light.training_room_ceiling
     - service: switch.turn_on
-      entity_id: switch.training_room_tv_switch
+      entity_id: switch.training_room_tv_current_value
 
 - id: '106'
   alias: 'Training room off'
   trigger:
-    - entity_id: binary_sensor.training_room_motion_sensor_sensor
+    - entity_id: binary_sensor.training_room_motion_sensor_home_security_motion_detection
       platform: state
       to: 'off'
       for:
-        minutes: 60
+        minutes: 45
   action:
     - service: light.turn_off
       entity_id: light.lamp
@@ -43,5 +43,5 @@
         seconds: 10
   action:
     - service: switch.turn_off
-      entity_id: switch.training_room_tv_switch
+      entity_id: switch.training_room_tv_current_value
 

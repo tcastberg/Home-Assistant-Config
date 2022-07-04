@@ -29,14 +29,30 @@
 #          tag: 'test-notification'
 
 
-- id: '1000'
-  alias: 'Casting camera'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.doorbell_switch
-    to: 'on'
-  action:
-    - service: camera.play_stream
-      data:
-        entity_id: camera.entrance
-        media_player: media_player.tv_room
+#- id: '1000'
+#  alias: 'Casting camera'
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.doorbell_switch
+#    to: 'on'
+#  action:
+#    - service: camera.play_stream
+#      data:
+#        entity_id: camera.entrance
+#        media_player: media_player.tv_room
+
+#- id: '1001'
+#  alias: 'Temperature warning'
+#  trigger:
+#    platform: webhook
+#    webhook_id: 'e93c769ef573c96636b5cfc9c6126c2e'
+#  action:
+#    - service: notify.mobile_app_tor_magnus_p30_pro
+#      data:
+#        title: 'Bjørkebu Alert'
+#        message: '{{ trigger.json.state }}: {{ trigger.json.tags.name }} at {{ trigger.json.tags.value }}'
+#        data:
+#          ttl: 0
+#          priority: high
+#          channel: alarm_stream
+#          tag: 'notification-temperature'

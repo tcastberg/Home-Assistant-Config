@@ -1,0 +1,105 @@
+- id: 'SL8fw2PbHYSV7UY2u7Rd'
+  alias: 'Guest bedroom heating high'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.workday_sensor
+            state: 'true'
+          - condition: state
+            entity_id: input_boolean.guests_present
+            state: 'true'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.guest_bedroom_floor_heating
+        temperature: 20
+
+- id: 'muiCNNYnLTskJHBR725p'
+  alias: 'Guest bedroom heating medium'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.workday_sensor
+            state: 'true'
+          - condition: state
+            entity_id: input_boolean.guests_present
+            state: 'true'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.guest_bedroom_floor_heating
+        temperature: 17
+
+- id: 'BRLkmdpLYum6kan9QGqx'
+  alias: 'Guest bedroom heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+  condition:
+    - condition: state
+      entity_id: input_boolean.guests_present
+      state: 'true'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.guest_bedroom_floor_heating
+        temperature: 15
+
+- id: 'BkZuJEKvaR6KyVwH3FWm'
+  alias: 'Guest bedroom heating vacation'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 
+        - 'Vacation'
+        - 'Away'
+  condition:
+    - condition: state
+      entity_id: input_boolean.guests_present
+      state: 'false'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.guest_bedroom_floor_heating
+        temperature: 12
+
+- id: 'DpCzFtzmuw4d8hs8Q9Ti'
+  alias: 'Guest bedroom heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.guest_bedroom_window_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.guest_bedroom_floor_heating
+
+- id: 'zVT7HXsWMqY3H3uS9RcS'
+  alias: 'Guest bedroom heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.guest_bedroom_window_any
+      to: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.guest_bedroom_floor_heating

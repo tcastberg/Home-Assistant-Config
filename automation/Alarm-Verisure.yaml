@@ -9,10 +9,9 @@
     entity_id: input_select.home_state
     state: 'Home'
   action:
-    - service: alarm_control_panel.alarm_disarm
-      entity_id: alarm_control_panel.holmsens_vei_alarm
-      data:
-        code: !secret verisure_code
+    - service: script.turn_on
+      target:
+        entity_id: script.disarm_alarm_verisure
 
 - id: '7'
   alias: 'Arm Verisure Alarm home'
@@ -25,22 +24,21 @@
     entity_id: input_select.home_state
     state: 'Home'
   action:
-    - service: alarm_control_panel.alarm_arm_home
-      entity_id: alarm_control_panel.holmsens_vei_alarm
-      data:
-        code: !secret verisure_code
+    - service: script.turn_on
+      target:
+        entity_id: script.arm_home_alarm_verisure
 
 - id: '8'
   alias: 'Alarm status changed'
   trigger:
     - platform: state
-      entity_id: alarm_control_panel.holmsens_vei_alarm
+      entity_id: alarm_control_panel.verisure_alarm
       from: 'disarmed'
     - platform: state
-      entity_id: alarm_control_panel.holmsens_vei_alarm
+      entity_id: alarm_control_panel.verisure_alarm
       from: 'armed_away'
     - platform: state
-      entity_id: alarm_control_panel.holmsens_vei_alarm
+      entity_id: alarm_control_panel.verisure_alarm
       from: 'armed_home'
   action:
     - service: notify.mobile_app_tor_magnus_p30_pro
@@ -50,68 +48,80 @@
           to {{ trigger.to_state.state }}
           by {{ trigger.to_state.attributes.changed_by }}
 
+#  binary_sensor.dining_room_stairs_motion_sensor_home_security_motion_detection
+#  binary_sensor.dressing_room_motion_sensor_home_security_motion_detection
+#  binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection
+#  binary_sensor.family_bathroom_multisensor_any
+#  binary_sensor.hallway_toilet_motion_sensor_home_security_motion_detection
+#  binary_sensor.ingrid_bedroom_motion_sensor_home_security_motion_detection
+#  binary_sensor.kitchen_island_motion_sensor_home_security_motion_detection
+#  binary_sensor.kitchen_table_motion_sensor_home_security_motion_detection
+#  binary_sensor.master_bathroom_multisensor_home_security_motion_detection
+#  binary_sensor.master_bathroom_multisensor_home_security_motion_detection
+#  binary_sensor.training_room_motion_sensor_home_security_motion_detection
+#  binary_sensor.tv_lounge_motion_sensor_home_security_motion_detection
+
 - id: '9'
   alias: 'Door or window open when alarm armed'
   trigger:
     - platform: state
-      entity_id: alarm_control_panel.holmsens_vei_alarm
-      from: 'armed_away'
+      entity_id: alarm_control_panel.verisure_alarm
+      to: 'armed_away'
     - platform: state
-      entity_id: alarm_control_panel.holmsens_vei_alarm
-      from: 'armed_home'
+      entity_id: alarm_control_panel.verisure_alarm
+      to: 'armed_home'
   condition:
-    condition: and
+    condition: or
     conditions:
       - condition: state
-        entity_id: binary_sensor.backhall_garden_door_sensor
+        entity_id: binary_sensor.backhall_garden_door_any
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.balcony_door_sensor_2
+        entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.bedroom_garden_door_sensor
+        entity_id: binary_sensor.bedroom_garden_door_any
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.kitchen_window_3_sensor
+        entity_id: binary_sensor.kitchen_window_3_any
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.ingrid_bedroom_window_sensor
+        entity_id: binary_sensor.ingrid_bedroom_window_any
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.guest_bedroom_window_sensor
+        entity_id: binary_sensor.guest_bedroom_window_any
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.nook_window_sensor
+        entity_id: binary_sensor.nook_window_any
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.laundry_window_sensor
+        entity_id: binary_sensor.laundry_window_any
         state: 'on'
   action:
     - service: notify.mobile_app_tor_magnus_p30_pro 
       data_template:
         title: 'Open door or window'
         message: >
-          {% if is_state('binary_sensor.backhall_garden_door_sensor', 'on') %}Downstairs garden door{%endif%}
-          {% if is_state('binary_sensor.balcony_door_sensor_2', 'on') %}Balcony door{%endif%}
-          {% if is_state('binary_sensor.bedroom_garden_door_sensor', 'on') %}Bedroom garden door{%endif%}
-          {% if is_state('binary_sensor.kitchen_window_3_sensor', 'on') %}Kitchen window{%endif%}
-          {% if is_state('binary_sensor.ingrid_bedroom_window_sensor', 'on') %}Ingrid bedroom window{%endif%}
-          {% if is_state('binary_sensor.guest_bedroom_window_sensor', 'on') %}Guest bedroom window{%endif%}
-          {% if is_state('binary_sensor.nook_window_sensor', 'on') %}Nook window{%endif%}
-          {% if is_state('binary_sensor.laundry_window_sensor', 'on') %}Laundry window{%endif%}
+          {% if is_state('binary_sensor.backhall_garden_door_any', 'on') %}Downstairs garden door{%endif%}
+          {% if is_state('binary_sensor.balcony_door_sensor_access_control_window_door_is_open', 'on') %}Balcony door{%endif%}
+          {% if is_state('binary_sensor.bedroom_garden_door_any', 'on') %}Bedroom garden door{%endif%}
+          {% if is_state('binary_sensor.kitchen_window_3_any', 'on') %}Kitchen window{%endif%}
+          {% if is_state('binary_sensor.ingrid_bedroom_window_any', 'on') %}Ingrid bedroom window{%endif%}
+          {% if is_state('binary_sensor.guest_bedroom_window_any', 'on') %}Guest bedroom window{%endif%}
+          {% if is_state('binary_sensor.nook_window_any', 'on') %}Nook window{%endif%}
+          {% if is_state('binary_sensor.laundry_window_any', 'on') %}Laundry window{%endif%}
     - service: notify.mobile_app_sm_g973f
       data_template:
         title: 'Open door or window'
         message: >
-          test
-          {% if is_state('binary_sensor.backhall_garden_door_sensor', 'on') %}Downstairs garden door{%endif%}
-          {% if is_state('binary_sensor.balcony_door_sensor_2', 'on') %}Balcony door{%endif%}
-          {% if is_state('binary_sensor.bedroom_garden_door_sensor', 'on') %}Bedroom garden door{%endif%}
-          {% if is_state('binary_sensor.kitchen_window_3_sensor', 'on') %}Kitchen window{%endif%}
-          {% if is_state('binary_sensor.ingrid_bedroom_window_sensor', 'on') %}Ingrid bedroom window{%endif%}
-          {% if is_state('binary_sensor.guest_bedroom_window_sensor', 'on') %}Guest bedroom window{%endif%}
-          {% if is_state('binary_sensor.nook_window_sensor', 'on') %}Nook window{%endif%}
-          {% if is_state('binary_sensor.laundry_window_sensor', 'on') %}Laundry window{%endif%}
+          {% if is_state('binary_sensor.backhall_garden_door_any', 'on') %}Downstairs garden door{%endif%}
+          {% if is_state('binary_sensor.balcony_door_sensor_access_control_window_door_is_open', 'on') %}Balcony door{%endif%}
+          {% if is_state('binary_sensor.bedroom_garden_door_any', 'on') %}Bedroom garden door{%endif%}
+          {% if is_state('binary_sensor.kitchen_window_3_any', 'on') %}Kitchen window{%endif%}
+          {% if is_state('binary_sensor.ingrid_bedroom_window_any', 'on') %}Ingrid bedroom window{%endif%}
+          {% if is_state('binary_sensor.guest_bedroom_window_any', 'on') %}Guest bedroom window{%endif%}
+          {% if is_state('binary_sensor.nook_window_any', 'on') %}Nook window{%endif%}
+          {% if is_state('binary_sensor.laundry_window_any', 'on') %}Laundry window{%endif%}
 
 - id: '16'
   alias: 'Verisure armed_away'
@@ -120,9 +130,15 @@
       entity_id: sensor.verisure_status_plug_power
       above: 1.0
     - platform: state
-      entity_id: alarm_control_panel.holmsens_vei_alarm
+      entity_id: alarm_control_panel.verisure_alarm
       from: 'disarmed'
       to: 'armed_away'
+  condition:
+    condition: not
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Vacation'
   action:
     - service: input_select.select_option
       data:
@@ -139,7 +155,7 @@
   alias: 'Verisure armed_home'
   trigger:
     platform: state
-    entity_id: alarm_control_panel.holmsens_vei_alarm
+    entity_id: alarm_control_panel.verisure_alarm
     from: 'disarmed'
     to: 'armed_home'
   action:
@@ -157,11 +173,11 @@
       entity_id: sensor.verisure_status_plug_power
       below: 1.0
     - platform: state
-      entity_id: alarm_control_panel.holmsens_vei_alarm
+      entity_id: alarm_control_panel.verisure_alarm
       from: 'armed_away'
       to: 'disarmed'
     - platform: state
-      entity_id: alarm_control_panel.holmsens_vei_alarm
+      entity_id: alarm_control_panel.verisure_alarm
       from: 'armed_home'
       to: 'disarmed'
   action:
@@ -182,7 +198,7 @@
   action:
     - service: light.turn_on
       data:
-        entity_id: light.nook_table, light.bookshelf, light.cabinets, light.dining_room_rail_1_level, light.dining_room_rail_2_level
+        entity_id: light.nook_table, light.bookshelf, light.cabinets, light.dining_room_rail_1, light.dining_room_rail_2
         brightness_pct: 5
     - service: switch.turn_off
       data:

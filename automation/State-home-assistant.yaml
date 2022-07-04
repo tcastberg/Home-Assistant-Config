@@ -1,4 +1,5 @@
 - alias: 'Set default theme'
+  id: 'E9Bj7FERwJEHcjpDPGKAD'
   initial_state: 'on'
   trigger:
     - platform: homeassistant
@@ -6,4 +7,18 @@
   action:
     - service: frontend.set_theme
       data:
-        name: 'Dark - Cyan'
+        name: 'ios-dark-mode-blue-red'
+
+- id: '1649232905127'
+  alias: Reload Tibber when frozen
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ as_timestamp( utcnow() ) | int > as_timestamp(states.sensor.power_holmsens_vei_29b.last_changed)
+      | int +60}}'
+  condition: []
+  action:
+  - service: homeassistant.reload_config_entry
+    data:
+      entry_id: "e4dd1a61ff6e11ea8ac905fdc7c903f8"
+  mode: single

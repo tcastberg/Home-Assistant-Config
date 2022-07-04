@@ -1,0 +1,86 @@
+- id: '94'
+  alias: 'Dining room heating high'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south
+        temperature: 21
+
+- id: '95'
+  alias: 'Dining room heating medium'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: not
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south
+        temperature: 18
+
+- id: '96'
+  alias: 'Dining room heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south
+        temperature: 8
+
+- id: '8G6K5StaeGJLAKyQBGtA'
+  alias: 'Dining room heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.nook_window_any
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.nook_window_any
+        state: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south
+
+- id: '9rMWBmaYc6M6mSfjjUhd'
+  alias: 'Dining room heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.nook_window_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.high_window, climate.oil_heater, climate.nook_north, climate.nook_south

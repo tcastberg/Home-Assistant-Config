@@ -18,11 +18,11 @@
         state: 'off'
   action:
     - service: switch.turn_on
-      entity_id: switch.entrance_outside_light_switch
+      entity_id: switch.entrance_outside_light_current_value
     - service: light.turn_on
-      entity_id: light.balcony_outside_light_level
+      entity_id: light.balcony_outside_light_current_value
     - service: switch.turn_on
-      entity_id: switch.terrace_outside_light_switch
+      entity_id: switch.terrace_outside_light_current_value
 
 - id: '31'    
   alias: 'Outside lights off'
@@ -35,11 +35,11 @@
       to: 'on'
   action:
     - service: switch.turn_off
-      entity_id: switch.terrace_outside_light_switch
+      entity_id: switch.terrace_outside_light_current_value
     - service: light.turn_off
-      entity_id: light.balcony_outside_light_level
+      entity_id: light.balcony_outside_light_current_value
     - service: switch.turn_off
-      entity_id: switch.entrance_outside_light_switch
+      entity_id: switch.entrance_outside_light_current_value
 
 - id: '93'    
   alias: 'Downstairs outside lights off'
@@ -49,4 +49,4 @@
       to: 'on'
   action:
     - service: switch.turn_off
-      entity_id: switch.terrace_outside_light_switch
+      entity_id: switch.terrace_outside_light_current_value

@@ -2,10 +2,11 @@
   alias: 'Guests awake'
   trigger:
     platform: event
-    event_type: zwave.scene_activated
+    event_type: zwave_js_value_notification
     event_data:
-      entity_id: zwave.guest_bedroom_dimmer
-      scene_id: 10
+      node_id: 94
+      command_class: 43
+      value: 10
   condition:
     condition: state
     entity_id: input_boolean.guests_present
@@ -19,10 +20,11 @@
   alias: 'Guests sleeping'
   trigger:
     platform: event
-    event_type: zwave.scene_activated
+    event_type: zwave_js_value_notification
     event_data:
-      entity_id: zwave.guest_bedroom_dimmer
-      scene_id: 11
+      node_id: 94
+      command_class: 43
+      value: 11
   condition:
     condition: and
     conditions:
@@ -36,3 +38,30 @@
       data:
         entity_id: input_boolean.sleep_state_guests
 
+- id: 'MFNQAWR8PF8QVK'
+  alias: 'Light off'
+  trigger:
+    platform: event
+    event_type: zwave_js_value_notification
+    event_data:
+      node_id: 94
+      command_class: 43
+      value: 11
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.doorframe, light.ceiling
+
+- id: '7MXNCE7MMQDD6J'
+  alias: 'Light on'
+  trigger:
+    platform: event
+    event_type: zwave_js_value_notification
+    event_data:
+      node_id: 94
+      command_class: 43
+      value: 10
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.doorframe, light.ceiling

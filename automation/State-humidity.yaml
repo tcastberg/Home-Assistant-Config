@@ -6,16 +6,16 @@
     above: 4
     below: 9
   condition:
-  - condition: or
+    condition: or
     conditions:
       - condition: numeric_state
         entity_id: fan.humidity_fan
-        value_template: '{{ states.fan.humidity_fan.attributes.speed }}'
-        above: 1
+        attribute: percentage
+        above: 60
       - condition: numeric_state
         entity_id: fan.humidity_fan
-        value_template: '{{ states.fan.humidity_fan.attributes.speed }}'
-        below: 1
+        attribute: percentage
+        below: 40
       - condition: state
         entity_id: fan.humidity_fan
         state: 'off'
@@ -23,7 +23,7 @@
     - service: fan.turn_on
       entity_id: fan.humidity_fan
       data:
-        speed: 1
+        percentage: 50
 
 - id: '32'
   alias: 'Ventilation high'
@@ -34,13 +34,13 @@
   condition:
     condition: numeric_state
     entity_id: fan.humidity_fan
-    value_template: '{{ states.fan.humidity_fan.attributes.speed }}'
-    below: 3
+    attribute: percentage
+    below: 90
   action:
     - service: fan.turn_on
       entity_id: fan.humidity_fan
       data:
-        speed: 3
+        percentage: 100
 
 - id: '33'
   alias: 'Ventilation off'

@@ -12,7 +12,6 @@
   lights:
     - light.nook
     - light.sofa
-    - light.serving_table
   start_time: '06:00'
   stop_time: '23:59'
   start_colortemp: 5000
@@ -25,38 +24,12 @@
 - platform: flux
   name: Nook flux
   lights:
-    - light.nook_mood_level
+    - light.nook_mood
   start_time: '06:00'
   stop_time: '23:59'
   start_colortemp: 3500
   sunset_colortemp: 2000
   stop_colortemp: 1100
-  disable_brightness_adjust: true
-  mode: rgb
-  interval: 120
-
-- platform: flux
-  name: Ingrid flux
-  lights:
-    - light.ingrid_bedroom_bed_light_level
-  start_time: '06:00'
-  stop_time: '23:59'
-  start_colortemp: 4000
-  sunset_colortemp: 2100
-  stop_colortemp: 1500
-  disable_brightness_adjust: true
-  mode: rgb
-  interval: 120
-
-- platform: flux
-  name: TV backlight flux
-  lights:
-    - light.bedroom_tv_backlight_level
-  start_time: '06:00'
-  stop_time: '23:59'
-  start_colortemp: 4000
-  sunset_colortemp: 2100
-  stop_colortemp: 1500
   disable_brightness_adjust: true
   mode: rgb
   interval: 120

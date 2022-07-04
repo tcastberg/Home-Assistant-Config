@@ -1,0 +1,58 @@
+- id: C99K46Dykz4XLvkd3JHH
+  alias: 'Family bathroom heating high'
+  trigger:
+    - platform: time
+      at: "4:00:00"
+    - platform: time
+      at: "19:00:00"
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+  condition:
+    - condition: state
+      entity_id: input_select.home_state
+      state: 
+        - Home
+        - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.family_bathroom_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.family_bathroom_floor_heating
+        temperature: 29
+
+- id: zBbXv9Vo9uX6kwmd7eK7
+  alias: 'Family bathroom heating low'
+  trigger:
+    - platform: time
+      at: "22:00:00"
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_select.home_state
+      state: 
+        - Home
+        - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.family_bathroom_floor_heating
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.family_bathroom_floor_heating
+        temperature: 22
+
+- id: 2kHZbjpcN8rvidsPYqXn
+  alias: 'Family bathroom heating off'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.family_bathroom_floor_heating

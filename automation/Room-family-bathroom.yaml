@@ -1,12 +1,12 @@
-- id: '23'    
+- id: zspuRL76f9CpZDNhrHP5
   alias: 'Family bathroom active'
   trigger:
-  - entity_id: binary_sensor.family_bathroom_multisensor_sensor
+  - entity_id: binary_sensor.family_bathroom_multisensor_any
     platform: state
     to: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.family_bathroom_dimmer_level
+      entity_id: light.family_bathroom_dimmer_current_value
       data_template:
         brightness: >
           {%- if is_state('binary_sensor.morning', 'on') %}
@@ -19,14 +19,13 @@
             125
           {%- endif %}
 
-- id: '24'    
+- id: umaMCs9TCdnrZtEKVjoc
   alias: 'Family bathroom off'
   trigger:
-  - entity_id: binary_sensor.family_bathroom_multisensor_sensor
+  - entity_id: binary_sensor.family_bathroom_multisensor_any
     platform: state
     to: 'off'
-    for:
-      minutes: 5
+    for: "00:10:00"
   action:
     - service: light.turn_off
-      entity_id: light.family_bathroom_dimmer_level
+      entity_id: light.family_bathroom_dimmer_current_value

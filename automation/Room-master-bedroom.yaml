@@ -32,28 +32,20 @@
     - service: cover.open_cover
       data:
         entity_id: cover.master_bedroom_blind
-    - service: switch.turn_on
-      data:
-        entity_id: switch.tv_backlight_flux
     - service: light.turn_on
       data:
-        entity_id: light.bedside_lamp_dimmer_level
-        brightness: 150
-    - service: light.turn_on
-      data:
-        entity_id: light.bedroom_tv_backlight_level
-        brightness: 255
-        rgb_color: [211,221,247]
+        entity_id: light.bedside_lamp_dimmer_current_value
+        brightness: 100
     - service: light.turn_on
       data:
         entity_id: light.dressing_table
         brightness: 254
     - service: switch.turn_on
       data:
-        entity_id: switch.dressing_room_wardrobes_switch
+        entity_id: switch.dressing_room_wardrobes_current_value
     - service: light.turn_on
       data:
-        entity_id: light.changing_room_ceiling_light_level
+        entity_id: light.changing_room_ceiling_light_current_value
 
 - id: '41'    
   alias: 'Master bedroom day'
@@ -77,18 +69,15 @@
     - service: cover.open_cover
       data:
         entity_id: cover.master_bedroom_blind
-    - service: switch.turn_off
-      data:
-        entity_id: switch.tv_backlight_flux
     - service: light.turn_off
       data:
-        entity_id: light.bedside_lamp_dimmer_level
-    - service: light.turn_off
-      data:
-        entity_id: light.bedroom_tv_backlight_level
+        entity_id: light.bedside_lamp_dimmer_current_value
     - service: light.turn_off
       data:
         entity_id: light.dressing_table
+    - service: switch.turn_off
+      data:
+        entity_id: switch.dressing_room_wardrobes_current_value
 
 - id: '42'    
   alias: 'Master bedroom evening'
@@ -98,6 +87,7 @@
       to: 'on'
       for:
         hours: 2
+        minutes: 30
     - platform: state
       entity_id: input_select.home_state
       to: 'Home'
@@ -120,25 +110,17 @@
     - service: cover.close_cover
       data:
         entity_id: cover.master_bedroom_blind
-    - service: switch.turn_on
-      data:
-        entity_id: switch.tv_backlight_flux
     - service: light.turn_on
       data:
-        entity_id: light.bedside_lamp_dimmer_level
-        brightness: 150
-    - service: light.turn_on
-      data:
-        entity_id: light.bedroom_tv_backlight_level
-        brightness: 255
-        rgb_color: [255,165,0]
+        entity_id: light.bedside_lamp_dimmer_current_value
+        brightness: 75
     - service: light.turn_on
       data:
         entity_id: light.dressing_table
         brightness: 150
     - service: switch.turn_on
       data:
-        entity_id: switch.dressing_room_wardrobes_switch
+        entity_id: switch.dressing_room_wardrobes_current_value
 
 - id: '43'    
   alias: 'Master bedroom off'
@@ -156,24 +138,18 @@
     - service: cover.close_cover
       data:
         entity_id: cover.master_bedroom_blind
-    - service: switch.turn_off
-      data:
-        entity_id: switch.tv_backlight_flux
     - service: light.turn_off
       data:
-        entity_id: light.bedside_lamp_dimmer_level
-    - service: light.turn_off
-      data:
-        entity_id: light.bedroom_tv_backlight_level
+        entity_id: light.bedside_lamp_dimmer_current_value
     - service: light.turn_off
       data:
         entity_id: light.dressing_table
     - service: switch.turn_off
       data:
-        entity_id: switch.dressing_room_wardrobes_switch
+        entity_id: switch.dressing_room_wardrobes_current_value
     - service: light.turn_off
       data:
-        entity_id: light.changing_room_ceiling_light_level
+        entity_id: light.changing_room_ceiling_light_current_value
 
 - id: '115'    
   alias: 'TV master bedroom switch on'
@@ -192,7 +168,7 @@
   action:
     - service: switch.turn_on
       data:
-        entity_id: switch.master_bedroom_tv_switch
+        entity_id: switch.master_bedroom_tv_current_value
 
 - id: '116'    
   alias: 'TV master switch off'
@@ -205,13 +181,13 @@
   action:
     - service: switch.turn_off
       data:
-        entity_id: switch.master_bedroom_tv_switch
+        entity_id: switch.master_bedroom_tv_current_value
 
 - id: '69'    
   alias: 'Dressing room lights active'
   trigger:
     - platform: state
-      entity_id: binary_sensor.dressing_room_motion_sensor_sensor
+      entity_id: binary_sensor.dressing_room_motion_sensor_home_security_motion_detection
       to: 'on'
   condition:
     condition: state
@@ -220,61 +196,19 @@
   action:
     - service: light.turn_on
       data:
-        entity_id: light.changing_room_ceiling_light_level
-    - service: switch.turn_on
-      data:
-        entity_id: switch.dressing_room_wardrobes_switch
+        entity_id: light.changing_room_ceiling_light_current_value
 
 - id: '70'    
   alias: 'Dressing room ceiling off'
   trigger:
     - platform: state
-      entity_id: binary_sensor.dressing_room_motion_sensor_sensor
+      entity_id: binary_sensor.dressing_room_motion_sensor_home_security_motion_detection
       to: 'off'
-      for:
-        minutes: 7
-  condition:
-    condition: state
-    entity_id: binary_sensor.sleep_state
-    state: 'off'
+      for: "00:03:00"
   action:
     - service: light.turn_off
       data:
-        entity_id: light.changing_room_ceiling_light_level
-    - service: switch.turn_off
-      data:
-        entity_id: switch.dressing_room_wardrobes_switch
-
-#- id: '80'    
-#  alias: 'Dressing room light active night'
-#  trigger:
-#    - platform: state
-#      entity_id: binary_sensor.dressing_room_motion_sensor_sensor
-#      to: 'on'
-#  condition:
-#    condition: state
-#    entity_id: binary_sensor.sleep_state
-#    state: 'on'
-#  action:
-#    - service: switch.turn_on
-#      data:
-#        entity_id: switch.dressing_room_wardrobes_switch
-
-- id: '81'    
-  alias: 'Dressing room light off night'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.dressing_room_motion_sensor_sensor
-      to: 'off'
-  condition:
-    condition: state
-    entity_id: binary_sensor.sleep_state
-    state: 'on'
-  action:
-    - service: switch.turn_off
-      data:
-        entity_id: switch.dressing_room_wardrobes_switch
-
+        entity_id: light.changing_room_ceiling_light_current_value
 
 
 #- id: '34'
@@ -301,7 +235,7 @@
 #  action:
 #    - service: python_script.transition_light
 #      data:
-#        entity_id: light.bedside_lamp_dimmer_level
+#        entity_id: light.bedside_lamp_dimmer_current_value
 #        transition: 1800
 #        brightness: 255
 
@@ -357,33 +291,33 @@
       data:
         entity_id: input_boolean.sleep_state_lande
 
-- id: '12'
-  alias: 'Wakeup alarm 2'
-  trigger:
-    platform: state
-    entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande
-    to: 'off'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: 'on'
-      - condition: state
-        entity_id: input_select.home_state
-        state: 'Home'
-      - condition: state
-        entity_id: input_boolean.sleep_state_tor
-        state: 'off'
-      - condition: state
-        entity_id: input_boolean.sleep_state_tor
-        state: 'off'
-  action:
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.changing_room
-        volume_level: 0.25
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.changing_room
-        source: 'BBC World Service News'
+#- id: '12'
+#  alias: 'Wakeup alarm 2'
+#  trigger:
+#    platform: state
+#    entity_id: input_boolean.sleep_state_tor, input_boolean.sleep_state_lande
+#    to: 'off'
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: state
+#        entity_id: binary_sensor.workday_sensor
+#        state: 'on'
+#      - condition: state
+#        entity_id: input_select.home_state
+#        state: 'Home'
+#      - condition: state
+#        entity_id: input_boolean.sleep_state_tor
+#        state: 'off'
+#      - condition: state
+#        entity_id: input_boolean.sleep_state_tor
+#        state: 'off'
+#  action:
+#    - service: media_player.volume_set
+#      data:
+#        entity_id: media_player.changing_room
+#        volume_level: 0.25
+#    - service: media_player.select_source
+#      data:
+#        entity_id: media_player.changing_room
+#        source: 'BBC World Service News'

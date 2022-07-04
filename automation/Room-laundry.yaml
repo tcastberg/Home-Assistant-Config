@@ -1,23 +1,22 @@
 - id: '25'    
   alias: 'Laundry active'
   trigger:
-  - entity_id: binary_sensor.laundry_multisensor_sensor
+  - entity_id: binary_sensor.laundry_multisensor_home_security_motion_detection
     platform: state
     to: 'on'
   action:
     - service: light.turn_on
-      entity_id: light.laundry_dimmer_level, light.laundry_bench_light
+      entity_id: light.laundry_dimmer_current_value, light.laundry_bench_light
       data:
         brightness_pct: 100
 
 - id: '26'    
   alias: 'Laundry off'
   trigger:
-  - entity_id: binary_sensor.laundry_multisensor_sensor
+  - entity_id: binary_sensor.laundry_multisensor_home_security_motion_detection
     platform: state
     to: 'off'
-    for:
-      minutes: 5
+    for: "00:05:00"
   action:
     - service: light.turn_off
-      entity_id: light.laundry_dimmer_level, light.laundry_bench_light
+      entity_id: light.laundry_dimmer_current_value, light.laundry_bench_light

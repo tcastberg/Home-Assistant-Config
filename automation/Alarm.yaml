@@ -1,0 +1,319 @@
+- id: "alarm_disarm_on_tag"
+  alias: "Alarm - Disarm on tag"
+  mode: single
+  max_exceeded: silent
+  variables:
+    scanners:
+      b8771ac318956e76: "Tor Magnus"
+      e03bddc54696a6fc: "Lande"
+      b8771ac318956e78: "Ingrid Sofia"
+  trigger:
+    platform: event
+    event_type: tag_scanned
+    event_data:
+      tag_id: "5d35ac1d-0c30-473e-aecc-3f45cb2b9012"
+  condition:
+    - "{{ trigger.event.data.device_id in scanners }}"
+  action:
+    - variables:
+        person: "{{ scanners[trigger.event.data.device_id] }}"
+    - service: script.turn_on
+      target:
+        entity_id: script.disarm_alarm_home
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm disarmed'
+        message: '{{ person }} disarmed the alarm'
+        data:
+          tag: 'alarm-alert'
+    - delay: 10
+
+- id: "alarm_arm_on_tag"
+  alias: "Alarm - Arm on tag"
+  mode: single
+  max_exceeded: silent
+  variables:
+    scanners:
+      b8771ac318956e76: "Tor Magnus"
+      e03bddc54696a6fc: "Lande"
+      b8771ac318956e78: "Ingrid Sofia"
+  trigger:
+    platform: event
+    event_type: tag_scanned
+    event_data:
+      tag_id: "bf1155a3-833c-477a-8f83-9e84150fad03"
+  condition:
+    - "{{ trigger.event.data.device_id in scanners }}"
+  action:
+    - variables:
+        person: "{{ scanners[trigger.event.data.device_id] }}"
+    - service: alarm_control_panel.alarm_arm_away
+      data:
+        entity_id: alarm_control_panel.home_alarm
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm armed'
+        message: '{{ person }} armed the alarm'
+        data:
+          tag: 'alarm-alert'
+    - delay: 10
+
+- id: 'alarm_door_or_window_open'
+  alias: 'Alarm - Door or window open when home alarm pending'
+  mode: single
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: 'arming'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.backhall_garden_door_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.balcony_door_sensor_access_control_window_door_is_open
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.bedroom_garden_door_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.kitchen_window_3_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.ingrid_bedroom_window_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.guest_bedroom_window_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.nook_window_any
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.laundry_window_any
+        state: 'on'
+  action:
+    - service: script.turn_on
+      target:
+        entity_id: script.disarm_alarm_home
+    - service: notify.mobile_app_tor_magnus_p30_pro 
+      data_template:
+        title: "Alarm FAILED"
+        message: >
+          'The following doors or windows are open:'
+          {% if is_state('binary_sensor.backhall_garden_door_any', 'on') %}Downstairs garden door{%endif%}
+          {% if is_state('binary_sensor.balcony_door_sensor_access_control_window_door_is_open', 'on') %}Balcony door{%endif%}
+          {% if is_state('binary_sensor.bedroom_garden_door_any', 'on') %}Bedroom garden door{%endif%}
+          {% if is_state('binary_sensor.kitchen_window_3_any', 'on') %}Kitchen window{%endif%}
+          {% if is_state('binary_sensor.ingrid_bedroom_window_any', 'on') %}Ingrid bedroom window{%endif%}
+          {% if is_state('binary_sensor.guest_bedroom_window_any', 'on') %}Guest bedroom window{%endif%}
+          {% if is_state('binary_sensor.nook_window_any', 'on') %}Nook window{%endif%}
+          {% if is_state('binary_sensor.laundry_window_any', 'on') %}Laundry window{%endif%}
+        data:
+          tag: 'alarm-alert'
+
+- id: 'alarm_trigger_armed_away'
+  alias: 'Alarm - Trigger armed away'
+  mode: single
+  max_exceeded: silent
+  variables:
+    sensors:
+      binary_sensor.dining_room_stairs_motion_sensor_home_security_motion_detection: "Dining room motion sensor"
+      binary_sensor.dressing_room_motion_sensor_home_security_motion_detection: "Dressing room motion sensor"
+      binary_sensor.entrance_hallway_motion_sensor_home_security_motion_detection: "Entrance hallway motion sensor"
+      binary_sensor.family_bathroom_multisensor_any: "Family bathroom motion sensor"
+      binary_sensor.hallway_toilet_motion_sensor_home_security_motion_detection: "Hallway toilet motion sensor"
+      binary_sensor.ingrid_bedroom_motion_sensor_home_security_motion_detection: "Ingrid bedroom motion sensor"
+      binary_sensor.kitchen_island_motion_sensor_home_security_motion_detection: "Kitchen island motion sensor"
+      binary_sensor.kitchen_table_motion_sensor_home_security_motion_detection: "Kitchen table motion sensor"
+      binary_sensor.master_bathroom_multisensor_home_security_motion_detection: "Master bathroom motion sensor"
+      binary_sensor.training_room_motion_sensor_home_security_motion_detection: "Training room motion sensor"
+      binary_sensor.tv_lounge_motion_sensor_home_security_motion_detection: "TV lounge motion sensor"
+      binary_sensor.backhall_garden_door_any: "Downstairs hallway garden door"
+      binary_sensor.balcony_door_sensor_access_control_window_door_is_open: "Balcony door"
+      binary_sensor.bedroom_garden_door_any: "Master bedroom garden door"
+      binary_sensor.front_door_lock_the_current_status_of_the_door: "Front door"
+      binary_sensor.kitchen_window_3_any: "Kitchen window"
+      binary_sensor.ingrid_bedroom_window_any: "Ingrid bedroom window"
+      binary_sensor.guest_bedroom_window_any: "Guest bedroom window"
+      binary_sensor.nook_window_any: "Nook window"
+      laundry_window_any: "Laundry window"
+  trigger:
+    platform: event
+    event_type: state_changed
+  condition:
+    condition: and
+    conditions:
+      - "{{ trigger.event.data.entity_id in sensors }}"
+      - "{{ trigger.event.data.new_state.state == 'on' }}"
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: 'armed_away'
+  action:
+    - service: alarm_control_panel.alarm_trigger
+      entity_id: alarm_control_panel.home_alarm
+    - variables:
+        device: "{{ sensors[trigger.event.data.entity_id] }}"
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm triggered'
+        message: '{{ device }} triggered the alarm'
+        data:
+          tag: 'alarm-alert'
+
+- id: 'alarm_trigger_armed_home'
+  alias: 'Alarm - Trigger armed home'
+  mode: single
+  max_exceeded: silent
+  variables:
+    sensors:
+      binary_sensor.backhall_garden_door_any: "Downstairs hallway garden door"
+      binary_sensor.balcony_door_sensor_access_control_window_door_is_open: "Balcony door"
+      binary_sensor.bedroom_garden_door_any: "Master bedroom garden door"
+      binary_sensor.front_door_lock_the_current_status_of_the_door: "Front door"
+      binary_sensor.kitchen_window_3_any: "Kitchen window"
+      binary_sensor.ingrid_bedroom_window_any: "Ingrid bedroom window"
+      binary_sensor.guest_bedroom_window_any: "Guest bedroom window"
+      binary_sensor.nook_window_any: "Nook window"
+      laundry_window_any: "Laundry window"
+  trigger:
+    platform: event
+    event_type: state_changed
+  condition:
+    condition: and
+    conditions:
+      - "{{ trigger.event.data.entity_id in sensors }}"
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: 'armed_home'
+  action:
+    - service: alarm_control_panel.alarm_trigger
+      entity_id: alarm_control_panel.home_alarm
+    - variables:
+        device: "{{ sensors[trigger.event.data.entity_id] }}"
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: '{{ device }} triggered the alarm'
+        data:
+          tag: 'alarm-alert'
+
+- id: "alarm_pending"
+  alias: "Alarm - Pending"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      from: "armed_away" # No need for armed_home, there's no pending delay there.
+      to: "pending"
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'Please disarm the alarm'
+        data:
+          tag: 'alarm-state'
+    #- service: script.turn_on
+    #  entity_id: script.say_sonos
+    #  data:
+    #    variables:
+    #      where: 'dining_room'
+    #      what: 'Please disarm the alarm'
+    # Start a timer to repeat the warning
+    - service: timer.start
+      entity_id: timer.alarm_pending
+
+- id: "alarm_pending_repeat"
+  alias: "Alarm - Pending Repeat"
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.alarm_pending
+  condition:
+    condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: pending
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'Disarm the alarm now!'
+        data:
+          tag: 'alarm-state'
+    #- service: script.turn_on
+    #  entity_id: script.say_sonos
+    #  data:
+    #    variables:
+    #      where: 'dining_room'
+    #      what: "Disarm the alarm now!"
+    # Restart the timer
+    - service: timer.start
+      entity_id: timer.alarm_pending
+
+- id: "alarm_armed_home"
+  alias: "Alarm - Armed Home"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: "armed_home"
+      from: "disarmed"
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'The alarm transitioned to Armed Home'
+        data:
+          tag: 'alarm-state'
+
+- id: "alarm_armed_away"
+  alias: "Alarm - Armed Away"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: "armed_away"
+      from: "arming"
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'The alarm transitioned to Armed Away'
+        data:
+          tag: 'alarm-state'
+
+- id: "alarm_disarmed"
+  alias: "Alarm - Disarmed"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: "disarmed"
+      from:
+        - "armed_away"
+        - "armed_home"
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Alarm'
+        message: 'The alarm has been disarmed'
+        data:
+          tag: 'alarm-state'
+
+#- id: "alarm_triggered"
+#  alias: "Alarm - not Triggered"
+#  trigger:
+#    - platform: state
+#      entity_id: alarm_control_panel.home_alarm
+#      to: "triggered"
+#  action:
+#    - service: switch.turn_on
+#      entity_id: switch.siren_current_value
+#
+#- id: "alarm_not_triggered"
+#  alias: "Alarm - not Triggered"
+#  trigger:
+#    - platform: state
+#      entity_id: alarm_control_panel.home_alarm
+#      from: "triggered"
+#  action:
+#    - service: switch.turn_off
+#      entity_id: switch.siren_current_value

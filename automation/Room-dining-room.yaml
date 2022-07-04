@@ -13,7 +13,7 @@
       for:
         seconds: 20
     - platform: numeric_state
-      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
       below: 150
       for:
         seconds: 120
@@ -27,7 +27,7 @@
         entity_id: input_select.home_state
         state: 'Home'
       - condition: numeric_state
-        entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+        entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
         below: 150
   action:
     - choose:
@@ -40,15 +40,15 @@
               entity_id: switch.tradfri_flux, switch.nook_flux
             - service: light.turn_on
               data:
-                entity_id: light.nook_table, light.bookshelf, light.sofa, light.cabinets, light.serving_table, light.nook, light.nook_mood_level
+                entity_id: light.bookshelf, light.sofa, light.cabinets, light.nook_table, light.nook, light.nook_mood
                 brightness_pct: 90
             - service: light.turn_on
               data:
-                entity_id: light.dining_room_rail_1_level, light.dining_room_rail_2_level
+                entity_id: light.dining_room_rail_1, light.dining_room_rail_2
                 brightness_pct: 40
             - service: light.turn_on
               data:
-                entity_id: light.dining_room_stairs_level
+                entity_id: light.dining_room_rail_3
                 brightness_pct: 20
         - conditions:
             - condition: state
@@ -60,15 +60,15 @@
                 entity_id: switch.tradfri_flux, switch.nook_flux
             - service: light.turn_on
               data:
-                entity_id: light.nook_table, light.bookshelf, light.sofa, light.cabinets, light.serving_table, light.nook, light.nook_mood_level
+                entity_id: light.bookshelf, light.sofa, light.cabinets, light.nook_table, light.nook, light.nook_mood
                 brightness_pct: 100
             - service: light.turn_on
               data:
-                entity_id: light.dining_room_rail_1_level, light.dining_room_rail_2_level
+                entity_id: light.dining_room_rail_1, light.dining_room_rail_2
                 brightness_pct: 50
             - service: light.turn_on
               data:
-                entity_id: light.dining_room_stairs_level
+                entity_id: light.dining_room_rail_3
                 brightness_pct: 30
         - conditions:
             - condition: state
@@ -80,15 +80,15 @@
                 entity_id: switch.tradfri_flux, switch.nook_flux
             - service: light.turn_on
               data:
-                entity_id: light.nook_table, light.bookshelf, light.sofa, light.cabinets, light.serving_table, light.nook, light.nook_mood_level
+                entity_id: light.bookshelf, light.sofa, light.cabinets, light.nook_table, light.nook, light.nook_mood
                 brightness_pct: 85
             - service: light.turn_on
               data:
-                entity_id: light.dining_room_rail_1_level, light.dining_room_rail_2_level
+                entity_id: light.dining_room_rail_1, light.dining_room_rail_2
                 brightness_pct: 10
             - service: light.turn_on
               data:
-                entity_id: light.dining_room_stairs_level
+                entity_id: light.dining_room_rail_3
                 brightness_pct: 5
         - conditions:
             - condition: state
@@ -100,15 +100,15 @@
                 entity_id: switch.tradfri_flux, switch.nook_flux
             - service: light.turn_on
               data:
-                entity_id: light.nook_table, light.bookshelf, light.sofa, light.cabinets, light.serving_table, light.nook, light.nook_mood_level
+                entity_id: light.bookshelf, light.sofa, light.cabinets, light.nook_table, light.nook, light.nook_mood
                 brightness_pct: 25
             - service: light.turn_on
               data:
-                entity_id: light.dining_room_rail_1_level, light.dining_room_rail_2_level
+                entity_id: light.dining_room_rail_1, light.dining_room_rail_2
                 brightness_pct: 3
             - service: light.turn_on
               data:
-                entity_id: light.dining_room_stairs_level
+                entity_id: light.dining_room_rail_3
                 brightness_pct: 1
 
 
@@ -131,7 +131,7 @@
       for:
         seconds: 20
     - platform: numeric_state
-      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
       above: 200
       for:
         seconds: 120
@@ -141,17 +141,16 @@
         entity_id: switch.tradfri_flux, switch.nook_flux
     - service: light.turn_off
       data:
-        entity_id: light.sofa, light.cabinets, light.serving_table, light.nook, light.nook_table, light.bookshelf, light.dining_room_rail_1_level, light.dining_room_rail_2_level, light.dining_room_stairs_level, light.nook_mood_level
-
+        entity_id: light.sofa, light.cabinets, light.nook_table, light.nook, light.bookshelf, light.dining_room_rail_1, light.dining_room_rail_2, light.dining_room_rail_3, light.nook_mood
 
 - id: '72'    
   alias: 'Dining room blinds close'
   trigger:
     - platform: numeric_state
-      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
       above: 400
       for:
-        seconds: 120
+        minutes: 2
     - platform: state
       entity_id: binary_sensor.sleep_state
       to: 'on'
@@ -179,7 +178,7 @@
     - choose:
         - conditions:
               - condition: state
-                entity_id: binary_sensor.nook_window_sensor
+                entity_id: binary_sensor.nook_window_any
                 state: "off"
           sequence:
               - service: cover.close_cover
@@ -193,10 +192,10 @@
   alias: 'Dining room blinds open'
   trigger:
     - platform: numeric_state
-      entity_id: sensor.dining_room_stairs_motion_sensor_luminance
-      below: 250
+      entity_id: sensor.dining_room_stairs_motion_sensor_illuminance
+      below: 200
       for:
-        minutes: 5
+        minutes: 4
     - platform: state
       entity_id: binary_sensor.sleep_state
       to: 'off'

@@ -1,0 +1,62 @@
+- id: 'opTM8EhbouJQfDSY9SQAW'    
+  alias: 'Electricity price indicator'
+  trigger:
+    - platform: state
+      entity_id: sensor.price_level
+  action:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'VERY_CHEAP'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                brightness_pct: 100
+                color_name: 'green'
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'CHEAP'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                brightness_pct: 100
+                color_name: 'greenyellow'
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'NORMAL'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                rgb_color: [255, 185, 127]
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'EXPENSIVE'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                brightness_pct: 100
+                color_name: 'red'
+        - conditions:
+            - condition: state
+              entity_id: sensor.price_level
+              state: 
+                - 'VERY_EXPENSIVE'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.serving_table
+                brightness_pct: 100
+                color_name: 'darkred'
+

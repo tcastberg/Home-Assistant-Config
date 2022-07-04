@@ -6,6 +6,8 @@ homeassistant:
    - type: trusted_networks
      trusted_networks:
         - 127.0.0.1
+  #external_url: "https://hass.continually-evolving.net:8123"
+  #internal_url: "https://hass.continually-evolving.net:8123"
 
 auth:
 # Discover some devices automatically
@@ -21,19 +23,23 @@ frontend:
 config:
 person:
 map:
+energy:
 
 recorder:
   db_url: !secret mysql_connection
+  auto_purge: true
+  purge_keep_days: 7
+  commit_interval: 10
 
 http:
   ip_ban_enabled: true
   ssl_certificate: /config/ssl/fullchain.pem
   ssl_key: /config/ssl/privkey.pem
 
-zwave:
-  usb_path: /dev/ttyACM0
-  network_key: !secret zwave_network_key
-  autoheal: false
+#zwave:
+  #usb_path: /dev/ttyACM0
+  #network_key: !secret zwave_network_key
+  #autoheal: false
 
 prometheus:
   component_config_glob:
@@ -55,6 +61,34 @@ device_tracker:
 #  - platform: icloud
 #    username: !secret icloud_username
 #    password: !secret icloud_password
+
+alarm_control_panel:
+  - platform: manual
+    name: Home Alarm
+    code: !secret alarm_control_panel_code
+    # Don't require the code to arm the alarm
+    code_arm_required: false
+    # Arm again after triggering
+    disarm_after_trigger: false
+    # Delay from arming and becoming armed, eg. to leave the house.
+    arming_time: 120
+    # Allow time to disarm the alarm before it triggers, eg. when arriving home
+    delay_time: 60
+    # Amount of time the alarm is triggered for
+    trigger_time: 600
+    disarmed:
+      # Ensure the alarm can never be directly triggered when disarmed
+      trigger_time: 0
+    armed_home:
+      # Leave no delay between arming -> armed
+      arming_time: 0
+      # Leave no delay between pending -> triggered
+      delay_time: 0
+
+timer:
+  # Used to repeat notifications that the alarm needs to be disarmed
+  alarm_pending:
+    duration: "00:00:10"
 
 mobile_app:
 
@@ -119,35 +153,26 @@ proximity:
     unit_of_measurement: m
 
 remote:
-#  - platform: xiaomi_miio
-#    name: "Kitchen remote"
-#    host: !secret xiaomi_ir_2_ip
-#    token: !secret xiaomi_ir_2_token
-#    commands:
-#      power:
-#        command:
-#          - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
-#      hdmi1:
-#        command:
-#          - 'pronto:0000 006D 0000 0022 00AB 00AB 0015 003F 0015 003F 0015 003F 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003F 0015 003F 0015 003F 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003F 0015 0015 0015 0015 0015 003F 0015 0015 0015 003F 0015 003F 0015 003F 0015 0015 0015 003F 0015 003F 0015 0015 0015 003F 0015 0015 0015 0015 0015 0015 0015 071C'
-#      hdmi2:
-#        command:
-#          - 'pronto:0000 006D 0000 0022 00AC 00AB 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0689'
-#      hdmi3:
-#        command:
-#          - 'pronto:0000 006D 0000 0022 00AC 00AC 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0689'
-#      hdmi4:
-#        command:
-#          - 'pronto:0000 006D 0000 0022 00AC 00AB 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0016 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0689'
-#      volume_up:
-#        command:
-#          - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
-#      volume_down:
-#        command:
-#          - 'pronto:0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e'
-#      mute:
-#        command:
-#          - 'pronto:0000 006c 0022 0003 00ab 00aa 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 003f 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0714 00ab 00aa 0015 0015 0015 0e91'
+  - platform: xiaomi_miio
+    name: "Ingrid remote"
+    host: !secret xiaomi_ir_2_ip
+    token: !secret xiaomi_ir_2_token
+    commands:
+      power:
+        command:
+          - 'raw:nE5mswlk0mk0mEsmoBBABnNJzMJZNpgAOsxm8zAUIAwgEDAH8AeAPDmwAazGbTcAjpqCCYCEABlMZsBX4DXgpUAPwKvgD+DbQMnzGbBvsAG8xm04AI8Aj5ZMIAA='
+      volume_up:
+        command:
+          - 'raw:nE5mswlk0mgAhTWaABlNgDCnMwlk2mAA6zGbzMBQgDCAQMAfwB4A0IDx5jNpuARYCrADnMZsCeQBEgV+ARoHCA9FMZuC+YQZgKGDPQEDgJ4Bx4ECAomAgc2nABBBzEAR4BHgESCUUwgA'
+      volume_down:
+        command:
+          - 'raw:nE5mswlk0mgAhTWaABlNgDCnMwlk2mAA6zGbzMBQgDCAQMAfwB4AjMDggBzmM2A1IEk5jNwGfAQQAwpjNpuAR4BHgEMEgwItgDoAu4D/gJuAu4JCBsmAGUxm04AIIAMgEeAI8AjZhAA='
+      mute:
+        command:
+          - 'raw:nE5mswlk0mgAhTWaABlNgDCnMwlk2mAA6zGbzMBQgDCAQMAf5qA2c3AHYDggBzmM2A1IEkwCFAVMFYwGTm4GRgIFMZsBmYBHgEeAQwSjgi+AhAPDgDoBh4JMBMpOACCDnMANgEIAI8AiphAA'
+      light_onoff:
+        command:
+          - 'raw:nMwmMwlk0mk2mEsms5ADKZgD0AmYAZzgBfgB/AHqYzaagEPNAEfAI8AhgYSmM2BiMBqwf8Bn8Adwl6A4UBDwCPAI8IjwboAZiYQA'
   - platform: xiaomi_miio
     name: "TV Room remote"
     host: !secret xiaomi_ir_ip
@@ -211,8 +236,6 @@ logbook:
 # Track the sun
 sun:
 
-tibber:
-  access_token: !secret tibber_token
 
 #cast:
 #  media_player:
@@ -233,68 +256,10 @@ sonos:
       - 192.168.0.211
       - 192.168.0.212
 
-media_player:
-  - platform: universal
-    name: TV Room TV
-    state_template: >
-      {% if states("sensor.tv_room_tv_power") | float > 10 %}
-        on
-      {% else %}
-        off
-      {% endif %}
-    attributes:
-      source: input_select.tv_input
-      source_list: input_select.tv_input|options
-    commands:
-      turn_on:
-        service: remote.send_command
-        data:
-          entity_id: remote.xiaomi_miio_192_168_0_161
-          command: 'power'
-      turn_off:
-        service: remote.send_command
-        data:
-          entity_id: remote.xiaomi_miio_192_168_0_161
-          command: power
-      volume_up:
-        service: remote.send_command
-        data:
-          entity_id: remote.xiaomi_miio_192_168_0_161
-          command: volume_up
-      volume_down:
-        service: remote.send_command
-        data:
-          entity_id: remote.xiaomi_miio_192_168_0_161
-          command: volume_down
-      volume_mute:
-        service: remote.send_command
-        data:
-          entity_id: remote.xiaomi_miio_192_168_0_161
-          command: mute
-      select_source:
-        service: script.change_input_source
-        data_template:
-          source: "{{ source }}"
-
-tesla:
-  username: !secret tesla_username
-  password: !secret tesla_password
-  scan_interval: 660
-
 vacuum:
-  - platform: xiaomi_miio
-    host: !secret xiaomi_roborock_ip
-    token: !secret xiaomi_roborock_token
-
-verisure:
-  username: !secret verisure_username
-  password: !secret verisure_password
-  smartplugs: 0
-  locks: 0
-  thermometers: 0
-  mouse: 0
-  door_window: 0
-
+    - platform: xiaomi_miio
+      host: !secret xiaomi_roborock_ip
+      token: !secret xiaomi_roborock_token
 
 # Text to speech
 tts:
@@ -303,6 +268,7 @@ tts:
     cache: true
     time_memory: 3600
 
+input_number:
 input_select:
   home_state:
     name: Home State
@@ -355,19 +321,178 @@ notify:
     vapid_pub_key: !secret vapid_pub_key
     vapid_prv_key: !secret vapid_prv_key
     vapid_email: !secret vapid_email
+  - name: family_notification
+    platform: group
+    services:
+      - service: mobile_app_tor_magnus_p30_pro
+      - service: mobile_app_ingrids_phone
+      - service: mobile_app_sm_g973f
 
 
 google_assistant:
   project_id: api-project-511361644410
   service_account: !include google_assistant.json
   report_state: true
-  exposed_domains:
-    - light
-    - climate
-    - cover
+  expose_by_default: false
   entity_config:
+    light.neopixel_light:
+      name: Guest Bedroom Mood Light
+      expose: true
+      room: Guest Bedroom
+    light.guest_bedroom_dimmer_current_value:
+      name: Guest Bedroom Ceiling
+      expose: true
+      room: Guest Bedroom
+    light.ceiling:
+      name: Master Bathroom Ceiling
+      expose: true
+      room: Master Bathroom
+    light.nook_table:
+      name: Nook Side Table
+      expose: true
+      room: Nook
+    light.nook_mood_current_value:
+      name: Nook Mood Light
+      expose: true
+      room: Nook
+    light.nook:
+      name: Nook Standing Lamp
+      expose: true
+      room: Nook
+    light.dining_room_rail_2:
+      name: Office Ceiling
+      expose: true
+      room: Office Area
+    light.bookshelf:
+      name: Office Bookshelf
+      expose: true
+      room: Office Area
+    light.downstairs_hallway_pendant_current_value:
+      name: Downstairs Hallway Ceiling
+      expose: true
+      room: Downstairs Hallway
+    light.changing_room_ceiling_light_current_value:
+      name: Changing Room Ceiling
+      expose: true
+      room: Changing Room
+    light.wardrobes:
+      name: Changing Room Wardrobes
+      expose: true
+      room: Changing Room
+    light.cabinets:
+      name: Dining Room Cabinets
+      expose: true
+      room: Dining Room
+    light.sofa:
+      name: Dining Room Sofa
+      expose: true
+      room: Dining Room
+    light.serving_table:
+      name: Dining Room Serving Table
+      expose: true
+      room: Dining Room
+    light.dining_room_rail_1:
+      name: Dining Room Dining Table
+      expose: true
+      room: Dining Room
+    light.dining_room_rail_3:
+      name: Dining Room Stairs
+      expose: true
+      room: Dining Room
+    light.kitchen_hallway_ceiling_lights_current_value:
+      name: Kitchen Hallway 
+      expose: true
+      room: Kitchen
+    light.kitchen_table_ceiling_lamp_current_value:
+      name: Kitchen Table 
+      expose: true
+      room: Kitchen
+    light.kitchen_bench_ceiling_lights_current_value:
+      name: Kitchen Bench
+      expose: true
+      room: Kitchen
+    light.training_room_ceiling:
+      name: Training Room Ceiling
+      expose: true
+      room: Training Room
+    light.lamp:
+      name: Training Room Lamp
+      expose: true
+      room: Training Room
+    light.ingrid_bedroom_bed_light:
+      name: Ingrid Bedroom Bed Light
+      expose: true
+      room: Ingrid Bedroom
+    light.ingrid_bedroom_ceiling_light_current_value:
+      name: Ingrid Bedroom Ceiling
+      expose: true
+      room: Ingrid Bedroom
+    light.family_bathroom_dimmer_current_value:
+      name: Family Bathroom Ceiling
+      expose: true
+      room: Family Bathroom
+    light.laundry_dimmer_current_value:
+      name: Laundry Ceiling
+      expose: true
+      room: Laundry
+    light.laundry_bench_light:
+      name: Laundry Bench
+      expose: true
+      room: Laundry
+    light.hallway_toilet_ceiling_dimmer_current_value:
+      name: Hallway Toilet Ceiling
+      expose: true
+      room: Entrance Toilet
+    light.dressing_table:
+      name: Master Bedroom Dressing Table
+      expose: true
+      room: Master Bedroom
+    light.bedside_lamp_dimmer_current_value:
+      name: Master Bedroom Bedside Table
+      expose: true
+      room: Master Bedroom
+    light.bedroom_tv_backlight:
+      name: Ingrid Bedroom TV
+      expose: true
+      room: Ingrid Bedroom
+    light.tv_room_table_lamp:
+      name: TV Room Table
+      expose: true
+      room: TV Room
+    light.hallway_area_current_value:
+      name: TV Room Hallway
+      expose: true
+      room: TV Room
+    light.sofa_area_current_value:
+      name: TV Room Sofa
+      expose: true
+      room: TV Room
+    light.tv_area_current_value:
+      name: TV Room TV Wall
+      expose: true
+      room: TV Room
+    light.entrance_wardrobes:
+      name: Entrance Hallway Wardrobes
+      expose: true
+      room: Entrance Hallway
+    light.entrance_hallway_ceiling_lights_current_value:
+      name: Entrance Hallway Ceiling 
+      expose: true
+      room: Entrance Hallway
+    light.balcony_outside_light_current_value:
+      name: Outside Balcony
+      expose: true
+      room: Outside
+    light.terrace:
+      name: Outside Terrace
+      expose: true
+      room: Outside
+    light.porch:
+      name: Outside Porch
+      expose: true
+      room: Outside
     media_player.tv_room_tv:
-      name: TV
+      name: TV Room TV
       expose: true
       room: TV room
     input_boolean.sleep_state_tor:
@@ -385,151 +510,28 @@ google_assistant:
       name: ingrid sleeping
       expose: true
       room: Ingrid bedroom
-    input_boolean.red_alert:
-      name: Red Alert
-      expose: true
-      room: Dining room
-    input_boolean.fireplace:
-      name: Fireplace
-      expose: true
-      room: TV room
-    light.fibaro_system_fgd212_dimmer_2_level:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_2:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_3:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_4:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_5:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_6:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_7:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_8:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_9:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_10:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_13:
-      expose: false
-    light.fibaro_system_fgd212_dimmer_2_level_12:
-      expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level_2:
-      expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level_3:
-      expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level_4:
-      expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level_5:
-      expose: false
-    light.fibaro_system_fgrgbwm441_rgbw_controller_level_6:
-      expose: false
-    light.house_ventilation_dimmer_level:
-      expose: false
-    light.bedroom_tv_backlight_level_2:
-      expose: false
-    light.bedroom_tv_backlight_level_3:
-      expose: false
-    light.bedroom_tv_backlight_level_4:
-      expose: false
-    light.bedroom_tv_backlight_level_5:
-      expose: false
-    light.bedroom_tv_backlight_level_6:
-      expose: false
-    light.family_bathroom_dimmer_level_2:
-      expose: false
-    light.laundry_dimmer_level_2:
-      expose: false
-    light.master_bathroom_dimmer_level_2:
-      expose: false
-    light.house_ventilation_dimmer_level_2:
-      expose: false
-    light.downstairs_hallway_pendant_level_2:
-      expose: false
-    light.dining_room_rail_1_level_2:
-      expose: false
-    light.dining_room_rail_2_level_2:
-      expose: false
-    light.dining_room_rail_3_level_2:
-      expose: false
-    light.tv_area_level_2:
-      expose: false
-    light.sofa_area_level_2:
-      expose: false
-    light.hallway_area_level_2:
-      expose: false
-    light.entrance_hallway_ceiling_lights_level_2:
-      expose: false
-    light.changing_room_ceiling_light_level_2:
-      expose: false
-    light.ingrid_bedroom_ceiling_light_level_2:
-      expose: false
-    light.ingrid_bedroom_bed_light_level_2:
-      expose: false
-    light.ingrid_bedroom_bed_light_level_3:
-      expose: false
-    light.ingrid_bedroom_bed_light_level_4:
-      expose: false
-    light.ingrid_bedroom_bed_light_level_5:
-      expose: false
-    light.ingrid_bedroom_bed_light_level_6:
-      expose: false
-    light.kitchen_bench_ceiling_lights_level_2:
-      expose: false
-    light.kitchen_table_ceiling_lamp_level_2:
-      expose: false
-    light.hallway_toilet_ceiling_dimmer_level_2:
-      expose: false
-    light.ingrid_bedroom_bed_light_blue_level:
-      expose: false
-    light.ingrid_bedroom_bed_light_green_level:
-      expose: false
-    light.ingrid_bedroom_bed_light_red_level:
-      expose: false
-    light.ingrid_bedroom_bed_light_white_level:
-      expose: false
-    light.guest_bedroom_dimmer_level_2:
-      expose: false
-    light.nook_mood_blue_level:
-      expose: false
-    light.nook_mood_green_level:
-      expose: false
-    light.nook_mood_level_2:
-      expose: false
-    light.nook_mood_red_level:
-      expose: false
-    light.nook_mood_white_level:
-      expose: false    
-    light.kitchen:
-      expose: false
-    light.tv_lounge:
-      expose: false
-    light.entrance:
-      expose: false
-    light.dining_room:
-      expose: false
-    light.master_bedroom:
-      expose: false
-    climate.marvin_hvac_climate_system:
-      expose: false
  
 spotify:
   client_id: !secret spotify_client_id
   client_secret: !secret spotify_client_secret
 
+min_renovasjon:
+  street_name: "Holmsens vei"
+  house_no: "29B"
+  street_code: "6350"
+  county_id: "3030"
+  date_format: "None"
+
 netatmo:
   client_id: !secret netatmo_client_id
   client_secret: !secret netatmo_client_secret
 
-octoprint:
-  host: !secret octoprint_host
-  api_key: !secret octoprint_key
-  name: "Prusa i3 MK2S"
-  bed: true
-  number_of_tools: 1
+  #octoprint:
+  #host: !secret octoprint_host
+  #api_key: !secret octoprint_key
+  #name: "Prusa i3 MK2S"
+  #bed: true
+  #number_of_tools: 1
 
 utility_meter:
   water_yearly:
@@ -548,32 +550,32 @@ utility_meter:
     tariffs:
       - fixed
   electricity_yearly:
-    source: sensor.electricity_meter_accmulated_consumption
+    source: sensor.accumulated_consumption_holmsens_vei_29b
     cycle: yearly
     tariffs:
       - fixed
   electricity_monthly:
-    source: sensor.electricity_meter_accmulated_consumption
+    source: sensor.accumulated_consumption_holmsens_vei_29b
     cycle: monthly
     tariffs:
       - fixed
   electricity_daily:
-    source: sensor.electricity_meter_accmulated_consumption
+    source: sensor.accumulated_consumption_holmsens_vei_29b
     cycle: daily
     tariffs:
       - fixed
   electricity_cost_yearly:
-    source: sensor.electricity_meter_accmulated_cost
+    source: sensor.accumulated_cost_holmsens_vei_29b
     cycle: yearly
     tariffs:
       - fixed
   electricity_cost_monthly:
-    source: sensor.electricity_meter_accmulated_cost
+    source: sensor.accumulated_cost_holmsens_vei_29b
     cycle: monthly
     tariffs:
       - fixed
   electricity_cost_daily:
-    source: sensor.electricity_meter_accmulated_cost
+    source: sensor.accumulated_cost_holmsens_vei_29b
     cycle: daily
     tariffs:
       - fixed
@@ -590,7 +592,7 @@ switch: !include switch.yaml
 group: !include groups.yaml
 binary_sensor: !include binary-sensor.yaml
 sensor: !include sensor.yaml
-automation: !include_dir_merge_list automation/
+automation: !include automations.yaml
 script: !include scripts.yaml
 #alert: !include alerts.yaml
 fan: !include fans.yaml

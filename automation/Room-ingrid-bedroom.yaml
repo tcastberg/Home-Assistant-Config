@@ -1,16 +1,13 @@
 - id: '62'
   alias: 'Ingrids bedroom active'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.morning, binary_sensor.day, binary_sensor.evening, binary_sensor.night
-    - platform: state
-      entity_id: input_select.home_state
-      to: 'Home'
     - platform: numeric_state
-      entity_id: sensor.ingrid_bedroom_motion_sensor_luminance
+      entity_id: sensor.ingrid_bedroom_motion_sensor_illuminance
       below: 180
-      for:
-        seconds: 120
+      for: "00:02:00"
+    - platform: state
+      entity_id: binary_sensor.ingrid_bedroom_motion_sensor_home_security_motion_detection
+      to: 'on'
     - platform: state
       entity_id: input_boolean.sleep_state_ingrid
       to: 'off'
@@ -27,14 +24,13 @@
         entity_id: binary_sensor.sleep_state
         state: 'off'
       - condition: numeric_state
-        entity_id: sensor.ingrid_bedroom_motion_sensor_luminance
+        entity_id: sensor.ingrid_bedroom_motion_sensor_illuminance
         below: 200
   action:
-    - service: switch.turn_on
-      entity_id: switch.ingrid_flux
     - service: light.turn_on
-      entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
+      entity_id: light.ingrid_bedroom_ceiling_light_current_value, light.ingrid_bedroom_bed_light, light.bedroom_tv_backlight
       data_template:
+        transition: 10
         brightness_pct: >
           {%- if is_state('binary_sensor.morning', 'on') %}
             75
@@ -53,15 +49,22 @@
       entity_id: input_boolean.sleep_state_ingrid
       to: 'on'
   action:
-    - service: switch.turn_off
-      entity_id: switch.ingrid_flux
     - service: light.turn_off
-      entity_id: light.ingrid_bedroom_ceiling_light_level 
-    - service: light.turn_on
-      entity_id: light.ingrid_bedroom_bed_light_level
+      entity_id: light.ingrid_bedroom_ceiling_light_current_value 
       data:
-        brightness: 35
-        rgb_color: [255, 64, 0]
+        transition: 15
+    - delay:
+        seconds: 30
+    - service: light.turn_off
+      entity_id: light.bedroom_tv_backlight
+      data:
+        transition: 15
+    - delay:
+        seconds: 30
+    - service: light.turn_off
+      entity_id: light.ingrid_bedroom_bed_light
+      data:
+        transition: 15
 
 - id: '63'    
   alias: 'Ingrids bedroom off'
@@ -73,44 +76,24 @@
       entity_id: input_select.home_state
       to: 'Away'
     - platform: numeric_state
-      entity_id: sensor.ingrid_bedroom_motion_sensor_luminance
+      entity_id: sensor.ingrid_bedroom_motion_sensor_illuminance
       above: 200
-      for:
-        seconds: 120
+      for: "00:02:00"
+    - platform: state
+      entity_id: binary_sensor.ingrid_bedroom_motion_sensor_home_security_motion_detection
+      to: 'off'
+      for: "00:45:00"
+  condition:
+    condition: state
+    entity_id: input_boolean.sleep_state_ingrid
+    state: 'off'
   action:
-    - service: switch.turn_off
-      entity_id: switch.ingrid_flux
     - service: light.turn_off
-      entity_id: light.ingrid_bedroom_ceiling_light_level, light.ingrid_bedroom_bed_light_level
+      entity_id: light.ingrid_bedroom_ceiling_light_current_value, light.ingrid_bedroom_bed_light, light.bedroom_tv_backlight
+      data:
+        transition: 10
 
-#- id: '71'
-#  alias: 'Pre-wakeup alarm Ingrid'
-#  trigger:
-#    platform: state
-#    entity_id: sensor.time
-#  condition:
-#    condition: and
-#    conditions:
-#      - condition: state
-#        entity_id: input_select.home_state
-#        state: 'Home'
-#      - condition: state
-#        entity_id: input_boolean.sleep_state_ingrid
-#        state: 'on'
-#      - condition: template
-#        value_template: '{{(now().strftime("%s") | int +900) | timestamp_custom("%H:%M")  == "%0.02d:%0.02d" | format(states.input_datetime.alarm_time_ingrid.attributes.hour | int, states.input_datetime.alarm_time_ingrid.attributes.minute | int)}}'
-#      - condition: template
-#        value_template: '{{(is_state("input_boolean.alarm_workday_ingrid", "on") and is_state("binary_sensor.workday_sensor", "on")) or is_state("input_boolean.alarm_workday_ingrid","off")}}'
-#      - condition: state
-#        entity_id: input_boolean.alarm_override_ingrid
-#        state: 'off'
-#  action:
-#    - service: python_script.transition_light
-#      data:
-#        entity_id: light.ingrid_bedroom_ceiling_light_level
-#        transition: 900
-#        brightness: 255
- 
+
 - id: '82'
   alias: 'Wakeup alarm Ingrid'
   trigger:
@@ -141,10 +124,11 @@
   alias: 'Ingrid sleeping'
   trigger:
     platform: event
-    event_type: zwave.scene_activated
+    event_type: zwave_js_value_notification
     event_data:
-      entity_id: zwave.ingrid_bedroom_ceiling_light
-      scene_id: 11
+      node_id: 50
+      command_class: 43
+      value: 11
   condition:
     condition: time
     after: '19:00:00'
@@ -159,10 +143,11 @@
   alias: 'Ingrid awake'
   trigger:
     platform: event
-    event_type: zwave.scene_activated
+    event_type: zwave_js_value_notification
     event_data:
-      entity_id: zwave.ingrid_bedroom_ceiling_light
-      scene_id: 10
+      node_id: 50
+      command_class: 43
+      value: 10
   condition:
     condition: and
     conditions:
@@ -177,71 +162,52 @@
     - service: cover.open_cover
       entity_id: cover.ingrid_bedroom_blind
 
-- id: '122'
-  alias: 'Ingrids bedroom heating high'
+- id: 'PQmqPGfZobeT6vRxjWkk'
+  alias: Button off press
+  description: ''
   trigger:
-    - platform: state
-      entity_id: input_select.home_state
-      from: 'Vacation'
-    - platform: time
-      at: "05:00:00"
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_select.home_state
-        state: 'Home'
+    - platform: event
+      event_type: zwave_js_value_notification
+      event_data:
+        node_id: 50
+        command_class: 43
+        value: 11
   action:
-    - service: climate.set_temperature
+    - delay:
+        seconds: 10
+    - service: light.turn_off
+      entity_id: light.bedroom_tv_backlight
       data:
-        entity_id: climate.thermofloor_as_heatit_thermostat_tf_058_mode
-        temperature: 21
+        transition: 15
+    - delay:
+        seconds: 10
+    - service: light.turn_off
+      entity_id: light.ingrid_bedroom_bed_light
+      data:
+        transition: 15
+  mode: single
 
-- id: '122'
-  alias: 'Ingrids bedroom heating medium'
+- id: 'fYoXuQeW45tghJnPJGnk'
+  alias: Button on press
+  description: ''
   trigger:
-    - platform: state
-      entity_id: input_select.home_state
-      to: 'Away'
-  condition:
-    condition: and
-    conditions:
-      - condition: time
-        after: "05:00:00"
-        before: "18:00:00"
+    - platform: event
+      event_type: zwave_js_value_notification
+      event_data:
+        node_id: 50
+        command_class: 43
+        value: 10
   action:
-    - service: climate.set_temperature
+    - delay:
+        seconds: 10
+    - service: light.turn_on
+      entity_id: light.bedroom_tv_backlight
       data:
-        entity_id: climate.thermofloor_as_heatit_thermostat_tf_058_mode
-        temperature: 19
-
-- id: '123'
-  alias: 'Ingrids bedroom heating low'
-  trigger:
-    - platform: time
-      at: "18:00:00"
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_select.home_state
-        state: 
-          - Home
-          - Away
-  action:
-    - service: climate.set_temperature
+        transition: 15
+    - delay:
+        seconds: 10
+    - service: light.turn_on
+      entity_id: light.ingrid_bedroom_bed_light
       data:
-        entity_id: climate.thermofloor_as_heatit_thermostat_tf_058_mode
-        temperature: 16
-
-- id: '124'
-  alias: 'Ingrids bedroom heating vacation'
-  trigger:
-    - platform: state
-      entity_id: input_select.home_state
-      to: 'Vacation'
-  action:
-    - service: climate.set_temperature
-      data:
-        entity_id: climate.thermofloor_as_heatit_thermostat_tf_058_mode
-        temperature: 10
+        transition: 15
+  mode: single

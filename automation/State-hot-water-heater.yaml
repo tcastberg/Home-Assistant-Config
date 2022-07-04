@@ -1,0 +1,32 @@
+- id: 'QQ8hZxXTCHLw8pwYuuSn'
+  alias: 'Water heater on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+      for:
+        minutes: 3
+  action:
+    - service: switch.turn_on
+      entity_id: switch.hot_water_tank
+  mode: single
+
+- id: 'b4Ec5N7LLi4Awst8hBst'
+  alias: 'Water heater off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+      for:
+        minutes: 3
+  action:
+    - service: switch.turn_off
+      entity_id: switch.hot_water_tank
+  mode: single
+

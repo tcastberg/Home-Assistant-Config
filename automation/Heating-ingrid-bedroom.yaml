@@ -1,0 +1,80 @@
+- id: '122'
+  alias: 'Ingrids bedroom heating high'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      from: 'Vacation'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Home'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+        temperature: 21
+
+- id: '124'
+  alias: 'Ingrids bedroom heating low'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+    - platform: time
+      at: "19:00:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 
+          - Home
+          - Away
+  action:
+    - service: climate.turn_on
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+        temperature: 17
+
+- id: '125'
+  alias: 'Ingrids bedroom heating vacation'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+        temperature: 12
+
+- id: 'KXHJDwMLg5waWEf7vNiA'
+  alias: 'Ingrids bedroom heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.ingrid_bedroom_window_any
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode
+
+- id: '65r8ko3LNwsKG4zG9cxv'
+  alias: 'Ingrids bedroom heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.ingrid_bedroom_window_any
+      to: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.ingrid_bedroom_floor_heating_thermostat_mode

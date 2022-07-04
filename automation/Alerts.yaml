@@ -1,0 +1,15 @@
+- id: 'f5o4LjaD4MJt7cYwASK99'
+  alias: 'Bjørkebu notifications'
+  trigger:
+    platform: webhook
+    webhook_id: 'e93c769ef573c96636b5cfc9c6126c2e'
+  action:
+    - service: notify.mobile_app_tor_magnus_p30_pro
+      data:
+        title: 'Bjørkebu Alert'
+        message: '{{ trigger.json.state }}: {{ trigger.json.tags.name }} is {{ trigger.json.tags.value }}'
+        data:
+          ttl: 0
+          priority: high
+          channel: alarm_stream
+          tag: 'notification-temperature'

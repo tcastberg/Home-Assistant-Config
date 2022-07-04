@@ -1,0 +1,71 @@
+- id: 'm5tJPnVpvyMcw3'
+  alias: 'Entrance hallway heating high'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Home'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_select.home_state
+    state: 'Home'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.entrance_hallway_floor_heating
+        temperature: 20
+
+- id: '7zxnjyri7sD2rK'
+  alias: 'Entrance hallway heating medium'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Away'
+    - platform: state
+      entity_id: binary_sensor.low_priced_electricity
+      to: 'off'
+  condition:
+    condition: not
+    conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.entrance_hallway_floor_heating
+        temperature: 17
+
+- id: 'tQDH668uPAakXc'
+  alias: 'Entrance hallway heating low'
+  trigger:
+    - platform: state
+      entity_id: input_select.home_state
+      to: 'Vacation'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.entrance_hallway_floor_heating
+        temperature: 8
+
+- id: 'a5XigEKmzRnZUR'
+  alias: 'Entrance hallway heating on'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.front_door_lock_the_current_status_of_the_door
+      to: 'off'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.entrance_hallway_floor_heating
+
+- id: 'ZPpVxoVwDw5P6Y'
+  alias: 'Entrance hallway heating off'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.front_door_lock_the_current_status_of_the_door
+      to: 'on'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.entrance_hallway_floor_heating
